@@ -10,45 +10,58 @@ const Navbar = () => {
   const menu = () => {
     switch (user.role) {
       case 'Delegado':
-  return <>
-    <Link to="/dashboard">Dashboard</Link> |
-    <Link to="/crear-noticia">Crear Noticia</Link> |
-    <Link to="/crear-patinador">Crear Patinador</Link> |
-    <Link to="/patinadores">Patinadores</Link> |
-    <Link to="/crear-competencia">Crear Competencia</Link> |
-    <Link to="/competencias">Competencias</Link> |
-    <Link to="/mis-patinadores">Mis Patinadores</Link>
-    <Link to="/titulos">Ver Títulos</Link> |
-    <Link to="/titulos/individual">Nuevo Título Individual</Link> |
-    <Link to="/titulos/club">Nuevo Título Club</Link>
-  </>;
+        return (
+          <>
+            <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/crear-noticia">Crear Noticia</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/crear-patinador">Crear Patinador</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/patinadores">Patinadores</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/crear-competencia">Crear Competencia</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/competencias">Competencias</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/mis-patinadores">Mis Patinadores</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/titulos">Ver Títulos</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/titulos/individual">Nuevo Título Individual</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/titulos/club">Nuevo Título Club</Link></li>
+          </>
+        );
       case 'Tecnico':
-        return <>
-          <Link to="/dashboard">Dashboard</Link> |
-          <Link to="/crear-noticia">Crear Noticia</Link>
-            <Link to="/mis-patinadores">Mis Patinadores</Link>
-        </>;
+        return (
+          <>
+            <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/crear-noticia">Crear Noticia</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/mis-patinadores">Mis Patinadores</Link></li>
+          </>
+        );
       default:
-        return <>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/mis-patinadores">Mis Patinadores</Link>
-        </>;
+        return (
+          <>
+            <li className="nav-item"><Link className="nav-link" to="/dashboard">Dashboard</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/mis-patinadores">Mis Patinadores</Link></li>
+          </>
+        );
     }
   };
 
   return (
-    <nav style={{ display: 'flex', justifyContent: 'space-between', padding: 10, background: '#eee' }}>
-      <div>
-        <Link to="/dashboard"><img src="/logo.png" alt="logo" height="40" /></Link>
-        <Link to="/ranking">Ranking</Link>
-        <Link to="/ranking-categorias">Ranking por Categorías</Link>
-      </div>
-
-      <div>{menu()}</div>
-
-      <div>
-        <span style={{ marginRight: 10 }}>{user.nombre}</span>
-        <button onClick={() => { logout(); navigate('/'); }}>Cerrar sesión</button>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/dashboard">
+          <img src="/logo.png" alt="logo" height="40" />
+        </Link>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="mainNav">
+          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            <li className="nav-item"><Link className="nav-link" to="/ranking">Ranking</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/ranking-categorias">Ranking por Categorías</Link></li>
+            {menu()}
+          </ul>
+          <div className="d-flex align-items-center">
+            <span className="navbar-text me-3">{user.nombre}</span>
+            <button className="btn btn-outline-light btn-sm" onClick={() => { logout(); navigate('/'); }}>Cerrar sesión</button>
+          </div>
+        </div>
       </div>
     </nav>
   );

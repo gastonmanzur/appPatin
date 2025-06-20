@@ -26,9 +26,9 @@ const Dashboard = () => {
 
       {noticias.length === 0 && <p>No hay noticias disponibles.</p>}
 
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+      <ul className="list-group">
         {noticias.map(noticia => (
-          <li key={noticia._id} style={{ border: '1px solid #ccc', padding: 10, marginBottom: 15 }}>
+          <li key={noticia._id} className="list-group-item mb-3">
             <h3>{noticia.titulo}</h3>
             <p>{noticia.contenido}</p>
 
