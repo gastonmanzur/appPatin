@@ -6,7 +6,7 @@ const Layout = () => {
   return (
     <div>
       <Navbar />
-      <div style={{ padding: '20px' }}>
+      <div className="container py-4">
         <Outlet />
       </div>
     </div>

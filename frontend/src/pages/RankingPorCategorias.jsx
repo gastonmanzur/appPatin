@@ -23,9 +23,9 @@ const RankingPorCategorias = () => {
         <p>No hay datos aún.</p>
       ) : (
         Object.keys(rankings).sort().map((categoria) => (
-          <div key={categoria} style={{ marginBottom: 30 }}>
+          <div key={categoria} className="mb-4">
             <h3>Categoría: {categoria}</h3>
-            <table border="1" cellPadding="5" style={{ marginTop: 10 }}>
+            <table className="table table-striped mt-2">
               <thead>
                 <tr>
                   <th>Posición</th>

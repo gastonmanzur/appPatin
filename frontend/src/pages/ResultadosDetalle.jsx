@@ -38,7 +38,7 @@ const ResultadosDetalle = () => {
       {resultadosOrdenados.length === 0 ? (
         <p>No hay resultados cargados aún.</p>
       ) : (
-        <table border="1" cellPadding="5" style={{ marginTop: 20 }}>
+        <table className="table table-striped mt-3">
           <thead>
             <tr>
               <th>Posición</th>

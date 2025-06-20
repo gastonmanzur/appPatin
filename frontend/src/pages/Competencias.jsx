@@ -29,13 +29,15 @@ const Competencias = () => {
   return (
     <div>
       <h2>Competencias</h2>
-      <ul>
+      <ul className="list-group">
         {competencias.map(c => (
-          <li key={c._id}>
-  <strong>{c.nombre}</strong> - {new Date(c.fecha).toLocaleDateString()}
-  <button onClick={() => handleResultados(c._id)}>Cargar Resultados</button>
-  <button onClick={() => navigate(`/competencias/${c._id}/detalle`)}>Ver Resultados</button>
-</li>
+          <li key={c._id} className="list-group-item d-flex justify-content-between align-items-center">
+            <span><strong>{c.nombre}</strong> - {new Date(c.fecha).toLocaleDateString()}</span>
+            <div>
+              <button className="btn btn-sm btn-secondary me-2" onClick={() => handleResultados(c._id)}>Cargar Resultados</button>
+              <button className="btn btn-sm btn-primary" onClick={() => navigate(`/competencias/${c._id}/detalle`)}>Ver Resultados</button>
+            </div>
+          </li>
 
         ))}
       </ul>
