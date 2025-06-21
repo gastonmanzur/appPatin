@@ -30,14 +30,49 @@ const CrearNoticia = () => {
   };
 
   return (
-    <div>
-      <h2>Crear Noticia</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="titulo" placeholder="Título" onChange={handleChange} required />
-        <textarea name="contenido" placeholder="Contenido" onChange={handleChange} required />
-        <input type="file" name="imagen" onChange={handleFileChange} accept="image/*" />
-        <button type="submit">Publicar</button>
-      </form>
+    <div className="container my-4">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-4">Crear Noticia</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="titulo"
+                    placeholder="Título"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <textarea
+                    className="form-control"
+                    name="contenido"
+                    placeholder="Contenido"
+                    rows="5"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    type="file"
+                    name="imagen"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                  />
+                </div>
+                <button className="btn btn-primary w-100" type="submit">
+                  Publicar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
