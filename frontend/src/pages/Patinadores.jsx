@@ -43,31 +43,50 @@ const Patinadores = () => {
   };
 
   return (
-    <div>
-      <h2>Listado de Patinadores</h2>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+    <div className="container">
+      <h2 className="mb-4">Listado de Patinadores</h2>
+      <div className="row">
         {patinadores.map(p => (
-          <li key={p._id} style={{ border: '1px solid #ccc', padding: 10, marginBottom: 15, display: 'flex', alignItems: 'center' }}>
-            
-            {p.fotoRostro && (
-              <img 
-                src={`http://localhost:5000/uploads/${p.fotoRostro}`} 
-                alt="Rostro" 
-                style={{ width: '100px', height: '100px', objectFit: 'cover', marginRight: 15, borderRadius: '50%' }} 
-              />
-            )}
-
-            <div style={{ flex: 1 }}>
-              <strong>{p.primerNombre} {p.apellido}</strong> - Categoría: {p.categoria}
-              <div>
-                <button onClick={() => handleEditar(p._id)}>Editar</button>
-                <button onClick={() => handleEliminar(p._id)}>Eliminar</button>
-                <button onClick={() => handleVerMas(p._id)}>Más info</button>
+          <div key={p._id} className="col-12 col-sm-6 col-lg-4 mb-4">
+            <div className="card h-100 text-center">
+              {p.fotoRostro && (
+                <img
+                  src={`http://localhost:5000/uploads/${p.fotoRostro}`}
+                  alt="Rostro"
+                  className="rounded-circle mx-auto mt-3"
+                  style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                />
+              )}
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title">
+                  {p.primerNombre} {p.apellido}
+                </h5>
+                <p className="card-text">Categoría: {p.categoria}</p>
+                <div className="mt-auto">
+                  <button
+                    className="btn btn-primary btn-sm me-2"
+                    onClick={() => handleEditar(p._id)}
+                  >
+                    Editar
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm me-2"
+                    onClick={() => handleEliminar(p._id)}
+                  >
+                    Eliminar
+                  </button>
+                  <button
+                    className="btn btn-secondary btn-sm"
+                    onClick={() => handleVerMas(p._id)}
+                  >
+                    Más info
+                  </button>
+                </div>
               </div>
             </div>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
