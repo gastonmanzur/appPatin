@@ -21,3 +21,10 @@ export const getNoticias = async (token) => {
   });
   return res.data;
 };
+
+export const getNoticia = async (id, token) => {
+  const res = await api.get(`/news/${id}`, {
+    headers: { Authorization: token }
+  });
+  return res.data;
+};

@@ -32,3 +32,13 @@ exports.getNews = async (req, res) => {
     res.status(500).json({ msg: 'Error al obtener noticias' });
   }
 };
+
+exports.getNewsById = async (req, res) => {
+  try {
+    const noticia = await News.findById(req.params.id).populate('autor', 'nombre apellido');
+    if (!noticia) return res.status(404).json({ msg: 'Noticia no encontrada' });
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ msg: 'Error al obtener la noticia' });
+  }
+};

@@ -22,6 +22,7 @@ import ResultadosClubCompetencia from './pages/ResultadosClubCompetencia';
 import CrearTituloIndividual from './pages/CrearTituloIndividual';
 import CrearTituloClub from './pages/CrearTituloClub';
 import Titulos from './pages/Titulos';
+import NoticiaDetalle from './pages/NoticiaDetalle';
 const App = () => {
   return (
     <Routes>
@@ -31,7 +32,8 @@ const App = () => {
 
       <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
        <Route path="dashboard" element={<Dashboard />} />
-  <Route path="crear-noticia" element={<CrearNoticia />} />
+       <Route path="crear-noticia" element={<CrearNoticia />} />
+       <Route path="noticia/:id" element={<NoticiaDetalle />} />
         <Route path="mis-patinadores" element={<MisPatinadores />} />
           <Route path="crear-patinador" element={<CrearPatinador />} />
            <Route path="patinadores" element={<Patinadores />} />
