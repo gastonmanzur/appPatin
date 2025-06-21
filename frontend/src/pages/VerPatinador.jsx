@@ -21,34 +21,44 @@ const VerPatinador = () => {
   if (!patinador) return <p>Cargando...</p>;
 
   return (
-    <div>
-      <h2>Ficha de {patinador.primerNombre} {patinador.apellido}</h2>
+    <div className="container my-4">
+      <div className="card mx-auto" style={{ maxWidth: '600px' }}>
+        <div className="card-body text-center">
+          <h2 className="card-title mb-3">Ficha de {patinador.primerNombre} {patinador.apellido}</h2>
 
-      {patinador.fotoRostro && (
-        <img 
-          src={`http://localhost:5000/uploads/${patinador.fotoRostro}`} 
-          alt="Rostro" 
-          style={{ width: '200px', borderRadius: '50%' }} 
-        />
-      )}
+          {patinador.fotoRostro && (
+            <img
+              src={`http://localhost:5000/uploads/${patinador.fotoRostro}`}
+              alt="Rostro"
+              className="rounded-circle mb-3"
+              style={{ width: '200px', height: '200px', objectFit: 'cover' }}
+            />
+          )}
 
-      <p><strong>Edad:</strong> {patinador.edad}</p>
-      <p><strong>Fecha Nacimiento:</strong> {new Date(patinador.fechaNacimiento).toLocaleDateString()}</p>
-      <p><strong>DNI:</strong> {patinador.dni}</p>
-      <p><strong>CUIL:</strong> {patinador.cuil}</p>
-      <p><strong>Dirección:</strong> {patinador.direccion}</p>
-      <p><strong>Teléfono:</strong> {patinador.telefono}</p>
-      <p><strong>Número Corredor:</strong> {patinador.numeroCorredor}</p>
-      <p><strong>Sexo:</strong> {patinador.sexo === 'M' ? 'Masculino' : 'Femenino'}</p>
-      <p><strong>Nivel:</strong> {patinador.nivel}</p>
-      <p><strong>Categoría:</strong> {patinador.categoria}</p>
+          <p className="mb-1"><strong>Edad:</strong> {patinador.edad}</p>
+          <p className="mb-1"><strong>Fecha Nacimiento:</strong> {new Date(patinador.fechaNacimiento).toLocaleDateString()}</p>
+          <p className="mb-1"><strong>DNI:</strong> {patinador.dni}</p>
+          <p className="mb-1"><strong>CUIL:</strong> {patinador.cuil}</p>
+          <p className="mb-1"><strong>Dirección:</strong> {patinador.direccion}</p>
+          <p className="mb-1"><strong>Teléfono:</strong> {patinador.telefono}</p>
+          <p className="mb-1"><strong>Número Corredor:</strong> {patinador.numeroCorredor}</p>
+          <p className="mb-1"><strong>Sexo:</strong> {patinador.sexo === 'M' ? 'Masculino' : 'Femenino'}</p>
+          <p className="mb-1"><strong>Nivel:</strong> {patinador.nivel}</p>
+          <p className="mb-3"><strong>Categoría:</strong> {patinador.categoria}</p>
 
-      {patinador.foto && (
-        <div>
-          <h3>Foto Completa:</h3>
-          <img src={`http://localhost:5000/uploads/${patinador.foto}`} alt="Foto" style={{ maxWidth: '400px' }} />
+          {patinador.foto && (
+            <div className="mt-4">
+              <h3>Foto Completa:</h3>
+              <img
+                src={`http://localhost:5000/uploads/${patinador.foto}`}
+                alt="Foto"
+                className="img-fluid"
+                style={{ maxWidth: '400px' }}
+              />
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
