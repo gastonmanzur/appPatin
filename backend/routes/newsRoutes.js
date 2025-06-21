@@ -8,5 +8,6 @@ const upload = require('../middleware/upload');
 // rutas
 router.post('/', auth, checkRole(['Tecnico', 'Delegado']), upload.single('imagen'), newsController.createNews);
 router.get('/', auth, newsController.getNews);
+router.get('/:id', auth, newsController.getNewsById);
 
 module.exports = router;
