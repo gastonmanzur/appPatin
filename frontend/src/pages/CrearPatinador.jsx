@@ -56,46 +56,170 @@ const CrearPatinador = () => {
     }
   };
 
-  return (
-    <div>
-      <h2>Crear Patinador</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="primerNombre" placeholder="Primer Nombre" onChange={handleChange} required />
-        <input name="segundoNombre" placeholder="Segundo Nombre" onChange={handleChange} />
-        <input name="apellido" placeholder="Apellido" onChange={handleChange} required />
-        <input name="edad" type="number" placeholder="Edad" onChange={handleChange} required />
-        <input name="fechaNacimiento" type="date" placeholder="Fecha de Nacimiento" onChange={handleChange} required />
-        <input name="dni" placeholder="DNI" onChange={handleChange} required />
-        <input name="cuil" placeholder="CUIL" onChange={handleChange} />
-        <input name="direccion" placeholder="Dirección" onChange={handleChange} />
-        <input name="dniMadre" placeholder="DNI Madre" onChange={handleChange} />
-        <input name="dniPadre" placeholder="DNI Padre" onChange={handleChange} />
-        <input name="telefono" placeholder="Teléfono" onChange={handleChange} />
-        
-        <select name="sexo" onChange={handleChange}>
-          <option value="M">Masculino</option>
-          <option value="F">Femenino</option>
-        </select>
-
-        <select name="nivel" onChange={handleChange}>
-          <option value="Federado">Federado</option>
-          <option value="Intermedia">Intermedia</option>
-          <option value="Transicion">Transición</option>
-          <option value="Escuela">Escuela</option>
-        </select>
-
-        <input name="numeroCorredor" type="number" placeholder="Número Corredor" onChange={handleChange} />
-        
-        <label>Foto Cuerpo:</label>
-        <input type="file" name="foto" onChange={handleFileChange} accept="image/*" />
-        
-        <label>Foto Rostro:</label>
-        <input type="file" name="fotoRostro" onChange={handleFileChange} accept="image/*" />
-
-        <button type="submit">Guardar</button>
-      </form>
-    </div>
-  );
-};
+    return (
+      <div className="container my-4">
+        <div className="row justify-content-center">
+          <div className="col-12 col-md-8 col-lg-6">
+            <div className="card shadow-sm">
+              <div className="card-body">
+                <h2 className="card-title text-center mb-4">Crear Patinador</h2>
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="primerNombre"
+                      placeholder="Primer Nombre"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="segundoNombre"
+                      placeholder="Segundo Nombre"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="apellido"
+                      placeholder="Apellido"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="edad"
+                      type="number"
+                      placeholder="Edad"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="fechaNacimiento"
+                      type="date"
+                      placeholder="Fecha de Nacimiento"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="dni"
+                      placeholder="DNI"
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="cuil"
+                      placeholder="CUIL"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="direccion"
+                      placeholder="Dirección"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="dniMadre"
+                      placeholder="DNI Madre"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="dniPadre"
+                      placeholder="DNI Padre"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="telefono"
+                      placeholder="Teléfono"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <select
+                      className="form-select"
+                      name="sexo"
+                      onChange={handleChange}
+                    >
+                      <option value="M">Masculino</option>
+                      <option value="F">Femenino</option>
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <select
+                      className="form-select"
+                      name="nivel"
+                      onChange={handleChange}
+                    >
+                      <option value="Federado">Federado</option>
+                      <option value="Intermedia">Intermedia</option>
+                      <option value="Transicion">Transición</option>
+                      <option value="Escuela">Escuela</option>
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <input
+                      className="form-control"
+                      name="numeroCorredor"
+                      type="number"
+                      placeholder="Número Corredor"
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label">Foto Cuerpo:</label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      name="foto"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="form-label">Foto Rostro:</label>
+                    <input
+                      className="form-control"
+                      type="file"
+                      name="fotoRostro"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                    />
+                  </div>
+                  <button className="btn btn-primary w-100" type="submit">
+                    Guardar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
 export default CrearPatinador;
