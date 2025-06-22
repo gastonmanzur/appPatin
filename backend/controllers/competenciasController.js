@@ -1,6 +1,7 @@
 const Competencia = require('../models/Competencia');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
+const Notification = require('../models/Notification');
 
 exports.crearCompetencia = async (req, res) => {
   try {
@@ -29,6 +30,10 @@ exports.crearCompetencia = async (req, res) => {
            <p>Confirma tu participación:</p>
            <a href="${linksBase}?respuesta=SI">Participar</a> | <a href="${linksBase}?respuesta=NO">No participar</a>`
         );
+        await Notification.create({
+          usuario: u._id,
+          mensaje: `Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString()}.`
+        });
       }
     } catch (e) {
       console.error('Error al enviar notificaciones:', e);
@@ -131,6 +136,10 @@ exports.confirmarParticipacion = async (req, res) => {
         'Participación rechazada',
         `<p>${usuario.nombre} ${usuario.apellido} no participará en ${competencia.nombre}.</p>`
       );
+      await Notification.create({
+        usuario: competencia.creador._id,
+        mensaje: `${usuario.nombre} ${usuario.apellido} no participará en ${competencia.nombre}.`
+      });
     } catch (e) {
       console.error('Error al notificar al delegado', e);
     }

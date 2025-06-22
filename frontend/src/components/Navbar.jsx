@@ -53,6 +53,9 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" to="/ranking-categorias">Ranking por Categorías</Link></li>
               </ul>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/notificaciones">Notificaciones</Link>
+            </li>
             {isDelegado ? (
               <li className="nav-item dropdown">
                 <a
