@@ -13,6 +13,7 @@ import Patinadores from './pages/Patinadores';
 import EditarPatinador from './pages/EditarPatinador';
 import VerPatinador from './pages/VerPatinador';
 import CrearCompetencia from './pages/CrearCompetencia';
+import EditarCompetencia from './pages/EditarCompetencia';
 import Competencias from './pages/Competencias';
 import ResultadosCompetencia from './pages/ResultadosCompetencia';
 import ResultadosDetalle from './pages/ResultadosDetalle';
@@ -23,6 +24,7 @@ import CrearTituloIndividual from './pages/CrearTituloIndividual';
 import CrearTituloClub from './pages/CrearTituloClub';
 import Titulos from './pages/Titulos';
 import NoticiaDetalle from './pages/NoticiaDetalle';
+import ConfirmarCompetencia from './pages/ConfirmarCompetencia';
 const App = () => {
   return (
     <Routes>
@@ -41,8 +43,10 @@ const App = () => {
            <Route path="patinador/:id" element={<VerPatinador />} />
            <Route path="crear-competencia" element={<CrearCompetencia />} />
           <Route path="competencias" element={<Competencias />} />
+          <Route path="competencias/editar/:id" element={<EditarCompetencia />} />
           <Route path="competencias/:id/resultados" element={<ResultadosCompetencia />} />
           <Route path="competencias/:id/detalle" element={<ResultadosDetalle />} />
+          <Route path="competencias/:id/confirmar" element={<ConfirmarCompetencia />} />
           <Route path="ranking" element={<RankingGeneral />} />
            <Route path="ranking-categorias" element={<RankingPorCategorias />} />
            <Route path="competencias/:id/resultados-club" element={<ResultadosClubCompetencia />} />
