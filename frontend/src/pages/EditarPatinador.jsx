@@ -67,43 +67,181 @@ const EditarPatinador = () => {
   };
 
   return (
-    <div>
-      <h2>Editar Patinador</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="primerNombre" placeholder="Primer Nombre" onChange={handleChange} value={form.primerNombre} required />
-        <input name="segundoNombre" placeholder="Segundo Nombre" onChange={handleChange} value={form.segundoNombre || ''} />
-        <input name="apellido" placeholder="Apellido" onChange={handleChange} value={form.apellido} required />
-        <input name="edad" type="number" placeholder="Edad" onChange={handleChange} value={form.edad} required />
-        <input name="fechaNacimiento" type="date" placeholder="Fecha Nacimiento" onChange={handleChange} value={form.fechaNacimiento?.substr(0,10)} required />
-        <input name="dni" placeholder="DNI" onChange={handleChange} value={form.dni} required />
-        <input name="cuil" placeholder="CUIL" onChange={handleChange} value={form.cuil} />
-        <input name="direccion" placeholder="Dirección" onChange={handleChange} value={form.direccion} />
-        <input name="dniMadre" placeholder="DNI Madre" onChange={handleChange} value={form.dniMadre} />
-        <input name="dniPadre" placeholder="DNI Padre" onChange={handleChange} value={form.dniPadre} />
-        <input name="telefono" placeholder="Teléfono" onChange={handleChange} value={form.telefono} />
-        
-        <select name="sexo" onChange={handleChange} value={form.sexo}>
-          <option value="M">Masculino</option>
-          <option value="F">Femenino</option>
-        </select>
-
-        <select name="nivel" onChange={handleChange} value={form.nivel}>
-          <option value="Federado">Federado</option>
-          <option value="Intermedia">Intermedia</option>
-          <option value="Transicion">Transición</option>
-          <option value="Escuela">Escuela</option>
-        </select>
-
-        <input name="numeroCorredor" type="number" placeholder="Número Corredor" onChange={handleChange} value={form.numeroCorredor} />
-        
-        <label>Actualizar Foto (opcional):</label>
-        <input type="file" name="foto" onChange={handleFileChange} accept="image/*" />
-
-        <label>Actualizar Foto Rostro (opcional):</label>
-        <input type="file" name="fotoRostro" onChange={handleFileChange} accept="image/*" />
-
-        <button type="submit">Guardar</button>
-      </form>
+    <div className="container my-4">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-4">Editar Patinador</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="primerNombre"
+                    placeholder="Primer Nombre"
+                    onChange={handleChange}
+                    value={form.primerNombre}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="segundoNombre"
+                    placeholder="Segundo Nombre"
+                    onChange={handleChange}
+                    value={form.segundoNombre || ''}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="apellido"
+                    placeholder="Apellido"
+                    onChange={handleChange}
+                    value={form.apellido}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="edad"
+                    type="number"
+                    placeholder="Edad"
+                    onChange={handleChange}
+                    value={form.edad}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="fechaNacimiento"
+                    type="date"
+                    placeholder="Fecha Nacimiento"
+                    onChange={handleChange}
+                    value={form.fechaNacimiento?.substr(0, 10)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="dni"
+                    placeholder="DNI"
+                    onChange={handleChange}
+                    value={form.dni}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="cuil"
+                    placeholder="CUIL"
+                    onChange={handleChange}
+                    value={form.cuil}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="direccion"
+                    placeholder="Dirección"
+                    onChange={handleChange}
+                    value={form.direccion}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="dniMadre"
+                    placeholder="DNI Madre"
+                    onChange={handleChange}
+                    value={form.dniMadre}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="dniPadre"
+                    placeholder="DNI Padre"
+                    onChange={handleChange}
+                    value={form.dniPadre}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="telefono"
+                    placeholder="Teléfono"
+                    onChange={handleChange}
+                    value={form.telefono}
+                  />
+                </div>
+                <div className="mb-3">
+                  <select
+                    className="form-select"
+                    name="sexo"
+                    onChange={handleChange}
+                    value={form.sexo}
+                  >
+                    <option value="M">Masculino</option>
+                    <option value="F">Femenino</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <select
+                    className="form-select"
+                    name="nivel"
+                    onChange={handleChange}
+                    value={form.nivel}
+                  >
+                    <option value="Federado">Federado</option>
+                    <option value="Intermedia">Intermedia</option>
+                    <option value="Transicion">Transición</option>
+                    <option value="Escuela">Escuela</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="numeroCorredor"
+                    type="number"
+                    placeholder="Número Corredor"
+                    onChange={handleChange}
+                    value={form.numeroCorredor}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">Actualizar Foto (opcional):</label>
+                  <input
+                    className="form-control"
+                    type="file"
+                    name="foto"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="form-label">Actualizar Foto Rostro (opcional):</label>
+                  <input
+                    className="form-control"
+                    type="file"
+                    name="fotoRostro"
+                    onChange={handleFileChange}
+                    accept="image/*"
+                  />
+                </div>
+                <button className="btn btn-primary w-100" type="submit">
+                  Guardar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
