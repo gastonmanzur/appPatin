@@ -25,6 +25,7 @@ import CrearTituloClub from './pages/CrearTituloClub';
 import Titulos from './pages/Titulos';
 import NoticiaDetalle from './pages/NoticiaDetalle';
 import ConfirmarCompetencia from './pages/ConfirmarCompetencia';
+import Notificaciones from './pages/Notificaciones';
 const App = () => {
   return (
     <Routes>
@@ -53,6 +54,7 @@ const App = () => {
             <Route path="titulos" element={<Titulos />} />
   <Route path="titulos/individual" element={<CrearTituloIndividual />} />
   <Route path="titulos/club" element={<CrearTituloClub />} />
+          <Route path="notificaciones" element={<Notificaciones />} />
       </Route>
     </Routes>
   );
