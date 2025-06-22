@@ -9,11 +9,14 @@ const resultadoSchema = new mongoose.Schema({
 const competenciaSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
   fecha: { type: Date, required: true },
+  creador: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   resultados: [resultadoSchema],
-  resultadosClub: [{ 
+  resultadosClub: [{
     club: { type: String, required: true },
     puntos: { type: Number, required: true }
-  }]
+  }],
+  listaBuenaFe: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  padronSeguros: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
 module.exports = mongoose.model('Competencia', competenciaSchema);

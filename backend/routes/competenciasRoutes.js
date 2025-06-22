@@ -9,6 +9,9 @@ router.post('/', auth, checkRole(['Delegado']), competenciasController.crearComp
 router.put('/resultados', auth, checkRole(['Delegado']), competenciasController.agregarResultados);
 router.get('/', auth, competenciasController.listarCompetencias);
 router.put('/resultados-club', auth, checkRole(['Delegado']), competenciasController.agregarResultadosClub);
+router.put('/:id', auth, checkRole(['Delegado']), competenciasController.editarCompetencia);
+router.delete('/:id', auth, checkRole(['Delegado']), competenciasController.eliminarCompetencia);
+router.post('/:id/confirmar', auth, competenciasController.confirmarParticipacion);
 
 
 module.exports = router;
