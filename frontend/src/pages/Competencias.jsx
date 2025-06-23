@@ -23,9 +23,6 @@ const Competencias = () => {
     fetchCompetencias();
   }, []);
 
-  const handleResultados = (id) => {
-    navigate(`/competencias/${id}/resultados`);
-  };
 
   const handleEditar = (id) => {
     navigate(`/competencias/editar/${id}`);
@@ -56,8 +53,12 @@ const Competencias = () => {
                   <button className="btn btn-sm btn-danger me-2" onClick={() => handleEliminar(c._id)}>Eliminar</button>
                 </>
               )}
-              <button className="btn btn-sm btn-secondary me-2" onClick={() => handleResultados(c._id)}>Cargar Resultados</button>
-              <button className="btn btn-sm btn-primary" onClick={() => navigate(`/competencias/${c._id}/detalle`)}>Ver Resultados</button>
+              <button
+                className="btn btn-sm btn-primary"
+                onClick={() => navigate(`/competencia/${c._id}`)}
+              >
+                Ver competencia
+              </button>
             </div>
           </li>
 

@@ -15,6 +15,7 @@ import VerPatinador from './pages/VerPatinador';
 import CrearCompetencia from './pages/CrearCompetencia';
 import EditarCompetencia from './pages/EditarCompetencia';
 import Competencias from './pages/Competencias';
+import VerCompetencia from './pages/VerCompetencia';
 import ResultadosCompetencia from './pages/ResultadosCompetencia';
 import ResultadosDetalle from './pages/ResultadosDetalle';
 import RankingGeneral from './pages/RankingGeneral';
@@ -45,6 +46,7 @@ const App = () => {
            <Route path="crear-competencia" element={<CrearCompetencia />} />
           <Route path="competencias" element={<Competencias />} />
           <Route path="competencias/editar/:id" element={<EditarCompetencia />} />
+          <Route path="competencia/:id" element={<VerCompetencia />} />
           <Route path="competencias/:id/resultados" element={<ResultadosCompetencia />} />
           <Route path="competencias/:id/detalle" element={<ResultadosDetalle />} />
           <Route path="competencias/:id/confirmar" element={<ConfirmarCompetencia />} />
