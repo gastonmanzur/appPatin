@@ -13,3 +13,10 @@ export const getRankingPorCategorias = async (token) => {
   });
   return res.data;
 };
+
+export const getRankingCategoriasCompetencia = async (id, token) => {
+  const res = await api.get(`/ranking/categorias/${id}`, {
+    headers: { Authorization: token }
+  });
+  return res.data;
+};

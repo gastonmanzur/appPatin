@@ -58,15 +58,24 @@ exports.agregarResultados = async (req, res) => {
 
     competencia.resultados = resultados;
 
-    // Calcular puntos por club automaticamente
-    const patinadoresIds = resultados.map(r => r.patinador);
+    // Calcular puntos por club incluyendo corredores externos
+    const patinadoresIds = resultados
+      .filter(r => r.patinador)
+      .map(r => r.patinador);
     const patinadores = await Patinador.find({ _id: { $in: patinadoresIds } });
     const acumulado = {};
+
     resultados.forEach(res => {
-      const pat = patinadores.find(p => p._id.toString() === res.patinador);
-      const club = pat?.club || 'Sin club';
+      let club = 'Sin club';
+      if (res.patinador) {
+        const pat = patinadores.find(p => p._id.toString() === res.patinador);
+        club = pat?.club || 'Sin club';
+      } else if (res.club) {
+        club = res.club;
+      }
       acumulado[club] = (acumulado[club] || 0) + res.puntos;
     });
+
     competencia.resultadosClub = Object.entries(acumulado).map(([club, puntos]) => ({ club, puntos }));
 
     await competencia.save();

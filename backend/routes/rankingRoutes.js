@@ -6,6 +6,7 @@ const auth = require('../middleware/authMiddleware');
 router.get('/general', auth, rankingController.getRankingGeneral);
 router.get('/categorias', auth, rankingController.getRankingPorCategorias);
 router.get('/clubes', auth, rankingController.getRankingClubes);
+router.get('/categorias/:id', auth, rankingController.getRankingCategoriasCompetencia);
 
 
 

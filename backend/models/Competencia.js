@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 const resultadoSchema = new mongoose.Schema({
-  patinador: { type: mongoose.Schema.Types.ObjectId, ref: 'Patinador', required: true },
+  patinador: { type: mongoose.Schema.Types.ObjectId, ref: 'Patinador' },
+  nombre: { type: String },
+  club: { type: String },
+  categoria: { type: String },
   posicion: { type: Number, required: true }, // 1, 2, 3, etc
   puntos: { type: Number, required: true }
 });
