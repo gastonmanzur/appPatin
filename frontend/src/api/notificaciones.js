@@ -6,3 +6,10 @@ export const getNotificaciones = async (token) => {
   });
   return res.data;
 };
+
+export const marcarLeida = async (id, token) => {
+  const res = await api.put(`/notificaciones/${id}/leida`, {}, {
+    headers: { Authorization: token }
+  });
+  return res.data;
+};

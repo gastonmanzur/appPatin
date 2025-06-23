@@ -32,7 +32,8 @@ exports.crearCompetencia = async (req, res) => {
         );
         await Notification.create({
           usuario: u._id,
-          mensaje: `Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString()}.`
+          mensaje: `Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString()}.`,
+          competencia: competencia._id
         });
       }
     } catch (e) {
@@ -138,7 +139,8 @@ exports.confirmarParticipacion = async (req, res) => {
       );
       await Notification.create({
         usuario: competencia.creador._id,
-        mensaje: `${usuario.nombre} ${usuario.apellido} no participará en ${competencia.nombre}.`
+        mensaje: `${usuario.nombre} ${usuario.apellido} no participará en ${competencia.nombre}.`,
+        competencia: competencia._id
       });
     } catch (e) {
       console.error('Error al notificar al delegado', e);

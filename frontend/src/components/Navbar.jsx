@@ -2,13 +2,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import useAuth from '../store/useAuth';
 import { getNotificaciones } from '../api/notificaciones';
+import useNotifications from '../store/useNotifications';
 import { getMe, updateProfilePicture } from '../api/usuarios';
 
 const Navbar = () => {
   const { user, token, logout } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
-  const [unread, setUnread] = useState(0);
+  const { unread, setUnread } = useNotifications();
   const fileRef = useRef();
 
   useEffect(() => {
@@ -23,7 +24,7 @@ const Navbar = () => {
       }
     };
     if (token) fetchData();
-  }, [token]);
+  }, [token, setUnread]);
 
   const handlePictureChange = async (e) => {
     const file = e.target.files[0];
