@@ -20,6 +20,7 @@ app.use('/api/competencias', require('./routes/competenciasRoutes'));
 app.use('/api/ranking', require('./routes/rankingRoutes'));
 app.use('/api/titulos', require('./routes/titulosRoutes'));
 app.use('/api/notificaciones', require('./routes/notificationRoutes'));
+app.use('/api/usuarios', require('./routes/userRoutes'));
 
 
 
