@@ -1,9 +1,41 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useRef } from 'react';
 import useAuth from '../store/useAuth';
+import { getNotificaciones } from '../api/notificaciones';
+import { getMe, updateProfilePicture } from '../api/usuarios';
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, token, logout } = useAuth();
   const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const [unread, setUnread] = useState(0);
+  const fileRef = useRef();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const me = await getMe(token);
+        setProfile(me);
+        const notifs = await getNotificaciones(token);
+        setUnread(notifs.filter(n => !n.leida).length);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    if (token) fetchData();
+  }, [token]);
+
+  const handlePictureChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const res = await updateProfilePicture(file, token);
+      setProfile(p => ({ ...p, picture: res.picture }));
+    } catch (err) {
+      console.error(err);
+      alert('Error al actualizar foto');
+    }
+  };
 
   if (!user) return null;
 
@@ -52,9 +84,6 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" to="/ranking">Ranking</Link></li>
                 <li><Link className="dropdown-item" to="/ranking-categorias">Ranking por Categorías</Link></li>
               </ul>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/notificaciones">Notificaciones</Link>
             </li>
             {isDelegado ? (
               <li className="nav-item dropdown">
@@ -114,6 +143,70 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="d-flex align-items-center">
+            <button
+              type="button"
+              className="btn position-relative me-3 p-0 bg-transparent border-0"
+              onClick={() => navigate('/notificaciones')}
+            >
+              <i
+                className={`bi bi-bell${unread > 0 ? '-fill' : ''}`}
+                style={{
+                  fontSize: '1.4rem',
+                  color: unread > 0 ? 'red' : 'gray',
+                  border: '1px solid #fff',
+                  borderRadius: '50%',
+                  padding: '4px'
+                }}
+              />
+              {unread > 0 && (
+                <span className="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">
+                  {unread}
+                </span>
+              )}
+            </button>
+
+            <div className="dropdown me-3">
+              <button
+                className="btn p-0 border-0 bg-transparent dropdown-toggle"
+                id="profileDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                type="button"
+              >
+                {profile?.picture ? (
+                  <img
+                    src={`http://localhost:5000/uploads/${profile.picture}`}
+                    alt="Perfil"
+                    className="rounded-circle"
+                    width="32"
+                    height="32"
+                  />
+                ) : (
+                  <div
+                    className="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center"
+                    style={{ width: '32px', height: '32px' }}
+                  >
+                    {(profile?.nombre || user.nombre || 'U')[0]}
+                  </div>
+                )}
+              </button>
+              <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                <li>
+                  <label htmlFor="profileInput" className="dropdown-item mb-0" style={{ cursor: 'pointer' }}>
+                    Cambiar foto
+                  </label>
+                  <input
+                    type="file"
+                    id="profileInput"
+                    accept="image/*"
+                    className="d-none"
+                    ref={fileRef}
+                    onChange={handlePictureChange}
+                  />
+                </li>
+              </ul>
+            </div>
+
             <span className="navbar-text me-3">{user.nombre}</span>
             <button
               className="btn btn-outline-light btn-sm"
