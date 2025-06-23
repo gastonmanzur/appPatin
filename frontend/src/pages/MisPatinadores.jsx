@@ -53,7 +53,7 @@ const MisPatinadores = () => {
           <ul>
             {patinadores.map(p => (
               <li key={p._id}>
-                <strong>{p.primerNombre} {p.apellido}</strong> - {p.categoria}
+                <strong>{p.primerNombre} {p.apellido}</strong> - {p.categoria} - {p.club}
                 {p.fotoRostro && (
                   <div>
                     <img src={`http://localhost:5000/uploads/${p.fotoRostro}`} alt="Rostro" width={150} />

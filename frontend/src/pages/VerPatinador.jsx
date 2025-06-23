@@ -41,6 +41,7 @@ const VerPatinador = () => {
           <p className="mb-1"><strong>CUIL:</strong> {patinador.cuil}</p>
           <p className="mb-1"><strong>Dirección:</strong> {patinador.direccion}</p>
           <p className="mb-1"><strong>Teléfono:</strong> {patinador.telefono}</p>
+          <p className="mb-1"><strong>Club:</strong> {patinador.club}</p>
           <p className="mb-1"><strong>Número Corredor:</strong> {patinador.numeroCorredor}</p>
           <p className="mb-1"><strong>Sexo:</strong> {patinador.sexo === 'M' ? 'Masculino' : 'Femenino'}</p>
           <p className="mb-1"><strong>Nivel:</strong> {patinador.nivel}</p>

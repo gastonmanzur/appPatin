@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { listarCompetencias } from '../api/competencias';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const VerCompetencia = () => {
   const { token } = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate();
   const [competencia, setCompetencia] = useState(null);
 
   useEffect(() => {
@@ -26,6 +27,9 @@ const VerCompetencia = () => {
       {competencia.descripcion && (
         <p><strong>Descripción:</strong> {competencia.descripcion}</p>
       )}
+      <button className="btn btn-primary" onClick={() => navigate(`/competencias/${id}/resultados`)}>
+        Cargar Resultados
+      </button>
     </div>
   );
 };

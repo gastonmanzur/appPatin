@@ -1,5 +1,6 @@
 const Competencia = require('../models/Competencia');
 const User = require('../models/User');
+const Patinador = require('../models/Patinador');
 const sendEmail = require('../utils/sendEmail');
 const Notification = require('../models/Notification');
 
@@ -56,6 +57,18 @@ exports.agregarResultados = async (req, res) => {
     if (!competencia) return res.status(404).json({ msg: 'Competencia no encontrada' });
 
     competencia.resultados = resultados;
+
+    // Calcular puntos por club automaticamente
+    const patinadoresIds = resultados.map(r => r.patinador);
+    const patinadores = await Patinador.find({ _id: { $in: patinadoresIds } });
+    const acumulado = {};
+    resultados.forEach(res => {
+      const pat = patinadores.find(p => p._id.toString() === res.patinador);
+      const club = pat?.club || 'Sin club';
+      acumulado[club] = (acumulado[club] || 0) + res.puntos;
+    });
+    competencia.resultadosClub = Object.entries(acumulado).map(([club, puntos]) => ({ club, puntos }));
+
     await competencia.save();
 
     res.json({ msg: 'Resultados cargados correctamente' });

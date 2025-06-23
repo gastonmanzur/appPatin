@@ -6,14 +6,14 @@ exports.crearPatinador = async (req, res) => {
   try {
     const { 
       primerNombre, segundoNombre, apellido, edad, fechaNacimiento, dni, cuil, direccion, 
-      dniMadre, dniPadre, telefono, sexo, nivel, numeroCorredor 
+      dniMadre, dniPadre, telefono, club, sexo, nivel, numeroCorredor
     } = req.body;
 
     const categoria = calcularCategoria(fechaNacimiento, sexo, nivel);
     
     const patinador = new Patinador({
       primerNombre, segundoNombre, apellido, edad, fechaNacimiento, dni, cuil, direccion, 
-      dniMadre, dniPadre, telefono, sexo, nivel, numeroCorredor,
+      dniMadre, dniPadre, telefono, club, sexo, nivel, numeroCorredor,
       categoria,
       foto: req.files?.foto?.[0]?.filename || null,
       fotoRostro: req.files?.fotoRostro?.[0]?.filename || null
@@ -54,14 +54,14 @@ exports.editarPatinador = async (req, res) => {
     const { id } = req.params;
     const { 
       primerNombre, segundoNombre, apellido, edad, fechaNacimiento, dni, cuil, direccion, 
-      dniMadre, dniPadre, telefono, sexo, nivel, numeroCorredor 
+      dniMadre, dniPadre, telefono, club, sexo, nivel, numeroCorredor
     } = req.body;
 
     const categoria = calcularCategoria(fechaNacimiento, sexo, nivel);
 
     const updateData = {
       primerNombre, segundoNombre, apellido, edad, fechaNacimiento, dni, cuil, direccion, 
-      dniMadre, dniPadre, telefono, sexo, nivel, numeroCorredor, categoria
+      dniMadre, dniPadre, telefono, club, sexo, nivel, numeroCorredor, categoria
     };
 
     if (req.files?.foto?.[0]?.filename) {

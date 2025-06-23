@@ -19,6 +19,7 @@ const CrearPatinador = () => {
     dniMadre: '',
     dniPadre: '',
     telefono: '',
+    club: '',
     sexo: 'M',
     nivel: 'Federado',
     numeroCorredor: '',
@@ -152,14 +153,23 @@ const CrearPatinador = () => {
                     />
                   </div>
                   <div className="mb-3">
-                    <input
-                      className="form-control"
-                      name="telefono"
-                      placeholder="Teléfono"
-                      onChange={handleChange}
-                    />
-                  </div>
-                  <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="telefono"
+                    placeholder="Teléfono"
+                    onChange={handleChange}
+                  />
+                 </div>
+                 <div className="mb-3">
+                   <input
+                     className="form-control"
+                     name="club"
+                     placeholder="Club"
+                     onChange={handleChange}
+                     value={form.club}
+                  />
+                 </div>
+                 <div className="mb-3">
                     <select
                       className="form-select"
                       name="sexo"
