@@ -19,7 +19,8 @@ const EditarPatinador = () => {
     direccion: '',
     dniMadre: '',
     dniPadre: '',
-    telefono: '',
+   telefono: '',
+    club: '',
     sexo: 'M',
     nivel: 'Federado',
     numeroCorredor: '',
@@ -172,15 +173,24 @@ const EditarPatinador = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="telefono"
-                    placeholder="Teléfono"
-                    onChange={handleChange}
-                    value={form.telefono}
-                  />
-                </div>
-                <div className="mb-3">
+                <input
+                  className="form-control"
+                  name="telefono"
+                  placeholder="Teléfono"
+                  onChange={handleChange}
+                  value={form.telefono}
+                />
+               </div>
+               <div className="mb-3">
+                 <input
+                   className="form-control"
+                   name="club"
+                   placeholder="Club"
+                   onChange={handleChange}
+                   value={form.club}
+                 />
+               </div>
+               <div className="mb-3">
                   <select
                     className="form-select"
                     name="sexo"

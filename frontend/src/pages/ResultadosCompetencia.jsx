@@ -64,7 +64,7 @@ const ResultadosCompetencia = () => {
               <option value="">Seleccionar Patinador</option>
               {patinadores.map(p => (
                 <option key={p._id} value={p._id}>
-                  {p.primerNombre} {p.apellido}
+                  {p.primerNombre} {p.apellido} - {p.categoria} - {p.club}
                 </option>
               ))}
             </select>

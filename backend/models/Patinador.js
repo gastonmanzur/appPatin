@@ -12,6 +12,7 @@ const patinadorSchema = new mongoose.Schema({
   dniMadre: { type: String },
   dniPadre: { type: String },
   telefono: { type: String },
+  club: { type: String },
   sexo: { type: String, enum: ['M', 'F'], required: true },
   nivel: { type: String, enum: ['Federado', 'Intermedia', 'Transicion', 'Escuela'], required: true },
   numeroCorredor: { type: Number },
