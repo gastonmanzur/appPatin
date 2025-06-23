@@ -28,7 +28,7 @@ const ResultadosCompetencia = () => {
   }, []);
 
   const agregarPatinador = () => {
-    setResultados([...resultados, { patinador: '', posicion: '', puntos: '' }]);
+    setResultados([...resultados, { patinador: '', nombre: '', club: '', categoria: '', posicion: '', puntos: '' }]);
   };
 
   const handleChange = (index, field, value) => {
@@ -59,7 +59,6 @@ const ResultadosCompetencia = () => {
             <select
               value={res.patinador}
               onChange={e => handleChange(index, 'patinador', e.target.value)}
-              required
             >
               <option value="">Seleccionar Patinador</option>
               {patinadores.map(p => (
@@ -68,6 +67,32 @@ const ResultadosCompetencia = () => {
                 </option>
               ))}
             </select>
+
+            {!res.patinador && (
+              <>
+                <input
+                  type="text"
+                  placeholder="Nombre"
+                  value={res.nombre}
+                  onChange={e => handleChange(index, 'nombre', e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Club"
+                  value={res.club}
+                  onChange={e => handleChange(index, 'club', e.target.value)}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Categoría"
+                  value={res.categoria}
+                  onChange={e => handleChange(index, 'categoria', e.target.value)}
+                  required
+                />
+              </>
+            )}
 
             <input
               type="number"

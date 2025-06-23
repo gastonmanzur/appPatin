@@ -103,3 +103,34 @@ exports.getRankingClubes = async (req, res) => {
   }
 };
 
+exports.getRankingCategoriasCompetencia = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const competencia = await Competencia.findById(id).populate('resultados.patinador');
+    if (!competencia) return res.status(404).json({ msg: 'Competencia no encontrada' });
+
+    const rankings = {};
+    competencia.resultados.forEach(res => {
+      const categoria = res.patinador ? res.patinador.categoria : res.categoria;
+      if (!rankings[categoria]) {
+        rankings[categoria] = [];
+      }
+
+      rankings[categoria].push({
+        nombre: res.patinador ? `${res.patinador.primerNombre} ${res.patinador.apellido}` : res.nombre,
+        club: res.patinador ? res.patinador.club : res.club,
+        puntos: res.puntos
+      });
+    });
+
+    for (const cat in rankings) {
+      rankings[cat].sort((a, b) => b.puntos - a.puntos);
+    }
+
+    res.json(rankings);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Error al generar ranking de la competencia' });
+  }
+};
+
