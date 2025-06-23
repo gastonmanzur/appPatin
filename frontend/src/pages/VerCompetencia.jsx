@@ -1,0 +1,33 @@
+import React, { useEffect, useState } from 'react';
+import useAuth from '../store/useAuth';
+import { listarCompetencias } from '../api/competencias';
+import { useParams } from 'react-router-dom';
+
+const VerCompetencia = () => {
+  const { token } = useAuth();
+  const { id } = useParams();
+  const [competencia, setCompetencia] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const comps = await listarCompetencias(token);
+      const comp = comps.find(c => c._id === id);
+      setCompetencia(comp);
+    };
+    fetchData();
+  }, []);
+
+  if (!competencia) return <p>Cargando...</p>;
+
+  return (
+    <div>
+      <h2>{competencia.nombre}</h2>
+      <p><strong>Fecha:</strong> {new Date(competencia.fecha).toLocaleDateString()}</p>
+      {competencia.descripcion && (
+        <p><strong>Descripción:</strong> {competencia.descripcion}</p>
+      )}
+    </div>
+  );
+};
+
+export default VerCompetencia;
