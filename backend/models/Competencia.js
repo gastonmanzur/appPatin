@@ -8,6 +8,7 @@ const resultadoSchema = new mongoose.Schema({
 
 const competenciaSchema = new mongoose.Schema({
   nombre: { type: String, required: true },
+  descripcion: { type: String },
   fecha: { type: Date, required: true },
   creador: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   resultados: [resultadoSchema],

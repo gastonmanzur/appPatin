@@ -9,6 +9,7 @@ const CrearCompetencia = () => {
 
   const [form, setForm] = useState({
     nombre: '',
+    descripcion: '',
     fecha: ''
   });
 
@@ -34,9 +35,10 @@ const CrearCompetencia = () => {
     <div>
       <h2>Crear Competencia</h2>
       <form onSubmit={handleSubmit}>
-        <input name="nombre" placeholder="Nombre" onChange={handleChange} required />
+        <input name="nombre" placeholder="Titulo" onChange={handleChange} required />
+        <textarea name="descripcion" placeholder="Descripcion" onChange={handleChange} className="form-control my-2" />
         <input type="date" name="fecha" onChange={handleChange} required />
-        <button type="submit">Guardar</button>
+        <button type="submit">Crear</button>
       </form>
     </div>
   );
