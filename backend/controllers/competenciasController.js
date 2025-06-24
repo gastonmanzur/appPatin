@@ -63,11 +63,17 @@ exports.agregarResultados = async (req, res) => {
     }
 
     const parsedResultados = resultados
-      .map(r => ({
-        ...r,
-        posicion: Number(r.posicion),
-        puntos: Number(r.puntos)
-      }))
+      .map(r => {
+        const res = {
+          ...r,
+          posicion: Number(r.posicion),
+          puntos: Number(r.puntos)
+        };
+        if (!res.patinador) {
+          delete res.patinador;
+        }
+        return res;
+      })
       .filter(r => !isNaN(r.posicion) && !isNaN(r.puntos));
 
     competencia.resultados = parsedResultados;
