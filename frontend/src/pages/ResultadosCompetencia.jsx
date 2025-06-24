@@ -50,72 +50,105 @@ const ResultadosCompetencia = () => {
   };
 
   return (
-    <div>
-      <h2>Cargar Resultados de: {competencia?.nombre}</h2>
+    <div className="container my-4">
+      <div className="row justify-content-center">
+        <div className="col-12 col-lg-10">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-4">
+                Cargar Resultados de: {competencia?.nombre}
+              </h2>
 
-      <form onSubmit={handleSubmit}>
-        {resultados.map((res, index) => (
-          <div key={index} style={{ marginBottom: 10 }}>
-            <select
-              value={res.patinador}
-              onChange={e => handleChange(index, 'patinador', e.target.value)}
-            >
-              <option value="">Seleccionar Patinador</option>
-              {patinadores.map(p => (
-                <option key={p._id} value={p._id}>
-                  {p.primerNombre} {p.apellido} - {p.categoria} - {p.club}
-                </option>
-              ))}
-            </select>
+              <form onSubmit={handleSubmit}>
+                {resultados.map((res, index) => (
+                  <div key={index} className="row g-2 align-items-end mb-3">
+                    <div className="col-12 col-md-4">
+                      <select
+                        className="form-select"
+                        value={res.patinador}
+                        onChange={e => handleChange(index, 'patinador', e.target.value)}
+                      >
+                        <option value="">Seleccionar Patinador</option>
+                        {patinadores.map(p => (
+                          <option key={p._id} value={p._id}>
+                            {p.primerNombre} {p.apellido} - {p.categoria} - {p.club}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
-            {!res.patinador && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Nombre"
-                  value={res.nombre}
-                  onChange={e => handleChange(index, 'nombre', e.target.value)}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Club"
-                  value={res.club}
-                  onChange={e => handleChange(index, 'club', e.target.value)}
-                  required
-                />
-                <input
-                  type="text"
-                  placeholder="Categoría"
-                  value={res.categoria}
-                  onChange={e => handleChange(index, 'categoria', e.target.value)}
-                  required
-                />
-              </>
-            )}
+                    {!res.patinador && (
+                      <>
+                        <div className="col-12 col-md">
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Nombre"
+                            value={res.nombre}
+                            onChange={e => handleChange(index, 'nombre', e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="col-12 col-md">
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Club"
+                            value={res.club}
+                            onChange={e => handleChange(index, 'club', e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="col-12 col-md">
+                          <input
+                            className="form-control"
+                            type="text"
+                            placeholder="Categoría"
+                            value={res.categoria}
+                            onChange={e => handleChange(index, 'categoria', e.target.value)}
+                            required
+                          />
+                        </div>
+                      </>
+                    )}
 
-            <input
-              type="number"
-              placeholder="Posición"
-              value={res.posicion}
-              onChange={e => handleChange(index, 'posicion', e.target.value)}
-              required
-            />
+                    <div className="col-6 col-md-2">
+                      <input
+                        className="form-control"
+                        type="number"
+                        placeholder="Posición"
+                        value={res.posicion}
+                        onChange={e => handleChange(index, 'posicion', e.target.value)}
+                        required
+                      />
+                    </div>
 
-            <input
-              type="number"
-              placeholder="Puntos"
-              value={res.puntos}
-              onChange={e => handleChange(index, 'puntos', e.target.value)}
-              required
-            />
+                    <div className="col-6 col-md-2">
+                      <input
+                        className="form-control"
+                        type="number"
+                        placeholder="Puntos"
+                        value={res.puntos}
+                        onChange={e => handleChange(index, 'puntos', e.target.value)}
+                        required
+                      />
+                    </div>
+                  </div>
+                ))}
+
+                <div className="d-flex justify-content-between mt-4">
+                  <button type="button" className="btn btn-secondary" onClick={agregarPatinador}>
+                    Agregar Resultado
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Guardar Resultados
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        ))}
-
-        <button type="button" onClick={agregarPatinador}>Agregar Resultado</button>
-        <br /><br />
-        <button type="submit">Guardar Resultados</button>
-      </form>
+        </div>
+      </div>
     </div>
   );
 };
