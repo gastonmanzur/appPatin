@@ -195,3 +195,41 @@ exports.confirmarParticipacion = async (req, res) => {
     res.status(500).json({ msg: 'Error al confirmar participación' });
   }
 };
+
+exports.obtenerListaBuenaFe = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const competencia = await Competencia.findById(id).populate({
+      path: 'listaBuenaFe',
+      populate: { path: 'patinadoresAsociados' }
+    });
+
+    if (!competencia) {
+      return res.status(404).json({ msg: 'Competencia no encontrada' });
+    }
+
+    const lista = [];
+
+    competencia.listaBuenaFe.forEach(u => {
+      u.patinadoresAsociados.forEach(p => {
+        lista.push({
+          _id: p._id,
+          tipoSeguro: 'SA',
+          numeroCorredor: p.numeroCorredor,
+          apellido: p.apellido,
+          primerNombre: p.primerNombre,
+          segundoNombre: p.segundoNombre,
+          categoria: p.categoria,
+          club: p.club || 'General Rodriguez',
+          fechaNacimiento: p.fechaNacimiento,
+          dni: p.dni
+        });
+      });
+    });
+
+    res.json(lista);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Error al obtener lista de buena fe' });
+  }
+};

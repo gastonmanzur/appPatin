@@ -12,6 +12,7 @@ router.put('/resultados-club', auth, checkRole(['Delegado']), competenciasContro
 router.put('/:id', auth, checkRole(['Delegado']), competenciasController.editarCompetencia);
 router.delete('/:id', auth, checkRole(['Delegado']), competenciasController.eliminarCompetencia);
 router.post('/:id/confirmar', auth, competenciasController.confirmarParticipacion);
+router.get('/:id/lista-buena-fe', auth, competenciasController.obtenerListaBuenaFe);
 
 
 module.exports = router;
