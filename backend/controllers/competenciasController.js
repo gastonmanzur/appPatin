@@ -53,8 +53,14 @@ exports.agregarResultados = async (req, res) => {
   try {
     const { competenciaId, resultados } = req.body;
 
+    if (!competenciaId || !Array.isArray(resultados)) {
+      return res.status(400).json({ msg: 'Datos de competencia inválidos' });
+    }
+
     const competencia = await Competencia.findById(competenciaId);
-    if (!competencia) return res.status(404).json({ msg: 'Competencia no encontrada' });
+    if (!competencia) {
+      return res.status(404).json({ msg: 'Competencia no encontrada' });
+    }
 
     competencia.resultados = resultados;
 
@@ -73,7 +79,9 @@ exports.agregarResultados = async (req, res) => {
       } else if (res.club) {
         club = res.club;
       }
-      acumulado[club] = (acumulado[club] || 0) + res.puntos;
+
+      const puntos = Number(res.puntos) || 0;
+      acumulado[club] = (acumulado[club] || 0) + puntos;
     });
 
     competencia.resultadosClub = Object.entries(acumulado).map(([club, puntos]) => ({ club, puntos }));
@@ -81,7 +89,6 @@ exports.agregarResultados = async (req, res) => {
     await competencia.save();
 
     res.json({ msg: 'Resultados cargados correctamente' });
-
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Error al cargar resultados' });
