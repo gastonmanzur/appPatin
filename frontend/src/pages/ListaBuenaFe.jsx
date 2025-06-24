@@ -30,20 +30,56 @@ const ListaBuenaFe = () => {
     });
   };
 
+  const exportarExcel = () => {
+    const encabezados = [
+      'Seguro',
+      'N° Patinador',
+      'Nombre Completo',
+      'Categoría',
+      'Club',
+      'Fecha Nacimiento',
+      'DNI'
+    ];
+
+    const filas = lista.map(p => [
+      p.tipoSeguro,
+      p.numeroCorredor || '-',
+      `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
+      p.categoria,
+      p.club,
+      new Date(p.fechaNacimiento).toLocaleDateString(),
+      p.dni
+    ]);
+
+    const csvContent = [encabezados, ...filas]
+      .map(row => row.join(','))
+      .join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'lista_buena_fe.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="container mt-4">
       <h2>Lista de Buena Fe</h2>
       {lista.length === 0 ? (
         <p>No hay patinadores confirmados aún.</p>
       ) : (
+        <>
+        <button className="btn btn-success mb-3" onClick={exportarExcel}>
+          Exportar a Excel
+        </button>
         <table className="table table-bordered">
           <thead>
             <tr>
               <th>Seguro</th>
               <th>N° Patinador</th>
-              <th>Apellido</th>
-              <th>Nombre</th>
-              <th>Segundo Nombre</th>
+              <th>Nombre Completo</th>
               <th>Categoría</th>
               <th>Club</th>
               <th>Fecha Nacimiento</th>
@@ -63,9 +99,7 @@ const ListaBuenaFe = () => {
                   </select>
                 </td>
                 <td>{p.numeroCorredor || '-'}</td>
-                <td>{p.apellido}</td>
-                <td>{p.primerNombre}</td>
-                <td>{p.segundoNombre}</td>
+                <td>{`${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim()}</td>
                 <td>{p.categoria}</td>
                 <td>{p.club}</td>
                 <td>{new Date(p.fechaNacimiento).toLocaleDateString()}</td>
@@ -74,6 +108,7 @@ const ListaBuenaFe = () => {
             ))}
           </tbody>
         </table>
+        </>
       )}
     </div>
   );
