@@ -62,16 +62,24 @@ exports.agregarResultados = async (req, res) => {
       return res.status(404).json({ msg: 'Competencia no encontrada' });
     }
 
-    competencia.resultados = resultados;
+    const parsedResultados = resultados
+      .map(r => ({
+        ...r,
+        posicion: Number(r.posicion),
+        puntos: Number(r.puntos)
+      }))
+      .filter(r => !isNaN(r.posicion) && !isNaN(r.puntos));
+
+    competencia.resultados = parsedResultados;
 
     // Calcular puntos por club incluyendo corredores externos
-    const patinadoresIds = resultados
+    const patinadoresIds = parsedResultados
       .filter(r => r.patinador)
       .map(r => r.patinador);
     const patinadores = await Patinador.find({ _id: { $in: patinadoresIds } });
     const acumulado = {};
 
-    resultados.forEach(res => {
+    parsedResultados.forEach(res => {
       let club = 'Sin club';
       if (res.patinador) {
         const pat = patinadores.find(p => p._id.toString() === res.patinador);
