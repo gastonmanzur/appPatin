@@ -142,6 +142,9 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" to="/titulos/club">Nuevo Título Club</Link></li>
               </ul>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/solicitud-seguro">Solicitud Seguro</Link>
+            </li>
           </ul>
           <div className="d-flex align-items-center">
             <button

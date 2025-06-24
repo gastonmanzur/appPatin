@@ -28,6 +28,7 @@ import NoticiaDetalle from './pages/NoticiaDetalle';
 import ConfirmarCompetencia from './pages/ConfirmarCompetencia';
 import Notificaciones from './pages/Notificaciones';
 import ListaBuenaFe from './pages/ListaBuenaFe';
+import SolicitudSeguro from './pages/SolicitudSeguro';
 const App = () => {
   return (
     <Routes>
@@ -58,7 +59,8 @@ const App = () => {
             <Route path="titulos" element={<Titulos />} />
   <Route path="titulos/individual" element={<CrearTituloIndividual />} />
   <Route path="titulos/club" element={<CrearTituloClub />} />
-          <Route path="notificaciones" element={<Notificaciones />} />
+  <Route path="solicitud-seguro" element={<SolicitudSeguro />} />
+  <Route path="notificaciones" element={<Notificaciones />} />
       </Route>
     </Routes>
   );
