@@ -27,6 +27,7 @@ import Titulos from './pages/Titulos';
 import NoticiaDetalle from './pages/NoticiaDetalle';
 import ConfirmarCompetencia from './pages/ConfirmarCompetencia';
 import Notificaciones from './pages/Notificaciones';
+import ListaBuenaFe from './pages/ListaBuenaFe';
 const App = () => {
   return (
     <Routes>
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="competencias" element={<Competencias />} />
           <Route path="competencias/editar/:id" element={<EditarCompetencia />} />
           <Route path="competencia/:id" element={<VerCompetencia />} />
+          <Route path="competencias/:id/lista-buena-fe" element={<ListaBuenaFe />} />
           <Route path="competencias/:id/resultados" element={<ResultadosCompetencia />} />
           <Route path="competencias/:id/detalle" element={<ResultadosDetalle />} />
           <Route path="competencias/:id/confirmar" element={<ConfirmarCompetencia />} />

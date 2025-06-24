@@ -30,6 +30,9 @@ const VerCompetencia = () => {
       <button className="btn btn-primary" onClick={() => navigate(`/competencias/${id}/resultados`)}>
         Cargar Resultados
       </button>
+      <button className="btn btn-secondary ms-2" onClick={() => navigate(`/competencias/${id}/lista-buena-fe`)}>
+        Ver Lista Buena Fe
+      </button>
     </div>
   );
 };

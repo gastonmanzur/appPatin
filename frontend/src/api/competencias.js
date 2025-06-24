@@ -51,3 +51,10 @@ export const confirmarCompetencia = async (id, respuesta, token) => {
   });
   return res.data;
 };
+
+export const obtenerListaBuenaFe = async (id, token) => {
+  const res = await api.get(`/competencias/${id}/lista-buena-fe`, {
+    headers: { Authorization: token }
+  });
+  return res.data;
+};
