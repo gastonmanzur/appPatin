@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
-import { obtenerListaBuenaFe } from '../api/competencias';
+import { obtenerListaBuenaFe, listarCompetencias } from '../api/competencias';
 import { useParams } from 'react-router-dom';
 
 const ListaBuenaFe = () => {
   const { token } = useAuth();
   const { id } = useParams();
   const [lista, setLista] = useState([]);
+  const [competencia, setCompetencia] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await obtenerListaBuenaFe(id, token);
+        const [data, comps] = await Promise.all([
+          obtenerListaBuenaFe(id, token),
+          listarCompetencias(token)
+        ]);
         const withSeguro = data.map(p => ({ ...p, tipoSeguro: 'SA' }));
         setLista(withSeguro);
+        const comp = comps.find(c => c._id === id);
+        setCompetencia(comp);
       } catch (err) {
         console.error(err);
         alert('Error al cargar lista de buena fe');
@@ -32,23 +38,27 @@ const ListaBuenaFe = () => {
 
   const exportarExcel = () => {
     const encabezados = [
+      'N°',
       'Seguro',
       'N° Patinador',
       'Nombre Completo',
       'Categoría',
       'Club',
       'Fecha Nacimiento',
-      'DNI'
+      'DNI',
+      'Club Organizador'
     ];
 
-    const filas = lista.map(p => [
+    const filas = lista.map((p, index) => [
+      index + 1,
       p.tipoSeguro,
       p.numeroCorredor || '-',
       `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
       p.categoria,
       p.club,
       new Date(p.fechaNacimiento).toLocaleDateString(),
-      p.dni
+      p.dni,
+      competencia?.clubOrganizador || ''
     ]);
 
     const csvContent = [encabezados, ...filas]
@@ -77,6 +87,7 @@ const ListaBuenaFe = () => {
         <table className="table table-bordered">
           <thead>
             <tr>
+              <th>N°</th>
               <th>Seguro</th>
               <th>N° Patinador</th>
               <th>Nombre Completo</th>
@@ -84,11 +95,13 @@ const ListaBuenaFe = () => {
               <th>Club</th>
               <th>Fecha Nacimiento</th>
               <th>DNI</th>
+              <th>Club Organizador</th>
             </tr>
           </thead>
           <tbody>
             {lista.map((p, idx) => (
               <tr key={p._id}>
+                <td>{idx + 1}</td>
                 <td>
                   <select
                     value={p.tipoSeguro}
@@ -104,6 +117,7 @@ const ListaBuenaFe = () => {
                 <td>{p.club}</td>
                 <td>{new Date(p.fechaNacimiento).toLocaleDateString()}</td>
                 <td>{p.dni}</td>
+                <td>{competencia?.clubOrganizador || ''}</td>
               </tr>
             ))}
           </tbody>
