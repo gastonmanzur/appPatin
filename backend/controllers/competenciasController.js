@@ -6,12 +6,13 @@ const Notification = require('../models/Notification');
 
 exports.crearCompetencia = async (req, res) => {
   try {
-    const { nombre, descripcion, fecha } = req.body;
+    const { nombre, descripcion, fecha, clubOrganizador } = req.body;
 
     const competencia = new Competencia({
       nombre,
       descripcion,
       fecha,
+      clubOrganizador,
       creador: req.user.id,
       resultados: [],
       resultadosClub: [],
@@ -138,8 +139,8 @@ exports.agregarResultadosClub = async (req, res) => {
 exports.editarCompetencia = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nombre, descripcion, fecha } = req.body;
-    await Competencia.findByIdAndUpdate(id, { nombre, descripcion, fecha });
+    const { nombre, descripcion, fecha, clubOrganizador } = req.body;
+    await Competencia.findByIdAndUpdate(id, { nombre, descripcion, fecha, clubOrganizador });
     res.json({ msg: 'Competencia actualizada' });
   } catch (err) {
     console.error(err);
