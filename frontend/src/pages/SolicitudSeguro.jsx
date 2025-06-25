@@ -1,196 +1,132 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
-import { crearSolicitudSeguro } from '../api/seguros';
-import { useNavigate } from 'react-router-dom';
+import { getMisPatinadores } from '../api/patinadores';
 
 const SolicitudSeguro = () => {
   const { token } = useAuth();
-  const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    dni: '',
-    cuil: '',
-    apellido: '',
-    nombres: '',
-    fechaNacimiento: '',
-    sexo: '1',
-    nacionalidad: 'Argentina',
-    club: 'General Rodriguez',
-    funcion: 'patinador',
-    codigoPostal: '1748',
-    localidad: 'General Rodriguez',
-    provincia: 'Bs. As.',
-    telefono: '',
-    tipoLicSeg: 'SA'
-  });
+  const [patinadores, setPatinadores] = useState([]);
+  const [seleccionado, setSeleccionado] = useState('');
+  const [tipo, setTipo] = useState('SA');
+  const [lista, setLista] = useState([]);
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+  useEffect(() => {
+    const fetchPatinadores = async () => {
+      try {
+        const data = await getMisPatinadores(token);
+        setPatinadores(data);
+      } catch (err) {
+        console.error(err);
+        alert('Error al cargar patinadores');
+      }
+    };
+    fetchPatinadores();
+  }, []);
+
+  const agregar = () => {
+    if (!seleccionado) return;
+    const pat = patinadores.find(p => p._id === seleccionado);
+    if (!pat) return;
+    setLista(l => [...l, { ...pat, tipo }]);
   };
 
-  const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      await crearSolicitudSeguro(form, token);
-      alert('Solicitud enviada correctamente');
-      navigate('/dashboard');
-    } catch (err) {
-      console.error(err);
-      alert('Error al enviar solicitud');
-    }
+  const quitar = index => {
+    setLista(l => l.filter((_, i) => i !== index));
+  };
+
+  const exportarExcel = () => {
+    const encabezados = ['Nombre Completo', 'DNI', 'Tipo Seguro', 'Club'];
+    const filas = lista.map(p => [
+      `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
+      p.dni,
+      p.tipo,
+      p.club || ''
+    ]);
+    const csvContent = [encabezados, ...filas]
+      .map(row => row.join(','))
+      .join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'solicitudes_seguros.csv';
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
-    <div className="container my-4">
-      <div className="row justify-content-center">
-        <div className="col-12 col-md-8 col-lg-6">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h2 className="card-title text-center mb-4">Solicitud de Seguro</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="dni"
-                    placeholder="DNI"
-                    value={form.dni}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="cuil"
-                    placeholder="CUIL"
-                    value={form.cuil}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="apellido"
-                    placeholder="Apellido"
-                    value={form.apellido}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="nombres"
-                    placeholder="Nombre y Segundo Nombre"
-                    value={form.nombres}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    type="date"
-                    name="fechaNacimiento"
-                    value={form.fechaNacimiento}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <select
-                    className="form-select"
-                    name="sexo"
-                    value={form.sexo}
-                    onChange={handleChange}
-                  >
-                    <option value="1">Varón</option>
-                    <option value="2">Mujer</option>
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="nacionalidad"
-                    placeholder="Nacionalidad"
-                    value={form.nacionalidad}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="club"
-                    placeholder="Club"
-                    value={form.club}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="funcion"
-                    placeholder="Función"
-                    value={form.funcion}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="codigoPostal"
-                    placeholder="Código Postal"
-                    value={form.codigoPostal}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="localidad"
-                    placeholder="Localidad"
-                    value={form.localidad}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="provincia"
-                    placeholder="Provincia"
-                    value={form.provincia}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    className="form-control"
-                    name="telefono"
-                    placeholder="Teléfono"
-                    value={form.telefono}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="mb-4">
-                  <select
-                    className="form-select"
-                    name="tipoLicSeg"
-                    value={form.tipoLicSeg}
-                    onChange={handleChange}
-                  >
-                    <option value="SA">SA</option>
-                    <option value="SD">SD</option>
-                    <option value="LN">LN</option>
-                  </select>
-                </div>
-                <button className="btn btn-primary w-100" type="submit">
-                  Enviar
-                </button>
-              </form>
-            </div>
-          </div>
+    <div className="container mt-4">
+      <h2>Solicitud de Seguros</h2>
+      <div className="row g-2 align-items-end mb-3">
+        <div className="col-md-6">
+          <select
+            className="form-select"
+            value={seleccionado}
+            onChange={e => setSeleccionado(e.target.value)}
+          >
+            <option value="">Seleccione patinador</option>
+            {patinadores.map(p => (
+              <option key={p._id} value={p._id}>
+                {p.apellido} {p.primerNombre}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="col-md-3">
+          <select
+            className="form-select"
+            value={tipo}
+            onChange={e => setTipo(e.target.value)}
+          >
+            <option value="SA">SA</option>
+            <option value="SD">SD</option>
+          </select>
+        </div>
+        <div className="col-md-3">
+          <button className="btn btn-primary w-100" onClick={agregar}>
+            Agregar
+          </button>
         </div>
       </div>
+
+      {lista.length > 0 && (
+        <>
+          <button className="btn btn-success mb-3" onClick={exportarExcel}>
+            Exportar a Excel
+          </button>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>DNI</th>
+                <th>Seguro</th>
+                <th>Club</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {lista.map((p, idx) => (
+                <tr key={idx}>
+                  <td>{idx + 1}</td>
+                  <td>{`${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim()}</td>
+                  <td>{p.dni}</td>
+                  <td>{p.tipo}</td>
+                  <td>{p.club || ''}</td>
+                  <td>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={() => quitar(idx)}
+                    >
+                      Quitar
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   );
 };
