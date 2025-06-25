@@ -8,12 +8,16 @@ const RankingPorCategorias = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getRankingPorCategorias(token);
-      setRankings(data);
+      try {
+        const data = await getRankingPorCategorias(token);
+        setRankings(data);
+      } catch (e) {
+        console.error('Error fetching ranking por categorias', e);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div>

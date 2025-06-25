@@ -6,29 +6,26 @@ exports.getRankingGeneral = async (req, res) => {
   try {
     const competencias = await Competencia.find().populate('resultados.patinador');
 
-    // Acumulador de puntos por patinador
+    // Acumulador de puntos por club sumando todos sus patinadores
     const acumulado = {};
 
     competencias.forEach(comp => {
       comp.resultados.forEach(res => {
-        const id = res.patinador._id.toString();
-        if (!acumulado[id]) {
-          acumulado[id] = {
-            patinador: res.patinador,
-            puntos: 0
-          };
-        }
-        acumulado[id].puntos += res.puntos;
+        const club = res.patinador ? (res.patinador.club || 'Sin club') : (res.club || 'Sin club');
+        const puntos = Number(res.puntos) || 0;
+        acumulado[club] = (acumulado[club] || 0) + puntos;
       });
     });
 
     // Convertimos a array y ordenamos por puntos
-    const ranking = Object.values(acumulado).sort((a, b) => b.puntos - a.puntos);
+    const ranking = Object.entries(acumulado)
+      .map(([club, puntos]) => ({ club, puntos }))
+      .sort((a, b) => b.puntos - a.puntos);
 
     res.json(ranking);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ msg: 'Error al generar ranking' });
+    res.status(500).json({ msg: 'Error al generar ranking de clubes' });
   }
 };
 
@@ -41,6 +38,7 @@ exports.getRankingPorCategorias = async (req, res) => {
 
     competencias.forEach(comp => {
       comp.resultados.forEach(res => {
+        if (!res.patinador) return;
         const categoria = res.patinador.categoria;
         const id = res.patinador._id.toString();
 

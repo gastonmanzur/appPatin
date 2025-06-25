@@ -8,16 +8,20 @@ const RankingGeneral = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getRankingGeneral(token);
-      setRanking(data);
+      try {
+        const data = await getRankingGeneral(token);
+        setRanking(data);
+      } catch (e) {
+        console.error('Error fetching ranking', e);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
   return (
     <div>
-      <h2>Ranking General de Patinadores</h2>
+      <h2>Ranking General de Clubes</h2>
 
       {ranking.length === 0 ? (
         <p>No hay datos aún.</p>
@@ -26,8 +30,7 @@ const RankingGeneral = () => {
           <thead>
             <tr>
               <th>Posición</th>
-              <th>Patinador</th>
-              <th>Categoría</th>
+              <th>Club</th>
               <th>Puntos Acumulados</th>
             </tr>
           </thead>
@@ -35,8 +38,7 @@ const RankingGeneral = () => {
             {ranking.map((item, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{item.patinador.primerNombre} {item.patinador.apellido}</td>
-                <td>{item.patinador.categoria}</td>
+                <td>{item.club}</td>
                 <td>{item.puntos}</td>
               </tr>
             ))}
