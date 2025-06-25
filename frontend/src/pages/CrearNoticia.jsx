@@ -22,7 +22,7 @@ const CrearNoticia = () => {
     try {
       await crearNoticia(form, token);
       alert("Noticia creada correctamente");
-      navigate('/dashboard');
+      navigate('/noticias');
     } catch (err) {
       console.error(err);
       alert("Error al crear noticia");

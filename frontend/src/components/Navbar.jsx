@@ -65,9 +65,30 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/dashboard">Dashboard</Link>
             </li>
-            {(isDelegado || isTecnico) && (
+            {(isDelegado || isTecnico) ? (
+              <li className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  id="newsDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Noticias
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="newsDropdown">
+                  <li>
+                    <Link className="dropdown-item" to="/noticias">Ver Noticias</Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/crear-noticia">Crear Noticia</Link>
+                  </li>
+                </ul>
+              </li>
+            ) : (
               <li className="nav-item">
-                <Link className="nav-link" to="/crear-noticia">Crear Noticia</Link>
+                <Link className="nav-link" to="/noticias">Noticias</Link>
               </li>
             )}
             <li className="nav-item dropdown">
