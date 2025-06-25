@@ -1,67 +1,53 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import useAuth from '../store/useAuth';
-import { getNoticias } from '../api/news';
+import { listarTitulosClub } from '../api/titulos';
+import MisPatinadores from './MisPatinadores';
 
 const Dashboard = () => {
   const { token } = useAuth();
-  const [noticias, setNoticias] = useState([]);
+  const [titulos, setTitulos] = useState([]);
 
   useEffect(() => {
-    const fetchNoticias = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getNoticias(token);
-        setNoticias(data);
+        const data = await listarTitulosClub(token);
+        setTitulos(data);
       } catch (err) {
         console.error(err);
-        alert("Error al cargar noticias");
+        alert('Error al cargar títulos');
       }
     };
-
-    fetchNoticias();
+    fetchData();
   }, [token]);
 
   return (
     <div>
-      <h2 className="mb-4">Últimas Noticias</h2>
-
-      {noticias.length === 0 && <p>No hay noticias disponibles.</p>}
-
-      <div className="row">
-        {noticias.map(noticia => (
-          <div key={noticia._id} className="col-md-6 col-lg-4 mb-4">
-            <div className="card h-100">
-              {noticia.imagen && (
-                <img
-                  src={`http://localhost:5000/uploads/${noticia.imagen}`}
-                  className="card-img-top"
-                  alt="Imagen noticia"
-                  style={{ objectFit: 'cover', height: '200px' }}
-                />
-              )}
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{noticia.titulo}</h5>
+      <div className="row mb-4">
+        {titulos.map(t => (
+          <div key={t._id} className="col-md-4 mb-3">
+            <div className="card bg-dark text-white">
+              <img
+                src="/vite.svg"
+                className="card-img"
+                alt="Título"
+                style={{ objectFit: 'cover', height: '200px' }}
+              />
+              <div className="card-img-overlay d-flex flex-column justify-content-end">
+                <h5 className="card-title">{t.titulo}</h5>
                 <p className="card-text">
-                  {noticia.contenido.length > 120
-                    ? `${noticia.contenido.substring(0, 120)}...`
-                    : noticia.contenido}
+                  {t.torneo}
+                  {t.posicion ? ` - Posición ${t.posicion}` : ''}
                 </p>
-                <div className="mt-auto">
-                  <Link to={`/noticia/${noticia._id}`} className="btn btn-primary">
-                    Más info
-                  </Link>
-                </div>
-              </div>
-              <div className="card-footer">
-                <small className="text-muted">
-                  Por: {noticia.autor.nombre} {noticia.autor.apellido} -{' '}
-                  {new Date(noticia.fecha).toLocaleString()}
-                </small>
+                <p className="card-text">
+                  <small>{new Date(t.fecha).toLocaleDateString()}</small>
+                </p>
               </div>
             </div>
           </div>
         ))}
       </div>
+
+      <MisPatinadores />
     </div>
   );
 };
