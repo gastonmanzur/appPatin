@@ -11,6 +11,15 @@ const SolicitudSeguro = () => {
   const [lista, setLista] = useState([]);
   const [sdCounts, setSdCounts] = useState({});
 
+  const DEFAULTS = {
+    nacionalidad: 'Argentina',
+    club: 'General Rodriguez',
+    funcion: 'patinador',
+    codigoPostal: '1748',
+    localidad: 'General Rodriguez',
+    provincia: 'Bs. As.'
+  };
+
   useEffect(() => {
     const fetchPatinadores = async () => {
       try {
@@ -34,7 +43,7 @@ const SolicitudSeguro = () => {
     if (!seleccionado) return;
     const pat = patinadores.find(p => p._id === seleccionado);
     if (!pat) return;
-    setLista(l => [...l, { ...pat, tipo }]);
+    setLista(l => [...l, { ...pat, tipoLicSeg: tipo }]);
 
     if (tipo === 'SA') {
       setPatinadores(patinadores.filter(p => p._id !== seleccionado));
@@ -54,12 +63,38 @@ const SolicitudSeguro = () => {
   };
 
   const exportarExcel = () => {
-    const encabezados = ['Nombre Completo', 'DNI', 'Tipo Seguro', 'Club'];
+    const encabezados = [
+      'DNI',
+      'CUIL',
+      'Apellido',
+      'Nombres',
+      'Fecha Nacimiento',
+      'Sexo',
+      'Nacionalidad',
+      'Club',
+      'Funcion',
+      'Codigo Postal',
+      'Localidad',
+      'Provincia',
+      'Telefono',
+      'Tipo Lic/Seg'
+    ];
+
     const filas = lista.map(p => [
-      `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
       p.dni,
-      p.tipo,
-      p.club || ''
+      p.cuil || '',
+      p.apellido,
+      `${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
+      new Date(p.fechaNacimiento).toLocaleDateString(),
+      p.sexo === 'M' ? 1 : 2,
+      DEFAULTS.nacionalidad,
+      p.club || DEFAULTS.club,
+      DEFAULTS.funcion,
+      DEFAULTS.codigoPostal,
+      DEFAULTS.localidad,
+      DEFAULTS.provincia,
+      p.telefono || '',
+      p.tipoLicSeg
     ]);
     const csvContent = [encabezados, ...filas]
       .map(row => row.join(','))
@@ -99,6 +134,7 @@ const SolicitudSeguro = () => {
           >
             <option value="SA">SA</option>
             <option value="SD" disabled={sdCounts[seleccionado] >= 2}>SD</option>
+            <option value="LN">LN</option>
           </select>
         </div>
         <div className="col-md-3">
@@ -117,10 +153,20 @@ const SolicitudSeguro = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Nombre</th>
                 <th>DNI</th>
-                <th>Seguro</th>
+                <th>CUIL</th>
+                <th>Apellido</th>
+                <th>Nombres</th>
+                <th>Fecha Nac.</th>
+                <th>Sexo</th>
+                <th>Nacionalidad</th>
                 <th>Club</th>
+                <th>Función</th>
+                <th>Cód. Postal</th>
+                <th>Localidad</th>
+                <th>Provincia</th>
+                <th>Teléfono</th>
+                <th>Lic./Seg.</th>
                 <th></th>
               </tr>
             </thead>
@@ -128,10 +174,20 @@ const SolicitudSeguro = () => {
               {lista.map((p, idx) => (
                 <tr key={idx}>
                   <td>{idx + 1}</td>
-                  <td>{`${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim()}</td>
                   <td>{p.dni}</td>
-                  <td>{p.tipo}</td>
-                  <td>{p.club || ''}</td>
+                  <td>{p.cuil}</td>
+                  <td>{p.apellido}</td>
+                  <td>{`${p.primerNombre} ${p.segundoNombre || ''}`.trim()}</td>
+                  <td>{new Date(p.fechaNacimiento).toLocaleDateString()}</td>
+                  <td>{p.sexo === 'M' ? 1 : 2}</td>
+                  <td>{DEFAULTS.nacionalidad}</td>
+                  <td>{p.club || DEFAULTS.club}</td>
+                  <td>{DEFAULTS.funcion}</td>
+                  <td>{DEFAULTS.codigoPostal}</td>
+                  <td>{DEFAULTS.localidad}</td>
+                  <td>{DEFAULTS.provincia}</td>
+                  <td>{p.telefono}</td>
+                  <td>{p.tipoLicSeg}</td>
                   <td>
                     <button
                       className="btn btn-sm btn-danger"
