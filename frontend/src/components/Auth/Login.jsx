@@ -3,11 +3,13 @@ import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import useAuth from '../../store/useAuth';
 
 
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: '', password: '' });
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
@@ -16,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await api.post('/auth/login', form);
-      localStorage.setItem('token', res.data.token);
+      login(res.data.token);
       navigate('/dashboard');
     } catch (err) {
       alert(err.response.data.msg);
@@ -47,7 +49,7 @@ const Login = () => {
                 picture: decoded.picture,
               };
               const res = await api.post('/auth/google-login', userData);
-              localStorage.setItem('token', res.data.token);
+              login(res.data.token);
               navigate('/dashboard');
             }}
             onError={() => alert('Google Login fallido')}
