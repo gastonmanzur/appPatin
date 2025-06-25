@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
-import { getMisPatinadores } from '../api/patinadores';
+import { getTodosLosPatinadores } from '../api/gestionPatinadores';
 
 const SolicitudSeguro = () => {
   const { token } = useAuth();
@@ -9,11 +9,12 @@ const SolicitudSeguro = () => {
   const [seleccionado, setSeleccionado] = useState('');
   const [tipo, setTipo] = useState('SA');
   const [lista, setLista] = useState([]);
+  const [sdCounts, setSdCounts] = useState({});
 
   useEffect(() => {
     const fetchPatinadores = async () => {
       try {
-        const data = await getMisPatinadores(token);
+        const data = await getTodosLosPatinadores(token);
         setPatinadores(data);
       } catch (err) {
         console.error(err);
@@ -23,11 +24,29 @@ const SolicitudSeguro = () => {
     fetchPatinadores();
   }, []);
 
+  useEffect(() => {
+    if (seleccionado && sdCounts[seleccionado] >= 2) {
+      setTipo('SA');
+    }
+  }, [seleccionado, sdCounts]);
+
   const agregar = () => {
     if (!seleccionado) return;
     const pat = patinadores.find(p => p._id === seleccionado);
     if (!pat) return;
     setLista(l => [...l, { ...pat, tipo }]);
+
+    if (tipo === 'SA') {
+      setPatinadores(patinadores.filter(p => p._id !== seleccionado));
+      setSdCounts(c => {
+        const nc = { ...c };
+        delete nc[seleccionado];
+        return nc;
+      });
+      setSeleccionado('');
+    } else if (tipo === 'SD') {
+      setSdCounts(c => ({ ...c, [seleccionado]: (c[seleccionado] || 0) + 1 }));
+    }
   };
 
   const quitar = index => {
@@ -79,7 +98,7 @@ const SolicitudSeguro = () => {
             onChange={e => setTipo(e.target.value)}
           >
             <option value="SA">SA</option>
-            <option value="SD">SD</option>
+            <option value="SD" disabled={sdCounts[seleccionado] >= 2}>SD</option>
           </select>
         </div>
         <div className="col-md-3">
