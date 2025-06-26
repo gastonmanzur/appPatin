@@ -96,10 +96,13 @@ const SolicitudSeguro = () => {
       p.telefono || '',
       p.tipoLicSeg
     ]);
+    // Algunos Excel utilizan ';' como separador predeterminado
     const csvContent = [encabezados, ...filas]
-      .map(row => row.join(','))
+      .map(row => row.join(';'))
       .join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    // Incluir BOM para forzar a Excel a reconocer UTF-8
+    const csvWithBom = '\uFEFF' + csvContent;
+    const blob = new Blob([csvWithBom], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
