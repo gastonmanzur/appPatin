@@ -22,29 +22,51 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div className="row mb-4">
-        {titulos.map(t => (
-          <div key={t._id} className="col-md-4 mb-3">
-            <div className="card bg-dark text-white">
-              <img
-                src="/vite.svg"
-                className="card-img"
-                alt="Título"
-                style={{ objectFit: 'cover', height: '200px' }}
-              />
-              <div className="card-img-overlay d-flex flex-column justify-content-end">
-                <h5 className="card-title">{t.titulo}</h5>
-                <p className="card-text">
-                  {t.torneo}
-                  {t.posicion ? ` - Posición ${t.posicion}` : ''}
-                </p>
-                <p className="card-text">
-                  <small>{new Date(t.fecha).toLocaleDateString()}</small>
-                </p>
+      <div className="mb-4">
+        <div id="titulosCarousel" className="carousel slide" data-bs-ride="carousel">
+          <div className="carousel-inner">
+            {titulos.map((t, idx) => (
+              <div key={t._id} className={`carousel-item ${idx === 0 ? 'active' : ''}`}>
+                <div className="card bg-dark text-white">
+                  <img
+                    src="/vite.svg"
+                    className="card-img"
+                    alt="Título"
+                    style={{ objectFit: 'cover', height: '200px' }}
+                  />
+                  <div className="card-img-overlay d-flex flex-column justify-content-end">
+                    <h5 className="card-title">{t.titulo}</h5>
+                    <p className="card-text">
+                      {t.torneo}
+                      {t.posicion ? ` - Posición ${t.posicion}` : ''}
+                    </p>
+                    <p className="card-text">
+                      <small>{new Date(t.fecha).toLocaleDateString()}</small>
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
+          <button
+            className="carousel-control-prev"
+            type="button"
+            data-bs-target="#titulosCarousel"
+            data-bs-slide="prev"
+          >
+            <span className="carousel-control-prev-icon" aria-hidden="true" />
+            <span className="visually-hidden">Anterior</span>
+          </button>
+          <button
+            className="carousel-control-next"
+            type="button"
+            data-bs-target="#titulosCarousel"
+            data-bs-slide="next"
+          >
+            <span className="carousel-control-next-icon" aria-hidden="true" />
+            <span className="visually-hidden">Siguiente</span>
+          </button>
+        </div>
       </div>
 
       <MisPatinadores />
