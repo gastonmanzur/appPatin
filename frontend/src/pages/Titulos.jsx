@@ -46,38 +46,94 @@ const Titulos = () => {
   };
 
   return (
-    <div>
-      <h2>Títulos Individuales</h2>
-      <ul>
-        {titulosIndividuales.map(t => (
-          <li key={t._id}>
-            {t.imagen && (
-              <img src={`http://localhost:5000/uploads/${t.imagen}`} alt="img" width="50" className="me-2" />
-            )}
-            {t.patinador?.primerNombre} {t.patinador?.apellido} - {t.titulo} - {t.torneo} ({new Date(t.fecha).toLocaleDateString()})
-            {' '}
-            <Link to={`/titulos/individual/editar/${t._id}`}>Editar</Link>
-            {' | '}
-            <button type="button" onClick={() => handleEliminarIndividual(t._id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
+    <div className="container my-4">
+      <h2 className="mb-4">Títulos Individuales</h2>
+      {titulosIndividuales.length === 0 && <p>No hay títulos individuales.</p>}
+      {titulosIndividuales.length > 0 && (
+        <div className="row">
+          {titulosIndividuales.map(t => (
+            <div key={t._id} className="col-12 col-sm-6 col-lg-4 mb-4">
+              <div className="card h-100">
+                {t.imagen && (
+                  <img
+                    src={`http://localhost:5000/uploads/${t.imagen}`}
+                    alt="img"
+                    className="card-img-top"
+                    style={{ objectFit: 'cover', height: '200px' }}
+                  />
+                )}
+                <div className="card-body d-flex flex-column">
+                  <h5 className="card-title">{t.titulo}</h5>
+                  <p className="card-text mb-1">
+                    {t.patinador?.primerNombre} {t.patinador?.apellido}
+                  </p>
+                  <p className="card-text mb-2">
+                    {t.torneo} ({new Date(t.fecha).toLocaleDateString()})
+                  </p>
+                  <div className="mt-auto">
+                    <Link
+                      to={`/titulos/individual/editar/${t._id}`}
+                      className="btn btn-primary btn-sm me-2"
+                    >
+                      Editar
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleEliminarIndividual(t._id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <h2>Títulos de Club</h2>
-      <ul>
-        {titulosClub.map(t => (
-          <li key={t._id}>
-            {t.imagen && (
-              <img src={`http://localhost:5000/uploads/${t.imagen}`} alt="img" width="50" className="me-2" />
-            )}
-            {t.titulo} - {t.torneo} ({new Date(t.fecha).toLocaleDateString()})
-            {' '}
-            <Link to={`/titulos/club/editar/${t._id}`}>Editar</Link>
-            {' | '}
-            <button type="button" onClick={() => handleEliminarClub(t._id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
+      <h2 className="mb-4 mt-5">Títulos de Club</h2>
+      {titulosClub.length === 0 && <p>No hay títulos de club.</p>}
+      {titulosClub.length > 0 && (
+        <div className="row">
+          {titulosClub.map(t => (
+            <div key={t._id} className="col-12 col-sm-6 col-lg-4 mb-4">
+              <div className="card h-100">
+                {t.imagen && (
+                  <img
+                    src={`http://localhost:5000/uploads/${t.imagen}`}
+                    alt="img"
+                    className="card-img-top"
+                    style={{ objectFit: 'cover', height: '200px' }}
+                  />
+                )}
+                <div className="card-body d-flex flex-column">
+                  <h5 className="card-title">{t.titulo}</h5>
+                  <p className="card-text mb-2">{t.torneo}</p>
+                  <p className="card-text mb-2">
+                    {new Date(t.fecha).toLocaleDateString()}
+                  </p>
+                  <div className="mt-auto">
+                    <Link
+                      to={`/titulos/club/editar/${t._id}`}
+                      className="btn btn-primary btn-sm me-2"
+                    >
+                      Editar
+                    </Link>
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleEliminarClub(t._id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
