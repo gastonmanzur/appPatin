@@ -11,7 +11,8 @@ const CrearTituloClub = () => {
     titulo: '',
     posicion: '',
     fecha: '',
-    torneo: ''
+    torneo: '',
+    imagen: null
   });
 
   const handleChange = e => {
@@ -19,10 +20,18 @@ const CrearTituloClub = () => {
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = e => {
+    setForm(prev => ({ ...prev, imagen: e.target.files[0] }));
+  };
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      await crearTituloClub(form, token);
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (value) formData.append(key, value);
+      });
+      await crearTituloClub(formData, token);
       alert("Título de club guardado");
       navigate('/titulos');
     } catch (err) {
@@ -39,6 +48,7 @@ const CrearTituloClub = () => {
         <input name="posicion" placeholder="Posición" type="number" onChange={handleChange} />
         <input name="torneo" placeholder="Torneo" onChange={handleChange} />
         <input name="fecha" type="date" onChange={handleChange} required />
+        <input type="file" name="imagen" accept="image/*" onChange={handleFileChange} />
         <button type="submit">Guardar</button>
       </form>
     </div>

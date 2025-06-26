@@ -24,6 +24,8 @@ import RankingPorCategorias from './pages/RankingPorCategorias';
 import ResultadosClubCompetencia from './pages/ResultadosClubCompetencia';
 import CrearTituloIndividual from './pages/CrearTituloIndividual';
 import CrearTituloClub from './pages/CrearTituloClub';
+import EditarTituloIndividual from './pages/EditarTituloIndividual';
+import EditarTituloClub from './pages/EditarTituloClub';
 import Titulos from './pages/Titulos';
 import NoticiaDetalle from './pages/NoticiaDetalle';
 import ConfirmarCompetencia from './pages/ConfirmarCompetencia';
@@ -58,9 +60,11 @@ const App = () => {
           <Route path="ranking" element={<RankingGeneral />} />
            <Route path="ranking-categorias" element={<RankingPorCategorias />} />
            <Route path="competencias/:id/resultados-club" element={<ResultadosClubCompetencia />} />
-            <Route path="titulos" element={<Titulos />} />
+           <Route path="titulos" element={<Titulos />} />
   <Route path="titulos/individual" element={<CrearTituloIndividual />} />
   <Route path="titulos/club" element={<CrearTituloClub />} />
+  <Route path="titulos/individual/editar/:id" element={<EditarTituloIndividual />} />
+  <Route path="titulos/club/editar/:id" element={<EditarTituloClub />} />
   <Route path="solicitud-seguro" element={<SolicitudSeguro />} />
   <Route path="notificaciones" element={<Notificaciones />} />
       </Route>
