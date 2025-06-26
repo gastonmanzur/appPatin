@@ -251,61 +251,36 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     }
 
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('LBF');
+    const ws = workbook.addWorksheet('LBF');
 
-    const azulOscuro = '002060';
+    const azul = '002060';
     const blanco = 'FFFFFF';
     const rojo = 'FF0000';
 
-    const bordeDelgado = {
-      top: { style: 'thin' },
-      bottom: { style: 'thin' },
-      left: { style: 'thin' },
-      right: { style: 'thin' }
-    };
+    ws.mergeCells('A1:H1');
+    ws.getCell('A1').value = 'COMITÉ DE CARRERAS';
+    ws.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: azul } };
+    ws.getCell('A1').font = { color: { argb: blanco }, bold: true, size: 14 };
+    ws.getCell('A1').alignment = { horizontal: 'center' };
 
-    worksheet.mergeCells('A1:I1');
-    worksheet.getCell('A1').value = 'COMITÉ DE CARRERAS';
-    worksheet.getCell('A1').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: azulOscuro }
-    };
-    worksheet.getCell('A1').font = { bold: true, color: { argb: blanco }, size: 14 };
-    worksheet.getCell('A1').alignment = { horizontal: 'center' };
+    ws.mergeCells('A2:H2');
+    ws.getCell('A2').value = 'LISTA DE BUENA FE     ESCUELA–TRANSICION–INTERMEDIAS–FEDERADOS–LIBRES';
+    ws.getCell('A2').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: azul } };
+    ws.getCell('A2').font = { color: { argb: blanco }, bold: true };
+    ws.getCell('A2').alignment = { horizontal: 'center' };
 
-    worksheet.mergeCells('A2:I2');
-    worksheet.getCell('A2').value = 'LISTA DE BUENA FE     ESCUELA–TRANSICION–INTERMEDIAS–FEDERADOS–LIBRES';
-    worksheet.getCell('A2').fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: azulOscuro }
-    };
-    worksheet.getCell('A2').font = { bold: true, color: { argb: blanco } };
-    worksheet.getCell('A2').alignment = { horizontal: 'center' };
+    ws.addRow(['FECHA DE EMISIÓN', '', 'EVENTO Y FECHA', '', '', 'ORGANIZADOR', '', '']);
+    ws.addRow(['', '', competencia.nombre, '', '', '', '', '']);
+    ws.getCell('E4').value = new Date(competencia.fecha).toLocaleDateString();
+    ws.getCell('F4').value = competencia.clubOrganizador;
 
-    const headers = [
-      ['FECHA DE EMISIÓN', '', 'EVENTO Y FECHA', '', '', 'ORGANIZADOR', '', '', ''],
-      ['', '', competencia.nombre, '', new Date(competencia.fecha).toLocaleDateString(), competencia.clubOrganizador, '', '', '']
-    ];
-    headers.forEach(row => worksheet.addRow(row));
-
-    worksheet.addRow([]);
-    worksheet.addRow([
-      '#',
-      'Seguro',
-      'N° Patinador',
-      'Nombre Completo',
-      'Categoría',
-      'Club',
-      'Fecha Nac.',
-      'DNI'
-    ]);
+    const headerRow = ['#', 'Seguro', 'N° Patinador', 'Nombre Completo', 'Categoría', 'Club', 'Fecha Nac.', 'DNI'];
+    ws.addRow(headerRow);
 
     let contador = 1;
     competencia.listaBuenaFe.forEach(u => {
       u.patinadoresAsociados.forEach(p => {
-        worksheet.addRow([
+        ws.addRow([
           contador++,
           'SA',
           p.numeroCorredor || '-',
@@ -318,32 +293,22 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
       });
     });
 
-    worksheet.addRow([]);
-    worksheet.addRow(['MANZUR VANESA CAROLINA', 'TECN', '08/07/1989', 34543626]);
-    worksheet.addRow(['MANZUR GASTON ALFREDO', 'DELEG', '14/12/1983', 30609550]);
-    worksheet.addRow(['FIRMA', '', '', 'FIRMA']);
-    worksheet.addRow(['SECRETARIO/A CLUB', '', '', 'PRESIDENTE/A CLUB']);
-    worksheet.addRow([]);
-    worksheet.addRow([
-      'CERTIFICACIÓN MÉDICA: CERTIFICO QUE LAS PERSONAS DETALLADAS PRECEDENTEMENTE SE ENCUENTRAN APTAS FÍSICA Y'
-    ]);
-    worksheet.addRow([
-      'PSÍQUICAMENTE, PARA LA PRÁCTICA ACTIVA DE ESTE DEPORTE Y CUENTAN CON SEGURO CON PÓLIZA VIGENTE.'
-    ]);
+    ws.addRow([]);
+    ws.addRow(['MANZUR VANESA CAROLINA', 'TECN', '08/07/1989', 34543626]);
+    ws.addRow(['MANZUR GASTON ALFREDO', 'DELEG', '14/12/1983', 30609550]);
+    ws.addRow(['FIRMA', '', '', 'FIRMA']);
+    ws.addRow(['SECRETARIO/A CLUB', '', '', 'PRESIDENTE/A CLUB']);
+    ws.addRow([]);
+    const nota1 = ws.addRow(['LAS PERSONAS DETALLADAS PRECEDENTEMENTE SE ENCUENTRAN APTAS FÍSICA Y']);
+    const nota2 = ws.addRow(['PARA LA PRÁCTICA ACTIVA DE ESTE DEPORTE Y CUENTAN CON SEGURO CON PÓLIZA VIGENTE.']);
+    nota1.font = { color: { argb: rojo }, bold: true };
+    nota2.font = { color: { argb: rojo }, bold: true };
 
-    worksheet.eachRow({ includeEmpty: false }, row => {
+    ws.columns.forEach(col => (col.width = 20));
+    ws.eachRow({ includeEmpty: false }, row => {
       row.eachCell(cell => {
-        cell.border = bordeDelgado;
         cell.alignment = { vertical: 'middle', horizontal: 'center' };
       });
-    });
-
-    const ultima = worksheet.lastRow.number;
-    worksheet.getCell(`A${ultima - 1}`).font = { color: { argb: rojo }, bold: true };
-    worksheet.getCell(`A${ultima}`).font = { color: { argb: rojo }, bold: true };
-
-    worksheet.columns.forEach(col => {
-      col.width = 20;
     });
 
     const filePath = path.join(__dirname, '..', 'uploads', `lbf_${id}.xlsx`);
