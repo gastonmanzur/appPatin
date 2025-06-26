@@ -61,11 +61,14 @@ const ListaBuenaFe = () => {
       competencia?.clubOrganizador || ''
     ]);
 
+    // Excel en algunos idiomas usa ';' como separador por defecto
     const csvContent = [encabezados, ...filas]
-      .map(row => row.join(','))
+      .map(row => row.join(';'))
       .join('\n');
+    // Agregar BOM para que Excel detecte UTF-8 correctamente
+    const csvWithBom = '\uFEFF' + csvContent;
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csvWithBom], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
