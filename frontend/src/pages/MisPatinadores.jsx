@@ -82,7 +82,7 @@ const MisPatinadores = () => {
                       src={`http://localhost:5000/uploads/${p.foto}`}
                       alt="Foto"
                       className="img-fluid rounded-start"
-                      style={{ width: '200px', objectFit: 'cover' }}
+                      style={{ width: '50%', objectFit: 'cover' }}
                     />
                   )}
                   <div className="card-body">
