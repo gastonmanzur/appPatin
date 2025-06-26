@@ -41,16 +41,65 @@ const CrearTituloClub = () => {
   };
 
   return (
-    <div>
-      <h2>Nuevo Título de Club</h2>
-      <form onSubmit={handleSubmit}>
-        <input name="titulo" placeholder="Título" onChange={handleChange} required />
-        <input name="posicion" placeholder="Posición" type="number" onChange={handleChange} />
-        <input name="torneo" placeholder="Torneo" onChange={handleChange} />
-        <input name="fecha" type="date" onChange={handleChange} required />
-        <input type="file" name="imagen" accept="image/*" onChange={handleFileChange} />
-        <button type="submit">Guardar</button>
-      </form>
+    <div className="container my-4">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
+          <div className="card shadow-sm">
+            <div className="card-body">
+              <h2 className="card-title text-center mb-4">Nuevo Título de Club</h2>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="titulo"
+                    placeholder="Título"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="posicion"
+                    placeholder="Posición"
+                    type="number"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="torneo"
+                    placeholder="Torneo"
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="mb-3">
+                  <input
+                    className="form-control"
+                    name="fecha"
+                    type="date"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <input
+                    className="form-control"
+                    type="file"
+                    name="imagen"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                </div>
+                <button className="btn btn-primary w-100" type="submit">
+                  Guardar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
