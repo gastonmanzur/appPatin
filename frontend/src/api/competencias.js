@@ -58,3 +58,11 @@ export const obtenerListaBuenaFe = async (id, token) => {
   });
   return res.data;
 };
+
+export const descargarListaBuenaFeExcel = async (id, token) => {
+  const res = await api.get(`/competencias/${id}/lista-buena-fe/excel`, {
+    headers: { Authorization: token },
+    responseType: 'blob'
+  });
+  return res.data;
+};

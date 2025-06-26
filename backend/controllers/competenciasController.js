@@ -3,6 +3,9 @@ const User = require('../models/User');
 const Patinador = require('../models/Patinador');
 const sendEmail = require('../utils/sendEmail');
 const Notification = require('../models/Notification');
+const ExcelJS = require('exceljs');
+const path = require('path');
+const fs = require('fs');
 
 exports.crearCompetencia = async (req, res) => {
   try {
@@ -232,5 +235,127 @@ exports.obtenerListaBuenaFe = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Error al obtener lista de buena fe' });
+  }
+};
+
+exports.exportarListaBuenaFeExcel = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const competencia = await Competencia.findById(id).populate({
+      path: 'listaBuenaFe',
+      populate: { path: 'patinadoresAsociados' }
+    });
+
+    if (!competencia) {
+      return res.status(404).json({ msg: 'Competencia no encontrada' });
+    }
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('LBF');
+
+    const azulOscuro = '002060';
+    const blanco = 'FFFFFF';
+    const rojo = 'FF0000';
+
+    const bordeDelgado = {
+      top: { style: 'thin' },
+      bottom: { style: 'thin' },
+      left: { style: 'thin' },
+      right: { style: 'thin' }
+    };
+
+    worksheet.mergeCells('A1:I1');
+    worksheet.getCell('A1').value = 'COMITÉ DE CARRERAS';
+    worksheet.getCell('A1').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: azulOscuro }
+    };
+    worksheet.getCell('A1').font = { bold: true, color: { argb: blanco }, size: 14 };
+    worksheet.getCell('A1').alignment = { horizontal: 'center' };
+
+    worksheet.mergeCells('A2:I2');
+    worksheet.getCell('A2').value = 'LISTA DE BUENA FE     ESCUELA–TRANSICION–INTERMEDIAS–FEDERADOS–LIBRES';
+    worksheet.getCell('A2').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: azulOscuro }
+    };
+    worksheet.getCell('A2').font = { bold: true, color: { argb: blanco } };
+    worksheet.getCell('A2').alignment = { horizontal: 'center' };
+
+    const headers = [
+      ['FECHA DE EMISIÓN', '', 'EVENTO Y FECHA', '', '', 'ORGANIZADOR', '', '', ''],
+      ['', '', competencia.nombre, '', new Date(competencia.fecha).toLocaleDateString(), competencia.clubOrganizador, '', '', '']
+    ];
+    headers.forEach(row => worksheet.addRow(row));
+
+    worksheet.addRow([]);
+    worksheet.addRow([
+      '#',
+      'Seguro',
+      'N° Patinador',
+      'Nombre Completo',
+      'Categoría',
+      'Club',
+      'Fecha Nac.',
+      'DNI'
+    ]);
+
+    let contador = 1;
+    competencia.listaBuenaFe.forEach(u => {
+      u.patinadoresAsociados.forEach(p => {
+        worksheet.addRow([
+          contador++,
+          'SA',
+          p.numeroCorredor || '-',
+          `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
+          p.categoria,
+          p.club || 'General Rodriguez',
+          new Date(p.fechaNacimiento).toLocaleDateString(),
+          p.dni
+        ]);
+      });
+    });
+
+    worksheet.addRow([]);
+    worksheet.addRow(['MANZUR VANESA CAROLINA', 'TECN', '08/07/1989', 34543626]);
+    worksheet.addRow(['MANZUR GASTON ALFREDO', 'DELEG', '14/12/1983', 30609550]);
+    worksheet.addRow(['FIRMA', '', '', 'FIRMA']);
+    worksheet.addRow(['SECRETARIO/A CLUB', '', '', 'PRESIDENTE/A CLUB']);
+    worksheet.addRow([]);
+    worksheet.addRow([
+      'CERTIFICACIÓN MÉDICA: CERTIFICO QUE LAS PERSONAS DETALLADAS PRECEDENTEMENTE SE ENCUENTRAN APTAS FÍSICA Y'
+    ]);
+    worksheet.addRow([
+      'PSÍQUICAMENTE, PARA LA PRÁCTICA ACTIVA DE ESTE DEPORTE Y CUENTAN CON SEGURO CON PÓLIZA VIGENTE.'
+    ]);
+
+    worksheet.eachRow({ includeEmpty: false }, row => {
+      row.eachCell(cell => {
+        cell.border = bordeDelgado;
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      });
+    });
+
+    const ultima = worksheet.lastRow.number;
+    worksheet.getCell(`A${ultima - 1}`).font = { color: { argb: rojo }, bold: true };
+    worksheet.getCell(`A${ultima}`).font = { color: { argb: rojo }, bold: true };
+
+    worksheet.columns.forEach(col => {
+      col.width = 20;
+    });
+
+    const filePath = path.join(__dirname, '..', 'uploads', `lbf_${id}.xlsx`);
+    await workbook.xlsx.writeFile(filePath);
+
+    res.download(filePath, 'lista_buena_fe.xlsx', err => {
+      if (!err) {
+        fs.unlinkSync(filePath);
+      }
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Error al exportar excel' });
   }
 };

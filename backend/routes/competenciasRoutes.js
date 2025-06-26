@@ -13,6 +13,7 @@ router.put('/:id', auth, checkRole(['Delegado']), competenciasController.editarC
 router.delete('/:id', auth, checkRole(['Delegado']), competenciasController.eliminarCompetencia);
 router.post('/:id/confirmar', auth, competenciasController.confirmarParticipacion);
 router.get('/:id/lista-buena-fe', auth, competenciasController.obtenerListaBuenaFe);
+router.get('/:id/lista-buena-fe/excel', auth, competenciasController.exportarListaBuenaFeExcel);
 
 
 module.exports = router;

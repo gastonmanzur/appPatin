@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
-import { obtenerListaBuenaFe, listarCompetencias } from '../api/competencias';
+import { obtenerListaBuenaFe, listarCompetencias, descargarListaBuenaFeExcel } from '../api/competencias';
 import { useParams } from 'react-router-dom';
 
 const ListaBuenaFe = () => {
@@ -36,45 +36,19 @@ const ListaBuenaFe = () => {
     });
   };
 
-  const exportarExcel = () => {
-    const encabezados = [
-      'N°',
-      'Seguro',
-      'N° Patinador',
-      'Nombre Completo',
-      'Categoría',
-      'Club',
-      'Fecha Nacimiento',
-      'DNI',
-      'Club Organizador'
-    ];
-
-    const filas = lista.map((p, index) => [
-      index + 1,
-      p.tipoSeguro,
-      p.numeroCorredor || '-',
-      `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
-      p.categoria,
-      p.club,
-      new Date(p.fechaNacimiento).toLocaleDateString(),
-      p.dni,
-      competencia?.clubOrganizador || ''
-    ]);
-
-    // Excel en algunos idiomas usa ';' como separador por defecto
-    const csvContent = [encabezados, ...filas]
-      .map(row => row.join(';'))
-      .join('\n');
-    // Agregar BOM para que Excel detecte UTF-8 correctamente
-    const csvWithBom = '\uFEFF' + csvContent;
-
-    const blob = new Blob([csvWithBom], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'lista_buena_fe.csv';
-    a.click();
-    URL.revokeObjectURL(url);
+  const exportarExcel = async () => {
+    try {
+      const blob = await descargarListaBuenaFeExcel(id, token);
+      const url = URL.createObjectURL(new Blob([blob]));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'lista_buena_fe.xlsx';
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      alert('Error al exportar a Excel');
+    }
   };
 
   return (
