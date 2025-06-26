@@ -29,7 +29,11 @@ const Dashboard = () => {
               <div key={t._id} className={`carousel-item ${idx === 0 ? 'active' : ''}`}>
                 <div className="card bg-dark text-white">
                   <img
-                    src="/vite.svg"
+                    src={
+                      t.imagen
+                        ? `http://localhost:5000/uploads/${t.imagen}`
+                        : '/vite.svg'
+                    }
                     className="card-img"
                     alt="Título"
                     style={{ objectFit: 'cover', height: '200px' }}
