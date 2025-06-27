@@ -11,7 +11,7 @@ exports.getRankingGeneral = async (req, res) => {
 
     competencias.forEach(comp => {
       comp.resultados.forEach(res => {
-        const club = res.patinador ? (res.patinador.club || 'Sin club') : (res.club || 'Sin club');
+        const club = res.patinador ? (res.patinador.club || 'General Rodriguez') : (res.club || 'General Rodriguez');
         const puntos = Number(res.puntos) || 0;
         acumulado[club] = (acumulado[club] || 0) + puntos;
       });
