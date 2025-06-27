@@ -88,10 +88,10 @@ exports.agregarResultados = async (req, res) => {
     const acumulado = {};
 
     parsedResultados.forEach(res => {
-      let club = 'Sin club';
+      let club = 'General Rodriguez';
       if (res.patinador) {
         const pat = patinadores.find(p => p._id.toString() === res.patinador);
-        club = pat?.club || 'Sin club';
+        club = pat?.club || 'General Rodriguez';
       } else if (res.club) {
         club = res.club;
       }
