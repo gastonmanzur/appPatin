@@ -4,8 +4,6 @@ const Patinador = require('../models/Patinador');
 const sendEmail = require('../utils/sendEmail');
 const Notification = require('../models/Notification');
 const ExcelJS = require('exceljs');
-const path = require('path');
-const fs = require('fs');
 
 exports.crearCompetencia = async (req, res) => {
   try {
@@ -311,14 +309,16 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
       });
     });
 
-    const filePath = path.join(__dirname, '..', 'uploads', `lbf_${id}.xlsx`);
-    await workbook.xlsx.writeFile(filePath);
-
-    res.download(filePath, 'lista_buena_fe.xlsx', err => {
-      if (!err) {
-        fs.unlinkSync(filePath);
-      }
-    });
+    const buffer = await workbook.xlsx.writeBuffer();
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    );
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=lista_buena_fe.xlsx'
+    );
+    res.send(buffer);
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Error al exportar excel' });

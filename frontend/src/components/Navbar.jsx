@@ -200,7 +200,11 @@ const Navbar = () => {
               >
                 {profile?.picture ? (
                   <img
-                    src={`http://localhost:5000/uploads/${profile.picture}`}
+                    src={
+                      profile.picture.startsWith('http')
+                        ? profile.picture
+                        : `http://localhost:5000/uploads/${profile.picture}`
+                    }
                     alt="Perfil"
                     className="rounded-circle"
                     width="32"
