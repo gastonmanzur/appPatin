@@ -44,7 +44,7 @@ const Navbar = () => {
   const isTecnico = user.role === 'Tecnico';
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark navbar-custom">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/dashboard">
           <img src="/logo.jpeg" alt="logo" height="40" />

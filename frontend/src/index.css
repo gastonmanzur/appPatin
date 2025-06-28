@@ -18,3 +18,8 @@ body {
 a {
   color: var(--color-accent);
 }
+
+/* Custom navbar gradient: black -> green -> light blue */
+.navbar-custom {
+  background: linear-gradient(90deg, #000000, var(--color-accent), var(--color-secondary));
+}
