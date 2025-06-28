@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { getTodosLosPatinadores } from '../api/gestionPatinadores';
+import { getMisPatinadores } from '../api/patinadores';
 import { crearInforme } from '../api/informes';
 
 const CrearInforme = () => {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [patinadores, setPatinadores] = useState([]);
   const [form, setForm] = useState({ patinador: '', contenido: '' });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getTodosLosPatinadores(token);
+        let data;
+        if (user.rol === 'Tecnico' || user.rol === 'Delegado') {
+          data = await getTodosLosPatinadores(token);
+        } else {
+          data = await getMisPatinadores(token);
+        }
         setPatinadores(data);
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
-  }, [token]);
+  }, [token, user]);
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
