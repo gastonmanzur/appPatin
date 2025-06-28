@@ -117,6 +117,9 @@ const Navbar = () => {
                 </li>
               </>
             )}
+            <li className="nav-item">
+              <Link className="nav-link" to="/informes">Informes</Link>
+            </li>
             {isDelegado ? (
               <li className="nav-item dropdown">
                 <a
