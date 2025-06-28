@@ -33,6 +33,7 @@ import Notificaciones from './pages/Notificaciones';
 import ListaBuenaFe from './pages/ListaBuenaFe';
 import SolicitudSeguro from './pages/SolicitudSeguro';
 import CrearInforme from './pages/CrearInforme';
+import VerInformes from './pages/VerInformes';
 import RegistrarAsistencia from './pages/RegistrarAsistencia';
 const App = () => {
   return (
@@ -70,6 +71,7 @@ const App = () => {
   <Route path="solicitud-seguro" element={<SolicitudSeguro />} />
   <Route path="notificaciones" element={<Notificaciones />} />
   <Route path="crear-informe" element={<CrearInforme />} />
+  <Route path="informes" element={<VerInformes />} />
   <Route path="registrar-asistencia" element={<RegistrarAsistencia />} />
       </Route>
     </Routes>
