@@ -107,6 +107,16 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" to="/ranking-categorias">Ranking por Categorías</Link></li>
               </ul>
             </li>
+            {isTecnico && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/crear-informe">Crear Informe</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/registrar-asistencia">Registrar Asistencia</Link>
+                </li>
+              </>
+            )}
             {isDelegado ? (
               <li className="nav-item dropdown">
                 <a
@@ -130,42 +140,52 @@ const Navbar = () => {
                 <Link className="nav-link" to="/mis-patinadores">Mis Patinadores</Link>
               </li>
             )}
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link dropdown-toggle"
-                id="competenciasDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Competencias
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="competenciasDropdown">
-                <li><Link className="dropdown-item" to="/competencias">Competencias</Link></li>
-                <li><Link className="dropdown-item" to="/crear-competencia">Crear Competencia</Link></li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                href="#"
-                className="nav-link dropdown-toggle"
-                id="titulosDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Títulos
-              </a>
-              <ul className="dropdown-menu" aria-labelledby="titulosDropdown">
-                <li><Link className="dropdown-item" to="/titulos">Ver Títulos</Link></li>
-                <li><Link className="dropdown-item" to="/titulos/individual">Nuevo Título Individual</Link></li>
-                <li><Link className="dropdown-item" to="/titulos/club">Nuevo Título Club</Link></li>
-              </ul>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/solicitud-seguro">Solicitud Seguro</Link>
-            </li>
+            {isDelegado && (
+              <li className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  id="competenciasDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Competencias
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="competenciasDropdown">
+                  <li><Link className="dropdown-item" to="/competencias">Competencias</Link></li>
+                  <li><Link className="dropdown-item" to="/crear-competencia">Crear Competencia</Link></li>
+                </ul>
+              </li>
+            )}
+            {isDelegado ? (
+              <li className="nav-item dropdown">
+                <a
+                  href="#"
+                  className="nav-link dropdown-toggle"
+                  id="titulosDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Títulos
+                </a>
+                <ul className="dropdown-menu" aria-labelledby="titulosDropdown">
+                  <li><Link className="dropdown-item" to="/titulos">Ver Títulos</Link></li>
+                  <li><Link className="dropdown-item" to="/titulos/individual">Nuevo Título Individual</Link></li>
+                  <li><Link className="dropdown-item" to="/titulos/club">Nuevo Título Club</Link></li>
+                </ul>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <Link className="nav-link" to="/titulos">Títulos</Link>
+              </li>
+            )}
+            {isDelegado && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/solicitud-seguro">Solicitud Seguro</Link>
+              </li>
+            )}
           </ul>
           <div className="d-flex align-items-center">
             <button
