@@ -32,6 +32,8 @@ import ConfirmarCompetencia from './pages/ConfirmarCompetencia';
 import Notificaciones from './pages/Notificaciones';
 import ListaBuenaFe from './pages/ListaBuenaFe';
 import SolicitudSeguro from './pages/SolicitudSeguro';
+import CrearInforme from './pages/CrearInforme';
+import RegistrarAsistencia from './pages/RegistrarAsistencia';
 const App = () => {
   return (
     <Routes>
@@ -67,6 +69,8 @@ const App = () => {
   <Route path="titulos/club/editar/:id" element={<EditarTituloClub />} />
   <Route path="solicitud-seguro" element={<SolicitudSeguro />} />
   <Route path="notificaciones" element={<Notificaciones />} />
+  <Route path="crear-informe" element={<CrearInforme />} />
+  <Route path="registrar-asistencia" element={<RegistrarAsistencia />} />
       </Route>
     </Routes>
   );
