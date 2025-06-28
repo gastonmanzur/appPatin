@@ -4,6 +4,7 @@ const Patinador = require('../models/Patinador');
 const sendEmail = require('../utils/sendEmail');
 const Notification = require('../models/Notification');
 const ExcelJS = require('exceljs');
+const path = require('path');
 
 exports.crearCompetencia = async (req, res) => {
   try {
@@ -251,76 +252,87 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     const workbook = new ExcelJS.Workbook();
     const ws = workbook.addWorksheet('LBF');
 
-    const azul = '002060';
-    const blanco = 'FFFFFF';
-    const rojo = 'FF0000';
+    const logoPath = path.join(__dirname, '../public/images/logo_apm.png');
+    const imageId = workbook.addImage({ filename: logoPath, extension: 'png' });
+    ws.addImage(imageId, { tl: { col: 0, row: 0 }, ext: { width: 140, height: 80 } });
 
-    ws.mergeCells('A1:H1');
-    ws.getCell('A1').value = 'COMITÉ DE CARRERAS';
-    ws.getCell('A1').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: azul } };
-    ws.getCell('A1').font = { color: { argb: blanco }, bold: true, size: 14 };
-    ws.getCell('A1').alignment = { horizontal: 'center' };
+    const fullBorder = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    };
 
-    ws.mergeCells('A2:H2');
-    ws.getCell('A2').value = 'LISTA DE BUENA FE     ESCUELA–TRANSICION–INTERMEDIAS–FEDERADOS–LIBRES';
-    ws.getCell('A2').fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: azul } };
-    ws.getCell('A2').font = { color: { argb: blanco }, bold: true };
-    ws.getCell('A2').alignment = { horizontal: 'center' };
+    ws.mergeCells('B2', 'H2');
+    ws.getCell('B2').value = 'ASOCIACIÓN PATINADORES METROPOLITANOS';
+    ws.getCell('B2').alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.getCell('B2').font = { size: 12, bold: true };
 
-    ws.addRow(['FECHA DE EMISIÓN', '', 'EVENTO Y FECHA', '', '', 'ORGANIZADOR', '', '']);
-    ws.addRow(['', '', competencia.nombre, '', '', '', '', '']);
-    ws.getCell('E4').value = new Date(competencia.fecha).toLocaleDateString();
-    ws.getCell('F4').value = competencia.clubOrganizador;
+    ws.mergeCells('B3', 'H3');
+    ws.getCell('B3').value = 'patinapm@gmail.com - patincarreraapm@gmail.com';
+    ws.getCell('B3').alignment = { vertical: 'middle', horizontal: 'center' };
 
-    const headerRow = ['#', 'Seguro', 'N° Patinador', 'Nombre Completo', 'Categoría', 'Club', 'Fecha Nac.', 'DNI'];
-    ws.addRow(headerRow);
+    ws.mergeCells('B4', 'H4');
+    ws.getCell('B4').value = 'COMITÉ DE CARRERAS';
+    ws.getCell('B4').alignment = { vertical: 'middle', horizontal: 'center' };
 
+    ws.mergeCells('B5', 'H5');
+    ws.getCell('B5').value = 'LISTA DE BUENA FE - ESCUELA-TRANSICION-INTERMEDIA';
+    ws.getCell('B5').alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.getCell('B5').font = { bold: true };
+
+    ws.mergeCells('B6', 'C6');
+    ws.getCell('B6').value = 'Fecha de emisión de la lista:';
+    ws.getCell('B6').font = { italic: true };
+    ws.getCell('D6').value = new Date().toLocaleDateString('es-AR');
+
+    const headers = ['N°', 'Apellido y Nombre', 'DNI', 'Club', 'Categoría', 'N° Deportista'];
+    const startRow = 8;
+    headers.forEach((text, i) => {
+      const cell = ws.getCell(startRow, i + 2);
+      cell.value = text;
+      cell.font = { bold: true };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      cell.border = fullBorder;
+    });
+
+    let rowPos = startRow + 1;
     let contador = 1;
     competencia.listaBuenaFe.forEach(u => {
       u.patinadoresAsociados.forEach(p => {
-        ws.addRow([
+        const values = [
           contador++,
-          'SA',
-          p.numeroCorredor || '-',
           `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
-          p.categoria,
+          p.dni,
           p.club || 'General Rodriguez',
-          new Date(p.fechaNacimiento).toLocaleDateString(),
-          p.dni
-        ]);
+          p.categoria,
+          p.numeroCorredor || '-'
+        ];
+        values.forEach((val, colIdx) => {
+          const cell = ws.getCell(rowPos, colIdx + 2);
+          cell.value = val;
+          cell.alignment = { vertical: 'middle', horizontal: 'center' };
+          cell.border = fullBorder;
+        });
+        rowPos++;
       });
     });
 
-    ws.addRow([]);
-    ws.addRow(['MANZUR VANESA CAROLINA', 'TECN', '08/07/1989', 34543626]);
-    ws.addRow(['MANZUR GASTON ALFREDO', 'DELEG', '14/12/1983', 30609550]);
-    ws.addRow(['FIRMA', '', '', 'FIRMA']);
-    ws.addRow(['SECRETARIO/A CLUB', '', '', 'PRESIDENTE/A CLUB']);
-    ws.addRow([]);
-    const nota1 = ws.addRow(['LAS PERSONAS DETALLADAS PRECEDENTEMENTE SE ENCUENTRAN APTAS FÍSICA Y']);
-    const nota2 = ws.addRow(['PARA LA PRÁCTICA ACTIVA DE ESTE DEPORTE Y CUENTAN CON SEGURO CON PÓLIZA VIGENTE.']);
-    nota1.font = { color: { argb: rojo }, bold: true };
-    nota2.font = { color: { argb: rojo }, bold: true };
-
-    ws.columns.forEach(col => (col.width = 20));
-    ws.eachRow({ includeEmpty: false }, row => {
-      row.eachCell(cell => {
-        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.columns.forEach(col => {
+      let maxLength = 10;
+      col.eachCell({ includeEmpty: true }, cell => {
+        const len = cell.value ? cell.value.toString().length : 0;
+        if (len > maxLength) maxLength = len;
       });
+      col.width = maxLength + 2;
     });
 
     const buffer = await workbook.xlsx.writeBuffer();
-    res.setHeader(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    res.setHeader(
-      'Content-Disposition',
-      'attachment; filename=lista_buena_fe.xlsx'
-    );
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=lista_buena_fe.xlsx');
     res.send(buffer);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: 'Error al exportar excel' });
+    console.error('Error al generar Excel:', err);
+    res.status(500).send('Error al generar Excel');
   }
 };
