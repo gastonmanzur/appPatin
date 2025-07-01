@@ -5,6 +5,7 @@ const sendEmail = require('../utils/sendEmail');
 const Notification = require('../models/Notification');
 const ExcelJS = require('exceljs');
 const path = require('path');
+const fs = require('fs');
 
 exports.crearCompetencia = async (req, res) => {
   try {
@@ -253,8 +254,10 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     const ws = workbook.addWorksheet('LBF');
 
     const logoPath = path.join(__dirname, '../public/images/logo_apm.png');
-    const imageId = workbook.addImage({ filename: logoPath, extension: 'png' });
-    ws.addImage(imageId, { tl: { col: 0, row: 0 }, ext: { width: 140, height: 80 } });
+    if (fs.existsSync(logoPath)) {
+      const imageId = workbook.addImage({ filename: logoPath, extension: 'png' });
+      ws.addImage(imageId, { tl: { col: 0, row: 0 }, ext: { width: 140, height: 80 } });
+    }
 
     const fullBorder = {
       top: { style: 'thin' },
