@@ -253,6 +253,16 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     const workbook = new ExcelJS.Workbook();
     const ws = workbook.addWorksheet('LBF');
 
+    // Definir anchos de las columnas según especificación de Lista de Buena Fe
+    ws.getColumn(1).width = 1.89;
+    ws.getColumn(2).width = 10.22;
+    ws.getColumn(3).width = 7.56;
+    ws.getColumn(4).width = 38;
+    ws.getColumn(5).width = 10.33;
+    ws.getColumn(6).width = 13.22;
+    ws.getColumn(7).width = 11.56;
+    ws.getColumn(8).width = 11.33;
+
     ws.getRow(2).height = 21.8;
     ws.getRow(4).height = 22.2;
 
@@ -410,7 +420,7 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     });
 
     ws.columns.forEach(col => {
-      if (!col.width || col.width < 15) col.width = 15;
+      if (!col.width) col.width = 15;
     });
 
     const buffer = await workbook.xlsx.writeBuffer();
