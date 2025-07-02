@@ -21,6 +21,10 @@ const competenciaSchema = new mongoose.Schema({
     puntos: { type: Number, required: true }
   }],
   listaBuenaFe: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  listaBuenaFeManual: [{
+    patinador: { type: mongoose.Schema.Types.ObjectId, ref: 'Patinador' },
+    baja: { type: Boolean, default: false }
+  }],
   padronSeguros: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 

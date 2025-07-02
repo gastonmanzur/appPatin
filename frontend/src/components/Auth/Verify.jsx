@@ -12,10 +12,11 @@ const Verify = () => {
         await api.get(`/auth/verify/${token}`);
         alert('Cuenta verificada correctamente.');
         navigate('/');
-      } catch (err) {
-        alert('Error al verificar cuenta.');
-        navigate('/');
-      }
+    } catch (err) {
+          console.error(err);
+          alert('Error al verificar cuenta.');
+          navigate('/');
+    }
     };
     verify();
   }, [token, navigate]);

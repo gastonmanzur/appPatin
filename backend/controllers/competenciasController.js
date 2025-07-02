@@ -203,10 +203,12 @@ exports.confirmarParticipacion = async (req, res) => {
 exports.obtenerListaBuenaFe = async (req, res) => {
   try {
     const { id } = req.params;
-    const competencia = await Competencia.findById(id).populate({
+  const competencia = await Competencia.findById(id)
+    .populate({
       path: 'listaBuenaFe',
       populate: { path: 'patinadoresAsociados' }
-    });
+    })
+    .populate('listaBuenaFeManual.patinador');
 
     if (!competencia) {
       return res.status(404).json({ msg: 'Competencia no encontrada' });
@@ -226,9 +228,29 @@ exports.obtenerListaBuenaFe = async (req, res) => {
           categoria: p.categoria,
           club: p.club || 'General Rodriguez',
           fechaNacimiento: p.fechaNacimiento,
-          dni: p.dni
+          dni: p.dni,
+          baja: false
         });
       });
+    });
+
+    competencia.listaBuenaFeManual.forEach(e => {
+      const p = e.patinador;
+      if (p) {
+        lista.push({
+          _id: p._id,
+          tipoSeguro: 'SA',
+          numeroCorredor: p.numeroCorredor,
+          apellido: p.apellido,
+          primerNombre: p.primerNombre,
+          segundoNombre: p.segundoNombre,
+          categoria: p.categoria,
+          club: p.club || 'General Rodriguez',
+          fechaNacimiento: p.fechaNacimiento,
+          dni: p.dni,
+          baja: e.baja
+        });
+      }
     });
 
     res.json(lista);
@@ -241,10 +263,12 @@ exports.obtenerListaBuenaFe = async (req, res) => {
 exports.exportarListaBuenaFeExcel = async (req, res) => {
   try {
     const { id } = req.params;
-    const competencia = await Competencia.findById(id).populate({
+  const competencia = await Competencia.findById(id)
+    .populate({
       path: 'listaBuenaFe',
       populate: { path: 'patinadoresAsociados' }
-    });
+    })
+    .populate('listaBuenaFeManual.patinador');
 
     if (!competencia) {
       return res.status(404).json({ msg: 'Competencia no encontrada' });
@@ -341,10 +365,14 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
 
     const patinadores = [];
     competencia.listaBuenaFe.forEach(u => {
-      u.patinadoresAsociados.forEach(p => patinadores.push(p));
+      u.patinadoresAsociados.forEach(p => patinadores.push({ patinador: p, baja: false }));
+    });
+    competencia.listaBuenaFeManual.forEach(e => {
+      if (e.patinador) patinadores.push({ patinador: e.patinador, baja: e.baja });
     });
 
-    patinadores.forEach(p => {
+    patinadores.forEach(d => {
+      const p = d.patinador;
       if (
         lastCat &&
         p.categoria.slice(p.categoria.length - 1) !==
@@ -374,6 +402,9 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
         cell.value = val;
         cell.alignment = { vertical: 'middle', horizontal: 'center' };
         cell.border = fullBorder;
+        if (d.baja) {
+          cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0000' } };
+        }
       });
       lastCat = p.categoria;
     });
@@ -453,5 +484,53 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
   } catch (err) {
     console.error('Error al generar Excel:', err);
     res.status(500).send('Error al generar Excel');
+  }
+};
+
+exports.agregarPatinadorManual = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { patinadorId } = req.body;
+
+    const competencia = await Competencia.findById(id);
+    if (!competencia) return res.status(404).json({ msg: 'Competencia no encontrada' });
+
+    const existeEnLista = competencia.listaBuenaFeManual.find(e => e.patinador.toString() === patinadorId);
+    if (existeEnLista) return res.status(400).json({ msg: 'Patinador ya agregado' });
+
+    const todos = [];
+    const compPop = await Competencia.findById(id).populate({
+      path: 'listaBuenaFe',
+      populate: { path: 'patinadoresAsociados' }
+    });
+    compPop.listaBuenaFe.forEach(u => u.patinadoresAsociados.forEach(p => todos.push(p._id.toString())));
+    if (todos.includes(patinadorId)) return res.status(400).json({ msg: 'Patinador ya agregado' });
+
+    competencia.listaBuenaFeManual.push({ patinador: patinadorId, baja: false });
+    await competencia.save();
+    res.json({ msg: 'Patinador agregado' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Error al agregar patinador' });
+  }
+};
+
+exports.actualizarBajaPatinadorManual = async (req, res) => {
+  try {
+    const { id, patinadorId } = req.params;
+    const { baja } = req.body;
+
+    const competencia = await Competencia.findById(id);
+    if (!competencia) return res.status(404).json({ msg: 'Competencia no encontrada' });
+
+    const entry = competencia.listaBuenaFeManual.find(e => e.patinador.toString() === patinadorId);
+    if (!entry) return res.status(404).json({ msg: 'Patinador no encontrado en lista' });
+
+    entry.baja = baja;
+    await competencia.save();
+    res.json({ msg: 'Estado actualizado' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Error al actualizar' });
   }
 };
