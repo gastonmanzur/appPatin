@@ -63,7 +63,7 @@ const SolicitudSeguro = () => {
   };
 
   const exportarExcel = async () => {
-    const ExcelJS = (await import('exceljs')).default;
+    const ExcelJS = (await import('exceljs/dist/exceljs.min.js')).default;
     const workbook = new ExcelJS.Workbook();
     const ws = workbook.addWorksheet('Solicitud');
 
