@@ -188,7 +188,7 @@ const SolicitudSeguro = () => {
     };
 
     lista.forEach(p => {
-      ws.addRow([
+      const row = ws.addRow([
         '',
         '',
         '',
@@ -204,13 +204,16 @@ const SolicitudSeguro = () => {
         DEFAULTS.nacionalidad,
         p.club || DEFAULTS.club,
         DEFAULTS.funcion,
-        '',
+        p.direccion || '',
         DEFAULTS.codigoPostal,
         DEFAULTS.localidad,
         DEFAULTS.provincia,
         p.telefono || '',
         p.tipoLicSeg
       ]);
+      row.eachCell({ includeEmpty: true }, cell => {
+        cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      });
     });
 
     const buffer = await workbook.xlsx.writeBuffer();
