@@ -14,6 +14,8 @@ router.delete('/:id', auth, checkRole(['Delegado']), competenciasController.elim
 router.post('/:id/confirmar', auth, competenciasController.confirmarParticipacion);
 router.get('/:id/lista-buena-fe', auth, competenciasController.obtenerListaBuenaFe);
 router.get('/:id/lista-buena-fe/excel', auth, competenciasController.exportarListaBuenaFeExcel);
+router.post('/:id/lista-buena-fe/manual', auth, checkRole(['Delegado']), competenciasController.agregarPatinadorManual);
+router.put('/:id/lista-buena-fe/manual/:patinadorId', auth, checkRole(['Delegado']), competenciasController.actualizarBajaPatinadorManual);
 
 
 module.exports = router;

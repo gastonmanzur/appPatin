@@ -66,3 +66,21 @@ export const descargarListaBuenaFeExcel = async (id, token) => {
   });
   return res.data;
 };
+
+export const agregarPatinadorLBF = async (id, patinadorId, token) => {
+  const res = await api.post(
+    `/competencias/${id}/lista-buena-fe/manual`,
+    { patinadorId },
+    { headers: { Authorization: token } }
+  );
+  return res.data;
+};
+
+export const actualizarBajaLBF = async (id, patinadorId, baja, token) => {
+  const res = await api.put(
+    `/competencias/${id}/lista-buena-fe/manual/${patinadorId}`,
+    { baja },
+    { headers: { Authorization: token } }
+  );
+  return res.data;
+};
