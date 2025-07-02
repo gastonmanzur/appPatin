@@ -71,24 +71,25 @@ const MisPatinadores = () => {
       )}
 
       {patinadores.length > 0 && (
-        <div className="row">
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {patinadores.map(p => {
             const misTitulos = titulos.filter(t => t.patinador?._id === p._id);
             return (
-              <div key={p._id} className="col-12 mb-4">
-                <div className="card h-100 flex-md-row">
+              <div key={p._id} className="col">
+                <div className="card h-100">
                   {p.foto && (
                     <img
                       src={`http://localhost:5000/uploads/${p.foto}`}
                       alt="Foto"
-                      className="img-fluid rounded-start"
-                      style={{ width: '50%', objectFit: 'cover' }}
+                      className="card-img-top"
+                      style={{ objectFit: 'cover', height: '200px' }}
                     />
                   )}
-                  <div className="card-body">
+                  <div className="card-body d-flex flex-column">
                     <h5 className="card-title">
                       {p.primerNombre} {p.apellido}
                     </h5>
+                    <p className="card-text mb-1">Edad: {p.edad}</p>
                     <p className="card-text mb-1">Categoría: {p.categoria}</p>
                     <p className="card-text">Club: {p.club}</p>
                     <h6 className="mt-3">Títulos personales</h6>

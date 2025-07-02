@@ -63,7 +63,7 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="mainNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link" to="/dashboard">Dashboard</Link>
+              <Link className="nav-link" to="/dashboard">Inicio</Link>
             </li>
             {(isDelegado || isTecnico) ? (
               <li className="nav-item dropdown">
