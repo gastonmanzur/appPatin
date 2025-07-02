@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
-import { obtenerListaBuenaFe, listarCompetencias, descargarListaBuenaFeExcel, agregarPatinadorLBF, actualizarBajaLBF } from '../api/competencias';
+import { obtenerListaBuenaFe, descargarListaBuenaFeExcel, agregarPatinadorLBF, actualizarBajaLBF } from '../api/competencias';
 import { getTodosLosPatinadores } from '../api/gestionPatinadores';
 import { useParams } from 'react-router-dom';
 
@@ -8,21 +8,17 @@ const ListaBuenaFe = () => {
   const { token } = useAuth();
   const { id } = useParams();
   const [lista, setLista] = useState([]);
-  const [competencia, setCompetencia] = useState(null);
   const [todos, setTodos] = useState([]);
   const [seleccion, setSeleccion] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [data, comps, pats] = await Promise.all([
+        const [data, pats] = await Promise.all([
           obtenerListaBuenaFe(id, token),
-          listarCompetencias(token),
           getTodosLosPatinadores(token)
         ]);
         setLista(data);
-        const comp = comps.find(c => c._id === id);
-        setCompetencia(comp);
         setTodos(pats);
       } catch (err) {
         console.error(err);
@@ -117,7 +113,6 @@ const ListaBuenaFe = () => {
               <th>Club</th>
               <th>Fecha Nacimiento</th>
               <th>DNI</th>
-              <th>Club Organizador</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -140,7 +135,6 @@ const ListaBuenaFe = () => {
                 <td>{p.club}</td>
                 <td>{new Date(p.fechaNacimiento).toLocaleDateString()}</td>
                 <td>{p.dni}</td>
-                <td>{competencia?.clubOrganizador || ''}</td>
                 <td>
                   <button className="btn btn-sm btn-danger" onClick={() => toggleBaja(p._id, p.baja)}>
                     {p.baja ? 'Revertir' : 'Dar de baja'}
