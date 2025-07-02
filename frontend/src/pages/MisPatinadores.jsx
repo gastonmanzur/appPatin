@@ -91,7 +91,6 @@ const MisPatinadores = () => {
                     </h5>
                     <p className="card-text mb-1">Edad: {p.edad}</p>
                     <p className="card-text mb-1">Categoría: {p.categoria}</p>
-                    <p className="card-text">Club: {p.club}</p>
                     <h6 className="mt-3">Títulos personales</h6>
                     <ul className="mb-0">
                       {misTitulos.length > 0 ? (
