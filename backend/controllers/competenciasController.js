@@ -378,6 +378,17 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
       lastCat = p.categoria;
     });
 
+    // Separator after the last skater
+    const endRow = ws.getRow(rowPos++);
+    for (let c = 1; c <= 8; c++) {
+      const cell = endRow.getCell(c);
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: '000000' } };
+      cell.border = fullBorder;
+    }
+
+    // Leave two empty rows
+    rowPos += 2;
+
     const tecnicos = [
       ['MANZUR VANESA CAROLINA', 'TECN', '08/07/1989', '34543626'],
       ['MANZUR GASTON ALFREDO', 'DELEG', '14/12/1983', '30609550'],
@@ -390,9 +401,11 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
       row.getCell(5).value = d[1];
       row.getCell(7).value = d[2];
       row.getCell(8).value = d[3];
-      row.eachCell({ includeEmpty: true }, cell => {
+      row.eachCell({ includeEmpty: true }, (cell, col) => {
         cell.alignment = { vertical: 'middle', horizontal: 'center' };
-        cell.border = fullBorder;
+        if (col > 3) {
+          cell.border = fullBorder;
+        }
       });
     });
 
