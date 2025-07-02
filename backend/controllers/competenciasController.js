@@ -329,6 +329,12 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     ws.getCell('D8').value = competencia.clubOrganizador;
     ws.getCell('D8').alignment = { vertical: 'middle', horizontal: 'center' };
 
+    for (let r = 2; r <= 8; r++) {
+      for (let c = 1; c <= 8; c++) {
+        ws.getRow(r).getCell(c).border = fullBorder;
+      }
+    }
+
     let rowPos = 9;
     let contador = 1;
     let lastCat = null;
@@ -339,7 +345,11 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     });
 
     patinadores.forEach(p => {
-      if (lastCat && p.categoria !== lastCat) {
+      if (
+        lastCat &&
+        p.categoria.slice(p.categoria.length - 1) !==
+          lastCat.slice(lastCat.length - 1)
+      ) {
         const br = ws.getRow(rowPos++);
         for (let c = 1; c <= 8; c++) {
           const cell = br.getCell(c);
