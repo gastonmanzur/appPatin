@@ -229,7 +229,7 @@ exports.obtenerListaBuenaFe = async (req, res) => {
           club: p.club || 'General Rodriguez',
           fechaNacimiento: p.fechaNacimiento,
           dni: p.dni,
-          baja: false
+          baja: competencia.bajas.some(b => b.toString() === p._id.toString())
         });
       });
     });
@@ -365,7 +365,12 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
 
     const patinadores = [];
     competencia.listaBuenaFe.forEach(u => {
-      u.patinadoresAsociados.forEach(p => patinadores.push({ patinador: p, baja: false }));
+      u.patinadoresAsociados.forEach(p =>
+        patinadores.push({
+          patinador: p,
+          baja: competencia.bajas.some(b => b.toString() === p._id.toString())
+        })
+      );
     });
     competencia.listaBuenaFeManual.forEach(e => {
       if (e.patinador) patinadores.push({ patinador: e.patinador, baja: e.baja });
@@ -520,13 +525,30 @@ exports.actualizarBajaPatinadorManual = async (req, res) => {
     const { id, patinadorId } = req.params;
     const { baja } = req.body;
 
-    const competencia = await Competencia.findById(id);
+    const competencia = await Competencia.findById(id).populate({
+      path: 'listaBuenaFe',
+      populate: { path: 'patinadoresAsociados' }
+    });
     if (!competencia) return res.status(404).json({ msg: 'Competencia no encontrada' });
 
     const entry = competencia.listaBuenaFeManual.find(e => e.patinador.toString() === patinadorId);
-    if (!entry) return res.status(404).json({ msg: 'Patinador no encontrado en lista' });
 
-    entry.baja = baja;
+    if (entry) {
+      entry.baja = baja;
+    } else {
+      const existe = competencia.listaBuenaFe.some(u =>
+        u.patinadoresAsociados.some(p => p._id.toString() === patinadorId)
+      );
+      if (!existe) return res.status(404).json({ msg: 'Patinador no encontrado en lista' });
+
+      const idx = competencia.bajas.findIndex(b => b.toString() === patinadorId);
+      if (baja && idx === -1) {
+        competencia.bajas.push(patinadorId);
+      } else if (!baja && idx !== -1) {
+        competencia.bajas.splice(idx, 1);
+      }
+    }
+
     await competencia.save();
     res.json({ msg: 'Estado actualizado' });
   } catch (err) {

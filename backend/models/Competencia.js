@@ -25,6 +25,7 @@ const competenciaSchema = new mongoose.Schema({
     patinador: { type: mongoose.Schema.Types.ObjectId, ref: 'Patinador' },
     baja: { type: Boolean, default: false }
   }],
+  bajas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Patinador' }],
   padronSeguros: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
