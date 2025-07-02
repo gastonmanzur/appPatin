@@ -67,7 +67,24 @@ const SolicitudSeguro = () => {
     const workbook = new ExcelJS.Workbook();
     const ws = workbook.addWorksheet('Solicitud');
 
-    ws.columns = new Array(21).fill({ width: 20 });
+    ws.columns = [
+      ...new Array(6).fill({ width: 2.89 }),
+      { width: 11.22 },
+      { width: 13.89 },
+      { width: 23.67 },
+      { width: 34.89 },
+      { width: 11.78 },
+      { width: 6.22 },
+      { width: 12.67 },
+      { width: 18.22 },
+      { width: 10.33 },
+      { width: 23 },
+      { width: 7.56 },
+      { width: 15.89 },
+      { width: 14.67 },
+      { width: 13.11 },
+      { width: 18.67 }
+    ];
 
     ws.mergeCells('A2:F2');
     ws.getCell('A2').value = 'NO COMPLETAR ESTAS COLUMNAS';
@@ -145,7 +162,6 @@ const SolicitudSeguro = () => {
       'Tipo Lic. O Seg'
     ];
 
-    ws.addRow([]); // Row 1 empty
     const headerRow = ws.addRow(headers);
     headerRow.eachCell((cell, col) => {
       cell.font = { name: 'Arial', size: 11, bold: true };
