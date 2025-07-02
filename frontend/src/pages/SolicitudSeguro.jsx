@@ -62,51 +62,149 @@ const SolicitudSeguro = () => {
     setLista(l => l.filter((_, i) => i !== index));
   };
 
-  const exportarExcel = () => {
-    const encabezados = [
+  const exportarExcel = async () => {
+    const ExcelJS = (await import('exceljs')).default;
+    const workbook = new ExcelJS.Workbook();
+    const ws = workbook.addWorksheet('Solicitud');
+
+    ws.columns = new Array(21).fill({ width: 20 });
+
+    ws.mergeCells('A2:F2');
+    ws.getCell('A2').value = 'NO COMPLETAR ESTAS COLUMNAS';
+    ws.getCell('A2').alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.getCell('A2').font = { name: 'Calibri', size: 14, bold: true };
+    ws.getCell('A2').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FF0000' }
+    };
+
+    ws.mergeCells('G2:K2');
+    ws.getCell('G2').value =
+      'COMPLETAR CON TODOS LOS APELLIDOS Y NOMBRES COMO FIGURAN EN EL DNI';
+    ws.getCell('G2').alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.getCell('G2').font = { name: 'Calibri', size: 14, bold: true };
+    ws.getCell('G2').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '00B0F0' }
+    };
+
+    ws.mergeCells('L2:O2');
+    ws.getCell('L2').value =
+      'SEXO IDENTIFICAR SOLO CON NUMEROS (1 MASCULINO) - (2 FEMENINO)';
+    ws.getCell('L2').alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.getCell('L2').font = { name: 'Calibri', size: 14, bold: true };
+    ws.getCell('L2').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '00B050' }
+    };
+
+    ws.mergeCells('P2:T2');
+    ws.getCell('P2').value = 'COMPLETAR SOLO COLUMNAS AMARILLAS';
+    ws.getCell('P2').alignment = { vertical: 'middle', horizontal: 'center' };
+    ws.getCell('P2').font = { name: 'Calibri', size: 14, bold: true };
+    ws.getCell('P2').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFFF00' }
+    };
+
+    const cU2 = ws.getCell('U2');
+    cU2.value = 'SEG. ANUAL O LIC.  PROMOCIONAL O LIC. NACIONAL';
+    cU2.alignment = { vertical: 'middle', horizontal: 'center' };
+    cU2.font = { name: 'Calibri', size: 11, bold: true };
+    cU2.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'FFA500' }
+    };
+
+    const headers = [
+      'Seguro',
+      'CAP',
+      'FA',
+      'DNI',
+      'FM',
+      'Legajo',
       'DNI',
       'CUIL',
-      'Apellido',
-      'Nombres',
-      'Fecha Nacimiento',
+      'APELLIDO/S',
+      'NOMBRE/S',
+      'F.Nac',
       'Sexo',
       'Nacionalidad',
       'Club',
       'Funcion',
-      'Codigo Postal',
+      'Domicilio',
+      'CP',
       'Localidad',
       'Provincia',
       'Telefono',
-      'Tipo Lic/Seg'
+      'Tipo Lic. O Seg'
     ];
 
-    const filas = lista.map(p => [
-      p.dni,
-      p.cuil || '',
-      p.apellido,
-      `${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
-      new Date(p.fechaNacimiento).toLocaleDateString(),
-      p.sexo === 'M' ? 1 : 2,
-      DEFAULTS.nacionalidad,
-      p.club || DEFAULTS.club,
-      DEFAULTS.funcion,
-      DEFAULTS.codigoPostal,
-      DEFAULTS.localidad,
-      DEFAULTS.provincia,
-      p.telefono || '',
-      p.tipoLicSeg
-    ]);
-    // Algunos Excel utilizan ';' como separador predeterminado
-    const csvContent = [encabezados, ...filas]
-      .map(row => row.join(';'))
-      .join('\n');
-    // Incluir BOM para forzar a Excel a reconocer UTF-8
-    const csvWithBom = '\uFEFF' + csvContent;
-    const blob = new Blob([csvWithBom], { type: 'text/csv;charset=utf-8;' });
+    ws.addRow([]); // Row 1 empty
+    const headerRow = ws.addRow(headers);
+    headerRow.eachCell((cell, col) => {
+      cell.font = { name: 'Arial', size: 11, bold: true };
+      cell.alignment = { vertical: 'middle', horizontal: 'center' };
+      if (col <= 6) {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFFFFF' }
+        };
+      } else {
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFFF00' }
+        };
+      }
+    });
+    ws.getCell('F3').font = {
+      name: 'Arial',
+      size: 11,
+      bold: true,
+      color: { argb: 'FF0000' }
+    };
+
+    lista.forEach(p => {
+      ws.addRow([
+        '',
+        '',
+        '',
+        p.dni,
+        '',
+        '',
+        p.dni,
+        p.cuil || '',
+        p.apellido,
+        `${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
+        new Date(p.fechaNacimiento).toLocaleDateString(),
+        p.sexo === 'M' ? 1 : 2,
+        DEFAULTS.nacionalidad,
+        p.club || DEFAULTS.club,
+        DEFAULTS.funcion,
+        '',
+        DEFAULTS.codigoPostal,
+        DEFAULTS.localidad,
+        DEFAULTS.provincia,
+        p.telefono || '',
+        p.tipoLicSeg
+      ]);
+    });
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'solicitudes_seguros.csv';
+    a.download = 'solicitudes_seguros.xlsx';
     a.click();
     URL.revokeObjectURL(url);
   };
