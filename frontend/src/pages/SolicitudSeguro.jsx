@@ -86,6 +86,8 @@ const SolicitudSeguro = () => {
       { width: 18.67 }
     ];
 
+    ws.getRow(2).height = 43.2;
+
     ws.mergeCells('A2:F2');
     ws.getCell('A2').value = 'NO COMPLETAR ESTAS COLUMNAS';
     ws.getCell('A2').alignment = { vertical: 'middle', horizontal: 'center' };
@@ -192,7 +194,7 @@ const SolicitudSeguro = () => {
         '',
         '',
         '',
-        p.dni,
+        '',
         '',
         '',
         p.dni,
