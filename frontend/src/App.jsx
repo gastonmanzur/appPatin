@@ -36,6 +36,7 @@ import SolicitudSeguro from './pages/SolicitudSeguro';
 import CrearInforme from './pages/CrearInforme';
 import VerInformes from './pages/VerInformes';
 import RegistrarAsistencia from './pages/RegistrarAsistencia';
+import CrearNotificacion from './pages/CrearNotificacion';
 const App = () => {
   return (
     <Routes>
@@ -47,6 +48,7 @@ const App = () => {
        <Route path="dashboard" element={<Dashboard />} />
        <Route path="noticias" element={<Noticias />} />
        <Route path="crear-noticia" element={<CrearNoticia />} />
+       <Route path="crear-notificacion" element={<CrearNotificacion />} />
        <Route path="agregar-foto" element={<AgregarFoto />} />
        <Route path="noticia/:id" element={<NoticiaDetalle />} />
         <Route path="mis-patinadores" element={<MisPatinadores />} />

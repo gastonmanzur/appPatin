@@ -30,3 +30,16 @@ exports.marcarLeida = async (req, res) => {
     res.status(500).json({ msg: 'Error al actualizar notificación' });
   }
 };
+
+exports.crearNotificacion = async (req, res) => {
+  try {
+    const { mensaje } = req.body;
+    if (!mensaje) return res.status(400).json({ msg: 'Mensaje requerido' });
+    await Notification.create({ mensaje, usuario: null });
+    res.json({ msg: 'Notificación creada' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Error al crear notificación' });
+  }
+};
+
