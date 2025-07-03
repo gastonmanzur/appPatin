@@ -47,7 +47,7 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg navbar-dark navbar-custom">
       <div className="container-fluid">
         <Link className="navbar-brand" to="/dashboard">
-          <img src="/logo.jpeg" alt="logo" height="40" />
+          <img src="/logo.png" className="Logo" alt="logo"/>
         </Link>
         <button
           className="navbar-toggler"

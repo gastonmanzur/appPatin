@@ -30,3 +30,8 @@ a {
 .photo-carousel .slick-center {
   opacity: 1;
 }
+
+.Logo{
+  height: 60px;
+  border-radius: 50%;
+}
