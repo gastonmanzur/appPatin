@@ -71,21 +71,18 @@ const MisPatinadores = () => {
       )}
 
       {patinadores.length > 0 && (
-        <div className="row row-cols-1 g-4">
+        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {patinadores.map(p => {
             const misTitulos = titulos.filter(t => t.patinador?._id === p._id);
             return (
               <div key={p._id} className="col">
-                <div
-                  className="card flex-md-row"
-                  style={{ minHeight: '80vh' }}
-                >
+                <div className="card h-100">
                   {p.foto && (
                     <img
                       src={`http://localhost:5000/uploads/${p.foto}`}
                       alt="Foto"
-                      className="m-3"
-                      style={{ objectFit: 'cover', height: '80vh' }}
+                      className="card-img-top"
+                      style={{ objectFit: 'cover', height: '200px' }}
                     />
                   )}
                   <div className="card-body d-flex flex-column">
