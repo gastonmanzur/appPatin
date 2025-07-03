@@ -43,18 +43,30 @@ const Patinadores = () => {
   };
 
   return (
-    <div className="container">
-      <h2 className="mb-4">Listado de Patinadores</h2>
-      <div className="row">
+    <div
+      className={`container${
+        patinadores.length === 1
+          ? ' d-flex align-items-center justify-content-center min-vh-100'
+          : ''
+      }`}
+    >
+      <h2 className="mb-4 text-center w-100">Listado de Patinadores</h2>
+      <div
+        className={`row${
+          patinadores.length > 1
+            ? ' row-cols-1 row-cols-md-2 row-cols-lg-3 g-4'
+            : ''
+        }`}
+      >
         {patinadores.map(p => (
-          <div key={p._id} className="col-12 col-sm-6 col-lg-4 mb-4">
-            <div className="card h-100 text-center">
+          <div key={p._id} className={patinadores.length > 1 ? 'col' : ''}>
+            <div className="card h-100 flex-md-row min-vh-100">
               {p.fotoRostro && (
                 <img
                   src={`http://localhost:5000/uploads/${p.fotoRostro}`}
                   alt="Rostro"
-                  className="rounded-circle mx-auto mt-3"
-                  style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+                  className="rounded-circle m-3"
+                  style={{ width: '200px', height: '200px', objectFit: 'cover' }}
                 />
               )}
               <div className="card-body d-flex flex-column">
