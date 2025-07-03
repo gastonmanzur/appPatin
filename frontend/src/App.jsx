@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 import CrearNoticia from './pages/CrearNoticia';
+import AgregarFoto from './pages/AgregarFoto';
 import Noticias from './pages/Noticias';
 import MisPatinadores from './pages/MisPatinadores';
 import CrearPatinador from './pages/CrearPatinador';
@@ -46,6 +47,7 @@ const App = () => {
        <Route path="dashboard" element={<Dashboard />} />
        <Route path="noticias" element={<Noticias />} />
        <Route path="crear-noticia" element={<CrearNoticia />} />
+       <Route path="agregar-foto" element={<AgregarFoto />} />
        <Route path="noticia/:id" element={<NoticiaDetalle />} />
         <Route path="mis-patinadores" element={<MisPatinadores />} />
           <Route path="crear-patinador" element={<CrearPatinador />} />

@@ -23,3 +23,10 @@ a {
 .navbar-custom {
   background: linear-gradient(90deg, #000000, var(--color-accent), var(--color-secondary));
 }
+
+.photo-carousel .slick-slide {
+  opacity: 0.5;
+}
+.photo-carousel .slick-center {
+  opacity: 1;
+}

@@ -23,6 +23,7 @@ app.use('/api/notificaciones', require('./routes/notificationRoutes'));
 app.use('/api/usuarios', require('./routes/userRoutes'));
 app.use('/api/seguros', require('./routes/segurosRoutes'));
 app.use('/api/informes', require('./routes/informesRoutes'));
+app.use('/api/fotos', require('./routes/photoRoutes'));
 
 
 

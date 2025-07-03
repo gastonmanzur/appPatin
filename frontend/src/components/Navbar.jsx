@@ -107,6 +107,11 @@ const Navbar = () => {
                 <li><Link className="dropdown-item" to="/ranking-categorias">Ranking por Categorías</Link></li>
               </ul>
             </li>
+            {(isDelegado || isTecnico) && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/agregar-foto">Agregar Foto</Link>
+              </li>
+            )}
             {isTecnico && (
               <>
                 <li className="nav-item">
