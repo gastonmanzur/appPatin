@@ -13,3 +13,10 @@ export const marcarLeida = async (id, token) => {
   });
   return res.data;
 };
+
+export const crearNotificacion = async (mensaje, token) => {
+  const res = await api.post('/notificaciones', { mensaje }, {
+    headers: { Authorization: token }
+  });
+  return res.data;
+};
