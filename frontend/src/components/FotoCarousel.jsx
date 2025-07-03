@@ -22,6 +22,8 @@ const FotoCarousel = ({ fotos }) => {
     centerMode: true,
     centerPadding: '0px',
     slidesToShow: Math.min(3, fotos.length),
+    autoplay: true,
+    autoplaySpeed: 3000,
     infinite: true,
     arrows: true,
     prevArrow: <PrevArrow />,
