@@ -8,7 +8,8 @@ const validator = require('../middleware/validaeDatosMiddleware')
 
 // Solo Delegados pueden crear patinadores
 router.post('/', auth, checkRole(['Delegado']), uploadMultiple, controller.crearPatinador);
-router.get('/', auth, checkRole(['Delegado']), controller.getTodosLosPatinadores);
+// Delegados y Tecnicos pueden consultar patinadores
+router.get('/', auth, checkRole(['Delegado', 'Tecnico']), controller.getTodosLosPatinadores);
 router.delete('/:id', auth, checkRole(['Delegado']), controller.eliminarPatinador);
 router.put('/:id', auth, checkRole(['Delegado']), uploadMultiple, controller.editarPatinador);
 
