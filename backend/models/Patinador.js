@@ -18,7 +18,12 @@ const patinadorSchema = new mongoose.Schema({
   numeroCorredor: { type: Number },
   categoria: { type: String },
   foto: { type: String },
-  fotoRostro: { type: String }
+  fotoRostro: { type: String },
+  asistencias: [{
+    year: { type: Number },
+    presentes: { type: Number, default: 0 },
+    ausentes: { type: Number, default: 0 }
+  }]
 });
 
 module.exports = mongoose.model('Patinador', patinadorSchema);
