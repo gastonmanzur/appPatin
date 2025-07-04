@@ -34,6 +34,7 @@ const RankingPorCategorias = () => {
                 <tr>
                   <th>Posición</th>
                   <th>Patinador</th>
+                  <th>Club</th>
                   <th>Puntos Acumulados</th>
                 </tr>
               </thead>
@@ -41,7 +42,12 @@ const RankingPorCategorias = () => {
                 {rankings[categoria].map((item, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{item.patinador.primerNombre} {item.patinador.apellido}</td>
+                    <td>
+                      {item.patinador
+                        ? `${item.patinador.primerNombre} ${item.patinador.apellido}`
+                        : item.nombre}
+                    </td>
+                    <td>{item.patinador ? item.patinador.club : item.club}</td>
                     <td>{item.puntos}</td>
                   </tr>
                 ))}

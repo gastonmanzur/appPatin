@@ -33,27 +33,28 @@ exports.getRankingPorCategorias = async (req, res) => {
   try {
     const competencias = await Competencia.find().populate('resultados.patinador');
 
-    // Acumulador general
+    // Acumulador general de puntos por categoria
     const acumulado = {};
 
     competencias.forEach(comp => {
       comp.resultados.forEach(res => {
-        if (!res.patinador) return;
-        const categoria = res.patinador.categoria;
-        const id = res.patinador._id.toString();
+        const categoria = res.patinador ? res.patinador.categoria : res.categoria;
+
+        const key = res.patinador
+          ? res.patinador._id.toString()
+          : `${res.nombre}-${res.club}`;
 
         if (!acumulado[categoria]) {
           acumulado[categoria] = {};
         }
 
-        if (!acumulado[categoria][id]) {
-          acumulado[categoria][id] = {
-            patinador: res.patinador,
-            puntos: 0
-          };
+        if (!acumulado[categoria][key]) {
+          acumulado[categoria][key] = res.patinador
+            ? { patinador: res.patinador, club: res.patinador.club, puntos: 0 }
+            : { nombre: res.nombre, club: res.club, puntos: 0 };
         }
 
-        acumulado[categoria][id].puntos += res.puntos;
+        acumulado[categoria][key].puntos += res.puntos;
       });
     });
 
