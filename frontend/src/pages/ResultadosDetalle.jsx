@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { listarCompetencias } from '../api/competencias';
 import { useParams } from 'react-router-dom';
+import formatDate from '../utils/formatDate';
 
 const ResultadosDetalle = () => {
   const { token } = useAuth();
@@ -33,7 +34,7 @@ const ResultadosDetalle = () => {
   return (
     <div>
       <h2>Resultados de: {competencia.nombre}</h2>
-      <p>Fecha: {new Date(competencia.fecha).toLocaleDateString()}</p>
+      <p>Fecha: {formatDate(competencia.fecha)}</p>
 
       {resultadosOrdenados.length === 0 ? (
         <p>No hay resultados cargados aún.</p>

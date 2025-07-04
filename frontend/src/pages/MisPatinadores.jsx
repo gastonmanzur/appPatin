@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import useAuth from '../store/useAuth';
 import { asociarPatinador, getMisPatinadores } from '../api/patinadores';
 import { listarTitulosIndividuales } from '../api/titulos';
+import formatDate from '../utils/formatDate';
 
 const MisPatinadores = () => {
   const { token } = useAuth();
@@ -99,9 +100,7 @@ const MisPatinadores = () => {
                       {misTitulos.length > 0 ? (
                         misTitulos.map(t => (
                           <li key={t._id}>
-                            {t.titulo} - {t.torneo} ({
-                              new Date(t.fecha).toLocaleDateString()
-                            })
+                            {t.titulo} - {t.torneo} ({formatDate(t.fecha)})
                           </li>
                         ))
                       ) : (

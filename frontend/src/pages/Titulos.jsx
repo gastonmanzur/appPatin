@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useAuth from '../store/useAuth';
+import formatDate from '../utils/formatDate';
 import {
   listarTitulosIndividuales,
   listarTitulosClub,
@@ -68,7 +69,7 @@ const Titulos = () => {
                     {t.patinador?.primerNombre} {t.patinador?.apellido}
                   </p>
                   <p className="card-text mb-2">
-                    {t.torneo} ({new Date(t.fecha).toLocaleDateString()})
+                    {t.torneo} ({formatDate(t.fecha)})
                   </p>
                   <div className="mt-auto">
                     <Link
@@ -111,7 +112,7 @@ const Titulos = () => {
                   <h5 className="card-title">{t.titulo}</h5>
                   <p className="card-text mb-2">{t.torneo}</p>
                   <p className="card-text mb-2">
-                    {new Date(t.fecha).toLocaleDateString()}
+                    {formatDate(t.fecha)}
                   </p>
                   <div className="mt-auto">
                     <Link

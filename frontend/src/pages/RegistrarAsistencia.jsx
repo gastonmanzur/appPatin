@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { getTodosLosPatinadores } from '../api/gestionPatinadores';
+import formatDate from '../utils/formatDate';
 import {
   crearAsistencia,
   listarAsistencias,
@@ -134,7 +135,7 @@ const RegistrarAsistencia = () => {
       <ul className="list-group">
         {asistencias.map(a => (
           <li key={a._id} className="list-group-item d-flex justify-content-between align-items-center">
-            {new Date(a.fecha).toLocaleDateString()}
+            {formatDate(a.fecha)}
             <div>
               <button className="btn btn-sm btn-outline-primary me-2" onClick={() => handleEditar(a._id)}>Ver/Editar</button>
               <button className="btn btn-sm btn-outline-danger" onClick={() => handleEliminar(a._id)}>Eliminar</button>
