@@ -7,8 +7,15 @@ exports.obtenerNotificaciones = async (req, res) => {
       $or: [{ usuario: userId }, { usuario: null }]
     })
       .sort({ fecha: -1 })
-      .populate('competencia');
-    res.json(notificaciones);
+      .populate('competencia')
+      .lean();
+    const result = notificaciones.map(n => ({
+      ...n,
+      leida: Array.isArray(n.leidosPor)
+        ? n.leidosPor.some(u => u.toString() === userId)
+        : false
+    }));
+    res.json(result);
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: 'Error al obtener notificaciones' });
@@ -22,8 +29,10 @@ exports.marcarLeida = async (req, res) => {
     if (!noti) return res.status(404).json({ msg: 'No encontrada' });
     if (noti.usuario && noti.usuario.toString() !== req.user.id)
       return res.status(403).json({ msg: 'No autorizada' });
-    noti.leida = true;
-    await noti.save();
+    if (!noti.leidosPor.some(u => u.toString() === req.user.id)) {
+      noti.leidosPor.push(req.user.id);
+      await noti.save();
+    }
     res.json({ msg: 'Notificación actualizada' });
   } catch (err) {
     console.error(err);
