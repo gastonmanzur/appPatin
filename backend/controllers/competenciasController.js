@@ -100,19 +100,39 @@ exports.agregarResultados = async (req, res) => {
       })
       .filter(r => !isNaN(r.posicion) && !isNaN(r.puntos));
 
-    competencia.resultados = parsedResultados;
+    // Agregar o actualizar resultados existentes
+    parsedResultados.forEach(res => {
+      const key = res.patinador ? res.patinador.toString() : `${res.nombre}-${res.club}`;
+      const idx = competencia.resultados.findIndex(r => {
+        if (res.patinador) {
+          return r.patinador && r.patinador.toString() === res.patinador.toString();
+        }
+        return !r.patinador && r.nombre === res.nombre && r.club === res.club;
+      });
+
+      if (idx !== -1) {
+        // Actualizar valores existentes
+        competencia.resultados[idx] = {
+          ...competencia.resultados[idx]._doc,
+          ...res
+        };
+      } else {
+        // Agregar nuevo resultado
+        competencia.resultados.push(res);
+      }
+    });
 
     // Calcular puntos por club incluyendo corredores externos
-    const patinadoresIds = parsedResultados
+    const patinadoresIds = competencia.resultados
       .filter(r => r.patinador)
       .map(r => r.patinador);
     const patinadores = await Patinador.find({ _id: { $in: patinadoresIds } });
     const acumulado = {};
 
-    parsedResultados.forEach(res => {
+    competencia.resultados.forEach(res => {
       let club = 'General Rodriguez';
       if (res.patinador) {
-        const pat = patinadores.find(p => p._id.toString() === res.patinador);
+        const pat = patinadores.find(p => p._id.toString() === res.patinador.toString());
         club = pat?.club || 'General Rodriguez';
       } else if (res.club) {
         club = res.club;
