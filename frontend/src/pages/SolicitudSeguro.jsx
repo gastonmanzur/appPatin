@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { getTodosLosPatinadores } from '../api/gestionPatinadores';
+import formatDate from '../utils/formatDate';
 
 const SolicitudSeguro = () => {
   const { token } = useAuth();
@@ -205,7 +206,7 @@ const SolicitudSeguro = () => {
         p.cuil || '',
         p.apellido,
         `${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
-        new Date(p.fechaNacimiento).toLocaleDateString(),
+        formatDate(p.fechaNacimiento),
         p.sexo === 'M' ? 1 : 2,
         DEFAULTS.nacionalidad,
         p.club || DEFAULTS.club,
@@ -304,7 +305,7 @@ const SolicitudSeguro = () => {
                   <td>{p.cuil}</td>
                   <td>{p.apellido}</td>
                   <td>{`${p.primerNombre} ${p.segundoNombre || ''}`.trim()}</td>
-                  <td>{new Date(p.fechaNacimiento).toLocaleDateString()}</td>
+                  <td>{formatDate(p.fechaNacimiento)}</td>
                   <td>{p.sexo === 'M' ? 1 : 2}</td>
                   <td>{DEFAULTS.nacionalidad}</td>
                   <td>{p.club || DEFAULTS.club}</td>

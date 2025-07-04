@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { getTodosLosPatinadores } from '../api/gestionPatinadores';
 import { useParams } from 'react-router-dom';
+import formatDate from '../utils/formatDate';
 
 const VerPatinador = () => {
   const { token } = useAuth();
@@ -36,7 +37,7 @@ const VerPatinador = () => {
           )}
 
           <p className="mb-1"><strong>Edad:</strong> {patinador.edad}</p>
-          <p className="mb-1"><strong>Fecha Nacimiento:</strong> {new Date(patinador.fechaNacimiento).toLocaleDateString()}</p>
+          <p className="mb-1"><strong>Fecha Nacimiento:</strong> {formatDate(patinador.fechaNacimiento)}</p>
           <p className="mb-1"><strong>DNI:</strong> {patinador.dni}</p>
           <p className="mb-1"><strong>CUIL:</strong> {patinador.cuil}</p>
           <p className="mb-1"><strong>Dirección:</strong> {patinador.direccion}</p>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { listarCompetencias } from '../api/competencias';
 import { useParams, useNavigate } from 'react-router-dom';
+import formatDate from '../utils/formatDate';
 
 const VerCompetencia = () => {
   const { token } = useAuth();
@@ -23,7 +24,7 @@ const VerCompetencia = () => {
   return (
     <div>
       <h2>{competencia.nombre}</h2>
-      <p><strong>Fecha:</strong> {new Date(competencia.fecha).toLocaleDateString()}</p>
+      <p><strong>Fecha:</strong> {formatDate(competencia.fecha)}</p>
       {competencia.descripcion && (
         <p><strong>Descripción:</strong> {competencia.descripcion}</p>
       )}

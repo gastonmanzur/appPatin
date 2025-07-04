@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { listarCompetencias, eliminarCompetencia } from '../api/competencias';
 import { useNavigate } from 'react-router-dom';
+import formatDate from '../utils/formatDate';
 
 const Competencias = () => {
   const { token, user } = useAuth();
@@ -45,7 +46,7 @@ const Competencias = () => {
       <ul className="list-group">
         {competencias.map(c => (
           <li key={c._id} className="list-group-item d-flex justify-content-between align-items-center">
-            <span><strong>{c.nombre}</strong> - {new Date(c.fecha).toLocaleDateString()}</span>
+            <span><strong>{c.nombre}</strong> - {formatDate(c.fecha)}</span>
             <div>
               {isDelegado && (
                 <>
