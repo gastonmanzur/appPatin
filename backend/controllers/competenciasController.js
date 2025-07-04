@@ -186,16 +186,31 @@ exports.confirmarParticipacion = async (req, res) => {
   try {
     const { id } = req.params;
     const { respuesta } = req.body;
-    const competencia = await Competencia.findById(id).populate('creador');
+    const competencia = await Competencia.findById(id)
+      .populate({ path: 'listaBuenaFe', populate: { path: 'patinadoresAsociados' } })
+      .populate('creador');
     if (!competencia) return res.status(404).json({ msg: 'Competencia no encontrada' });
 
-    const usuario = await User.findById(req.user.id);
+    const usuario = await User.findById(req.user.id).populate('patinadoresAsociados');
 
     if (respuesta === 'SI') {
-      if (!competencia.listaBuenaFe.includes(usuario._id)) {
+      // Build a set of already confirmed patinador DNIs
+      const dnis = new Set();
+      competencia.listaBuenaFe.forEach(u =>
+        u.patinadoresAsociados.forEach(p => dnis.add(p.dni))
+      );
+
+      const nuevos = usuario.patinadoresAsociados.filter(p => !dnis.has(p.dni));
+
+      if (nuevos.length === 0) {
+        return res.json({ msg: 'Patinador ya confirmado por otro usuario' });
+      }
+
+      if (!competencia.listaBuenaFe.some(u => u._id.toString() === usuario._id.toString())) {
         competencia.listaBuenaFe.push(usuario._id);
         await competencia.save();
       }
+
       return res.json({ msg: 'Participación confirmada' });
     }
 
@@ -234,30 +249,32 @@ exports.obtenerListaBuenaFe = async (req, res) => {
       return res.status(404).json({ msg: 'Competencia no encontrada' });
     }
 
-    const lista = [];
+    const mapa = new Map();
 
     competencia.listaBuenaFe.forEach(u => {
       u.patinadoresAsociados.forEach(p => {
-        lista.push({
-          _id: p._id,
-          tipoSeguro: 'SA',
-          numeroCorredor: p.numeroCorredor,
-          apellido: p.apellido,
-          primerNombre: p.primerNombre,
-          segundoNombre: p.segundoNombre,
-          categoria: p.categoria,
-          club: p.club || 'General Rodriguez',
-          fechaNacimiento: p.fechaNacimiento,
-          dni: p.dni,
-          baja: competencia.bajas.some(b => b.toString() === p._id.toString())
-        });
+        if (!mapa.has(p.dni)) {
+          mapa.set(p.dni, {
+            _id: p._id,
+            tipoSeguro: 'SA',
+            numeroCorredor: p.numeroCorredor,
+            apellido: p.apellido,
+            primerNombre: p.primerNombre,
+            segundoNombre: p.segundoNombre,
+            categoria: p.categoria,
+            club: p.club || 'General Rodriguez',
+            fechaNacimiento: p.fechaNacimiento,
+            dni: p.dni,
+            baja: competencia.bajas.some(b => b.toString() === p._id.toString())
+          });
+        }
       });
     });
 
     competencia.listaBuenaFeManual.forEach(e => {
       const p = e.patinador;
-      if (p) {
-        lista.push({
+      if (p && !mapa.has(p.dni)) {
+        mapa.set(p.dni, {
           _id: p._id,
           tipoSeguro: 'SA',
           numeroCorredor: p.numeroCorredor,
@@ -272,6 +289,8 @@ exports.obtenerListaBuenaFe = async (req, res) => {
         });
       }
     });
+
+    const lista = Array.from(mapa.values());
 
     lista.sort((a, b) => getCategoryIndex(a.categoria) - getCategoryIndex(b.categoria));
 
@@ -385,18 +404,24 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     let contador = 1;
     let lastCat = null;
 
-    const patinadores = [];
+    const mapaPat = new Map();
     competencia.listaBuenaFe.forEach(u => {
-      u.patinadoresAsociados.forEach(p =>
-        patinadores.push({
-          patinador: p,
-          baja: competencia.bajas.some(b => b.toString() === p._id.toString())
-        })
-      );
+      u.patinadoresAsociados.forEach(p => {
+        if (!mapaPat.has(p.dni)) {
+          mapaPat.set(p.dni, {
+            patinador: p,
+            baja: competencia.bajas.some(b => b.toString() === p._id.toString())
+          });
+        }
+      });
     });
     competencia.listaBuenaFeManual.forEach(e => {
-      if (e.patinador) patinadores.push({ patinador: e.patinador, baja: e.baja });
+      if (e.patinador && !mapaPat.has(e.patinador.dni)) {
+        mapaPat.set(e.patinador.dni, { patinador: e.patinador, baja: e.baja });
+      }
     });
+
+    const patinadores = Array.from(mapaPat.values());
 
     patinadores.sort(
       (a, b) =>
