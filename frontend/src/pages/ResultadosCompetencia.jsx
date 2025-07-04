@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
-import { getTodosLosPatinadores } from '../api/gestionPatinadores';
-import { agregarResultados, listarCompetencias } from '../api/competencias';
+import { agregarResultados, listarCompetencias, obtenerListaBuenaFe } from '../api/competencias';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ResultadosCompetencia = () => {
@@ -12,14 +11,15 @@ const ResultadosCompetencia = () => {
   const [patinadores, setPatinadores] = useState([]);
   const [competencia, setCompetencia] = useState(null);
   const [resultados, setResultados] = useState([]);
+  const [filtroNumero, setFiltroNumero] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
-      const pats = await getTodosLosPatinadores(token);
+      const lista = await obtenerListaBuenaFe(id, token);
       const comps = await listarCompetencias(token);
       const comp = comps.find(c => c._id === id);
 
-      setPatinadores(pats);
+      setPatinadores(lista);
       setCompetencia(comp);
       setResultados([]);
     };
@@ -58,6 +58,15 @@ const ResultadosCompetencia = () => {
               <h2 className="card-title text-center mb-4">
                 Cargar Resultados de: {competencia?.nombre}
               </h2>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Filtrar por número de patinador"
+                  value={filtroNumero}
+                  onChange={e => setFiltroNumero(e.target.value)}
+                />
+              </div>
 
               <form onSubmit={handleSubmit}>
                 {resultados.map((res, index) => (
@@ -69,11 +78,17 @@ const ResultadosCompetencia = () => {
                         onChange={e => handleChange(index, 'patinador', e.target.value)}
                       >
                         <option value="">Seleccionar Patinador</option>
-                        {patinadores.map(p => (
-                          <option key={p._id} value={p._id}>
-                            {p.primerNombre} {p.apellido} - {p.categoria} - {p.club}
-                          </option>
-                        ))}
+                        {patinadores
+                          .filter(p =>
+                            p.numeroCorredor
+                              ?.toString()
+                              .includes(filtroNumero)
+                          )
+                          .map(p => (
+                            <option key={p._id} value={p._id}>
+                              {p.primerNombre} {p.apellido} - {p.categoria} - {p.club}
+                            </option>
+                          ))}
                       </select>
                     </div>
 
