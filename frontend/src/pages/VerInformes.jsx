@@ -3,6 +3,7 @@ import useAuth from '../store/useAuth';
 import { getTodosLosPatinadores } from '../api/gestionPatinadores';
 import { getMisPatinadores } from '../api/patinadores';
 import { obtenerInformes } from '../api/informes';
+import formatDate from '../utils/formatDate';
 
 const VerInformes = () => {
   const { token, user } = useAuth();
@@ -60,7 +61,7 @@ const VerInformes = () => {
         <div key={inf._id} className="card mb-3">
           <div className="card-body">
             <h6 className="card-subtitle mb-2 text-muted">
-              {new Date(inf.fecha).toLocaleDateString()} - {inf.tecnico?.nombre}{' '}
+              {formatDate(inf.fecha)} - {inf.tecnico?.nombre}{' '}
               {inf.tecnico?.apellido}
             </h6>
             <p className="card-text">{inf.contenido}</p>

@@ -52,13 +52,13 @@ exports.crearCompetencia = async (req, res) => {
         await sendEmail(
           u.email,
           'Nueva competencia',
-          `<p>Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString()}.</p>
+          `<p>Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString('es-AR', { timeZone: 'UTC' })}.</p>
            <p>Confirma tu participación:</p>
            <a href="${linksBase}?respuesta=SI">Participar</a> | <a href="${linksBase}?respuesta=NO">No participar</a>`
         );
         await Notification.create({
           usuario: u._id,
-          mensaje: `Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString()}.`,
+          mensaje: `Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString('es-AR', { timeZone: 'UTC' })}.`,
           competencia: competencia._id
         });
       }
@@ -397,14 +397,14 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
     ws.getCell('B6').value = 'FECHA DE EMISION';
     ws.getCell('B6').font = { name: 'Calibri', size: 11, bold: true };
     ws.mergeCells('D6:H6');
-    ws.getCell('D6').value = new Date().toLocaleDateString('es-AR');
+    ws.getCell('D6').value = new Date().toLocaleDateString('es-AR', { timeZone: 'UTC' });
     ws.getCell('D6').alignment = { vertical: 'middle', horizontal: 'center' };
 
     ws.mergeCells('B7:C7');
     ws.getCell('B7').value = 'EVENTO Y FECHA';
     ws.getCell('B7').font = { name: 'Calibri', size: 11, bold: true };
     ws.mergeCells('D7:H7');
-    ws.getCell('D7').value = `${competencia.nombre} - ${new Date(competencia.fecha).toLocaleDateString('es-AR')}`;
+    ws.getCell('D7').value = `${competencia.nombre} - ${new Date(competencia.fecha).toLocaleDateString('es-AR', { timeZone: 'UTC' })}`;
     ws.getCell('D7').alignment = { vertical: 'middle', horizontal: 'center' };
 
     ws.mergeCells('B8:C8');
@@ -467,7 +467,7 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
         `${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim(),
         p.categoria,
         'Gral. Rodriguez',
-        new Date(p.fechaNacimiento).toLocaleDateString('es-AR'),
+        new Date(p.fechaNacimiento).toLocaleDateString('es-AR', { timeZone: 'UTC' }),
         p.dni
       ];
       values.forEach((val, idx) => {

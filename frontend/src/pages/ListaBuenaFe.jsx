@@ -3,6 +3,7 @@ import useAuth from '../store/useAuth';
 import { obtenerListaBuenaFe, descargarListaBuenaFeExcel, agregarPatinadorLBF, actualizarBajaLBF } from '../api/competencias';
 import { getTodosLosPatinadores } from '../api/gestionPatinadores';
 import { useParams } from 'react-router-dom';
+import formatDate from '../utils/formatDate';
 
 const ListaBuenaFe = () => {
   const { token } = useAuth();
@@ -133,7 +134,7 @@ const ListaBuenaFe = () => {
                 <td>{`${p.apellido} ${p.primerNombre} ${p.segundoNombre || ''}`.trim()}</td>
                 <td>{p.categoria}</td>
                 <td>{p.club}</td>
-                <td>{new Date(p.fechaNacimiento).toLocaleDateString()}</td>
+                <td>{formatDate(p.fechaNacimiento)}</td>
                 <td>{p.dni}</td>
                 <td>
                   <button className="btn btn-sm btn-danger" onClick={() => toggleBaja(p._id, p.baja)}>
