@@ -41,6 +41,10 @@ const SolicitudSeguro = () => {
 
   const agregar = () => {
     if (!seleccionado) return;
+    if (lista.some(p => p._id === seleccionado)) {
+      alert('El patinador ya está en la lista');
+      return;
+    }
     const pat = patinadores.find(p => p._id === seleccionado);
     if (!pat) return;
     setLista(l => [...l, { ...pat, tipoLicSeg: tipo }]);
