@@ -7,6 +7,26 @@ const ExcelJS = require('exceljs');
 const path = require('path');
 const fs = require('fs');
 
+const CATEGORY_ORDER = [
+  'CHDE', 'CHVE', 'M7DE', 'M7VE', 'PDE', 'PVE',
+  '6DE', '6VE', '5DE', '5VE', '4DE', '4VE',
+  'JDE', 'JVE', 'MDE', 'MVE',
+  'PDT', 'PVT', '6DT', '6VT', '5DT', '5VT',
+  '4DT', '4VT', 'JDI', 'JVI', 'MDI', 'MVI',
+  'PDF', 'PVF', '6DF', '6VF', '5DF', '5VF',
+  '4DF', '4VF', 'JDF', 'JVF', 'MDF', 'MVF'
+];
+
+const getCategoryIndex = cat => {
+  const idx = CATEGORY_ORDER.indexOf(cat);
+  return idx === -1 ? CATEGORY_ORDER.length : idx;
+};
+
+const getCategoryGroup = cat => {
+  const last = cat.slice(-1).toUpperCase();
+  return last === 'T' || last === 'I' ? 'TI' : last;
+};
+
 exports.crearCompetencia = async (req, res) => {
   try {
     const { nombre, descripcion, fecha, clubOrganizador } = req.body;
@@ -253,6 +273,8 @@ exports.obtenerListaBuenaFe = async (req, res) => {
       }
     });
 
+    lista.sort((a, b) => getCategoryIndex(a.categoria) - getCategoryIndex(b.categoria));
+
     res.json(lista);
   } catch (err) {
     console.error(err);
@@ -376,13 +398,14 @@ exports.exportarListaBuenaFeExcel = async (req, res) => {
       if (e.patinador) patinadores.push({ patinador: e.patinador, baja: e.baja });
     });
 
+    patinadores.sort(
+      (a, b) =>
+        getCategoryIndex(a.patinador.categoria) - getCategoryIndex(b.patinador.categoria)
+    );
+
     patinadores.forEach(d => {
       const p = d.patinador;
-      if (
-        lastCat &&
-        p.categoria.slice(p.categoria.length - 1) !==
-          lastCat.slice(lastCat.length - 1)
-      ) {
+      if (lastCat && getCategoryGroup(p.categoria) !== getCategoryGroup(lastCat)) {
         const br = ws.getRow(rowPos++);
         for (let c = 1; c <= 8; c++) {
           const cell = br.getCell(c);
