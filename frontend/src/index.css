@@ -1,6 +1,11 @@
 :root {
+<<<<<<< HEAD
   --color-bg: #000000;
   --color-text: #ffffff;
+=======
+  --color-bg: #ffffff;
+  --color-text: #000000;
+>>>>>>> c0120924fd4bea9c2f05bc200b8db2ac770ed0bb
   --color-accent: #00c853; /* verde brillante */
   --color-accent-light: #80ff9e; /* celeste-verde claro */
   --color-secondary: #00b0ff; /* celeste puro */
@@ -9,7 +14,7 @@
 
 
 body {
-  background-color: #000;
+  background-color: var(--color-bg);
   color: var(--color-text);
   font-family: 'Inter', sans-serif;
   margin: 0;
@@ -62,7 +67,11 @@ a {
 
 /* Custom navbar gradient: black -> green -> light blue */
 .navbar-custom {
+<<<<<<< HEAD
   background: #171212 ;
+=======
+  background: linear-gradient(90deg, var(--color-bg), var(--color-accent), var(--color-secondary));
+>>>>>>> c0120924fd4bea9c2f05bc200b8db2ac770ed0bb
 }
 
 .photo-carousel .slick-slide {
