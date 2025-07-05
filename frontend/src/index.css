@@ -1,6 +1,6 @@
 :root {
-  --color-bg: #000000;
-  --color-text: #ffffff;
+  --color-bg: #2d2c2c  ;
+  --color-text: #fff;
   --color-accent: #00c853; /* verde brillante */
   --color-accent-light: #80ff9e; /* celeste-verde claro */
   --color-secondary: #00b0ff; /* celeste puro */
@@ -21,7 +21,7 @@ a {
 
 /* Custom navbar gradient: black -> green -> light blue */
 .navbar-custom {
-  background: linear-gradient(90deg, #000000, var(--color-accent), var(--color-secondary));
+  background: #171212 ;
 }
 
 .photo-carousel .slick-slide {
@@ -32,6 +32,6 @@ a {
 }
 
 .Logo{
-  height: 60px;
+  height: 6rem;
   border-radius: 50%;
 }
