@@ -37,6 +37,7 @@ import CrearInforme from './pages/CrearInforme';
 import VerInformes from './pages/VerInformes';
 import RegistrarAsistencia from './pages/RegistrarAsistencia';
 import CrearNotificacion from './pages/CrearNotificacion';
+import Nosotros from './pages/Nosotros';
 const App = () => {
   return (
     <Routes>
@@ -47,6 +48,7 @@ const App = () => {
       <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
        <Route path="dashboard" element={<Dashboard />} />
        <Route path="noticias" element={<Noticias />} />
+       <Route path="nosotros" element={<Nosotros />} />
        <Route path="crear-noticia" element={<CrearNoticia />} />
        <Route path="crear-notificacion" element={<CrearNotificacion />} />
        <Route path="agregar-foto" element={<AgregarFoto />} />
