@@ -1,6 +1,6 @@
 :root {
-  --color-bg: #2d2c2c  ;
-  --color-text: #fff;
+  --color-bg: #000000;
+  --color-text: #ffffff;
   --color-accent: #00c853; /* verde brillante */
   --color-accent-light: #80ff9e; /* celeste-verde claro */
   --color-secondary: #00b0ff; /* celeste puro */
@@ -10,6 +10,7 @@
 
 body {
   background-color: var(--color-bg);
+  animation: bg-cycle 20s linear infinite;
   color: var(--color-text);
   font-family: 'Inter', sans-serif;
   margin: 0;
@@ -29,6 +30,21 @@ a {
 }
 .photo-carousel .slick-center {
   opacity: 1;
+}
+
+@keyframes bg-cycle {
+  0% {
+    background-color: var(--color-bg);
+  }
+  33% {
+    background-color: var(--color-accent);
+  }
+  66% {
+    background-color: var(--color-accent-light);
+  }
+  100% {
+    background-color: var(--color-secondary);
+  }
 }
 
 .Logo{
