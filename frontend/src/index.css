@@ -9,12 +9,51 @@
 
 
 body {
-  background-color: var(--color-bg);
-  animation: bg-cycle 20s linear infinite;
+  background-color: #000;
   color: var(--color-text);
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  position: relative;
+  overflow-x: hidden;
+}
+
+#wave-container {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 25vh;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.3;
+  animation: wave-fade 6s ease-in-out infinite;
+  overflow: hidden;
+}
+
+#wave-container svg {
+  position: absolute;
+  width: 200%;
+  height: 100%;
+  animation: wave-move 10s linear infinite;
+}
+
+@keyframes wave-move {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes wave-fade {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 a {
   color: var(--color-accent);
