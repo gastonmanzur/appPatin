@@ -36,14 +36,17 @@ a {
   0% {
     background-color: var(--color-bg);
   }
-  33% {
+  25% {
     background-color: var(--color-accent);
   }
-  66% {
+  50% {
     background-color: var(--color-accent-light);
   }
-  100% {
+  75% {
     background-color: var(--color-secondary);
+  }
+  100% {
+    background-color: var(--color-bg);
   }
 }
 
