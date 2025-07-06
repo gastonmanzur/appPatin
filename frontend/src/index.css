@@ -97,16 +97,16 @@ a {
   }
 }
 
-<<<<<<< HEAD
+
 .Logo{
   height: 6rem;
   border-radius: 50%;
 }
-=======
+
 /* Forms and cards with footer gray background at 50% opacity */
 form,
 .card {
   background-color: rgba(33, 37, 41, 0.5) !important;
 }
 
->>>>>>> 16e985e8f1569459615ce8c1535a6cb729125d2b
+
