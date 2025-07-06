@@ -68,6 +68,7 @@ a {
   color: var(--color-accent);
 }
 
+
 /* Custom navbar gradient: black -> green -> light blue */
 .navbar-custom {
 
@@ -75,6 +76,7 @@ a {
 
   background: linear-gradient(90deg, var(--color-bg), var(--color-accent), var(--color-secondary));
 }
+
 
 .photo-carousel .slick-slide {
   opacity: 0.5;
