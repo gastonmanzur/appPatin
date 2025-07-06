@@ -1,5 +1,5 @@
 :root {
-  --color-bg: #ffffff;
+  --color-bg: #f2f2f2;
   --color-text: #000000;
   --color-accent: #00c853; /* verde brillante */
   --color-accent-light: #80ff9e; /* celeste-verde claro */
@@ -89,10 +89,3 @@ a {
     background-color: var(--color-bg);
   }
 }
-
-/* Forms and cards with footer gray background at 50% opacity */
-form,
-.card {
-  background-color: rgba(33, 37, 41, 0.5) !important;
-}
-
