@@ -7,7 +7,10 @@ const Layout = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       <Navbar />
-      <div className="container py-4 flex-grow-1">
+      <div
+        className="container py-4 flex-grow-1 d-flex justify-content-center align-items-center"
+        style={{ minHeight: '80vh' }}
+      >
         <Outlet />
       </div>
       <Footer />
