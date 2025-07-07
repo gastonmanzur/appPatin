@@ -57,7 +57,7 @@ const Titulos = () => {
               <div className="card h-100">
                 {t.imagen && (
                   <img
-                    src={`http://localhost:5000/uploads/${t.imagen}`}
+                    src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${t.imagen}`}
                     alt="img"
                     className="card-img-top"
                     style={{ objectFit: 'cover', height: '200px' }}
@@ -102,7 +102,7 @@ const Titulos = () => {
               <div className="card h-100">
                 {t.imagen && (
                   <img
-                    src={`http://localhost:5000/uploads/${t.imagen}`}
+                    src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${t.imagen}`}
                     alt="img"
                     className="card-img-top"
                     style={{ objectFit: 'cover', height: '200px' }}
