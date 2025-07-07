@@ -31,7 +31,7 @@ const FotoCarousel = ({ fotos }) => {
   };
 
   return (
-    <Slider {...settings} className="photo-carousel carousel slide">
+    <Slider {...settings} className="photo-carousel">
       {fotos.map((f) => (
         <div key={f._id}>
           <img
