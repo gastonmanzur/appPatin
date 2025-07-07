@@ -83,7 +83,7 @@ const MisPatinadores = () => {
                 >
                   {p.foto && (
                     <img
-                      src={`http://localhost:5000/uploads/${p.foto}`}
+                      src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${p.foto}`}
                       alt="Foto"
                       className="m-3"
                       style={{ objectFit: 'cover', height: '80vh' }}

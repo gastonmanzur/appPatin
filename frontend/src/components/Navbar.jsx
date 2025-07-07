@@ -236,7 +236,7 @@ const Navbar = () => {
                     src={
                       profile.picture.startsWith('http')
                         ? profile.picture
-                        : `http://localhost:5000/uploads/${profile.picture}`
+                          : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${profile.picture}`
                     }
                     alt="Perfil"
                     className="rounded-circle"

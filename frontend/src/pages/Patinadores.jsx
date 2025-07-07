@@ -51,7 +51,7 @@ const Patinadores = () => {
             <div className="card h-100 text-center">
               {p.fotoRostro && (
                 <img
-                  src={`http://localhost:5000/uploads/${p.fotoRostro}`}
+                  src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${p.fotoRostro}`}
                   alt="Rostro"
                   className="rounded-circle mx-auto mt-3"
                   style={{ width: '120px', height: '120px', objectFit: 'cover' }}
