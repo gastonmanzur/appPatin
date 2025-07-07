@@ -85,3 +85,8 @@ a {
     background-color: var(--color-bg);
   }
 }
+
+form {
+  background-color: #fff;
+  opacity: 1;
+}
