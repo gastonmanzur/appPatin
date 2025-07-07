@@ -33,7 +33,7 @@ const Noticias = () => {
             <div className="card h-100">
               {noticia.imagen && (
                 <img
-                  src={`http://localhost:5000/uploads/${noticia.imagen}`}
+                  src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${noticia.imagen}`}
                   className="card-img-top"
                   alt="Imagen noticia"
                   style={{ objectFit: 'cover', height: '200px' }}

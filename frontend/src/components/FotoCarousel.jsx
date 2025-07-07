@@ -35,7 +35,7 @@ const FotoCarousel = ({ fotos }) => {
       {fotos.map((f) => (
         <div key={f._id}>
           <img
-            src={`http://localhost:5000/uploads/${f.imagen}`}
+              src={`${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${f.imagen}`}
             alt="foto"
             style={{ width: '100%', height: '300px', objectFit: 'contain' }}
           />
