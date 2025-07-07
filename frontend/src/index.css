@@ -104,6 +104,7 @@ a {
 }
 
 
+
 .Logo{
   height: 6rem;
   border-radius: 50%;
@@ -116,4 +117,9 @@ form,
 }
 
 
+
+form {
+  background-color: #fff;
+  opacity: 1;
+}
 
