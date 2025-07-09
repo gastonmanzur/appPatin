@@ -163,9 +163,11 @@ const Navbar = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Competencias
+                  Torneos
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="competenciasDropdown">
+                  <li><Link className="dropdown-item" to="/torneos">Torneos</Link></li>
+                  <li><Link className="dropdown-item" to="/crear-torneo">Crear Torneo</Link></li>
                   <li><Link className="dropdown-item" to="/competencias">Competencias</Link></li>
                   <li><Link className="dropdown-item" to="/crear-competencia">Crear Competencia</Link></li>
                 </ul>

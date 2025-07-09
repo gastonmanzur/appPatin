@@ -17,6 +17,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/patinadores', require('./routes/patinadoresRoutes'));
 app.use('/api/gestion-patinadores', require('./routes/gestionPatinadoresRoutes'));
 app.use('/api/competencias', require('./routes/competenciasRoutes'));
+app.use('/api/torneos', require('./routes/torneosRoutes'));
 app.use('/api/ranking', require('./routes/rankingRoutes'));
 app.use('/api/titulos', require('./routes/titulosRoutes'));
 app.use('/api/notificaciones', require('./routes/notificationRoutes'));

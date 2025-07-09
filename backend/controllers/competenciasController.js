@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Patinador = require('../models/Patinador');
 const sendEmail = require('../utils/sendEmail');
 const Notification = require('../models/Notification');
+const Torneo = require('../models/Torneo');
 const ExcelJS = require('exceljs');
 const path = require('path');
 const fs = require('fs');
@@ -29,13 +30,14 @@ const getCategoryGroup = cat => {
 
 exports.crearCompetencia = async (req, res) => {
   try {
-    const { nombre, descripcion, fecha, clubOrganizador } = req.body;
+    const { nombre, descripcion, fecha, clubOrganizador, torneo } = req.body;
 
     const competencia = new Competencia({
       nombre,
       descripcion,
       fecha,
       clubOrganizador,
+      torneo,
       creador: req.user.id,
       resultados: [],
       resultadosClub: [],
@@ -44,6 +46,14 @@ exports.crearCompetencia = async (req, res) => {
     });
 
     await competencia.save();
+
+    if (torneo) {
+      try {
+        await Torneo.findByIdAndUpdate(torneo, { $addToSet: { competencias: competencia._id } });
+      } catch (e) {
+        console.error('Error al asociar competencia al torneo:', e);
+      }
+    }
 
     try {
       const users = await User.find();

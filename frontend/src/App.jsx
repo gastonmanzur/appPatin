@@ -20,6 +20,8 @@ import Competencias from './pages/Competencias';
 import VerCompetencia from './pages/VerCompetencia';
 import ResultadosCompetencia from './pages/ResultadosCompetencia';
 import ResultadosDetalle from './pages/ResultadosDetalle';
+import Torneos from './pages/Torneos';
+import CrearTorneo from './pages/CrearTorneo';
 import RankingGeneral from './pages/RankingGeneral';
 import RankingPorCategorias from './pages/RankingPorCategorias';
 import ResultadosClubCompetencia from './pages/ResultadosClubCompetencia';
@@ -58,6 +60,8 @@ const App = () => {
            <Route path="patinadores" element={<Patinadores />} />
            <Route path="editar-patinador/:id" element={<EditarPatinador />} />
            <Route path="patinador/:id" element={<VerPatinador />} />
+           <Route path="torneos" element={<Torneos />} />
+           <Route path="crear-torneo" element={<CrearTorneo />} />
            <Route path="crear-competencia" element={<CrearCompetencia />} />
           <Route path="competencias" element={<Competencias />} />
           <Route path="competencias/editar/:id" element={<EditarCompetencia />} />
