@@ -1,23 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import useAuth from '../store/useAuth';
 import { crearCompetencia } from '../api/competencias';
+import { listarTorneos } from '../api/torneos';
 import { useNavigate } from 'react-router-dom';
 
 const CrearCompetencia = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
+  const [torneos, setTorneos] = useState([]);
 
   const [form, setForm] = useState({
     nombre: '',
     descripcion: '',
     fecha: '',
-    clubOrganizador: ''
+    clubOrganizador: '',
+    torneo: ''
   });
 
   const handleChange = e => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
+
+  useEffect(() => {
+    const fetchTorneos = async () => {
+      try {
+        const data = await listarTorneos(token);
+        setTorneos(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchTorneos();
+  }, [token]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -44,8 +59,14 @@ const CrearCompetencia = () => {
           onChange={handleChange}
           className="form-control my-2"
         />
+        <select name="torneo" onChange={handleChange} className="form-select my-2">
+          <option value="">Sin torneo</option>
+          {torneos.map(t => (
+            <option key={t._id} value={t._id}>{t.nombre}</option>
+          ))}
+        </select>
         <input type="date" name="fecha" onChange={handleChange} required />
-        <button type="submit">Crear</button>
+        <button type="submit" className="btn btn-primary mt-2">Crear</button>
       </form>
     </div>
   );

@@ -14,6 +14,7 @@ const competenciaSchema = new mongoose.Schema({
   descripcion: { type: String },
   fecha: { type: Date, required: true },
   clubOrganizador: { type: String },
+  torneo: { type: mongoose.Schema.Types.ObjectId, ref: 'Torneo' },
   creador: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   resultados: [resultadoSchema],
   resultadosClub: [{
