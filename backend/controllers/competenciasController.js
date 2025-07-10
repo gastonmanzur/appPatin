@@ -47,33 +47,38 @@ exports.crearCompetencia = async (req, res) => {
 
     await competencia.save();
 
+    let torneoData = null;
     if (torneo) {
       try {
-        await Torneo.findByIdAndUpdate(torneo, { $addToSet: { competencias: competencia._id } });
+        torneoData = await Torneo.findByIdAndUpdate(torneo, { $addToSet: { competencias: competencia._id } }, { new: true });
       } catch (e) {
         console.error('Error al asociar competencia al torneo:', e);
       }
     }
 
-    try {
-      const users = await User.find();
-      const linksBase = `${process.env.CLIENT_URL}/competencias/${competencia._id}/confirmar`;
-      for (const u of users) {
-        await sendEmail(
-          u.email,
-          'Nueva competencia',
-          `<p>Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString('es-AR', { timeZone: 'UTC' })}.</p>
-           <p>Confirma tu participación:</p>
-           <a href="${linksBase}?respuesta=SI">Participar</a> | <a href="${linksBase}?respuesta=NO">No participar</a>`
-        );
-        await Notification.create({
-          usuario: u._id,
-          mensaje: `Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString('es-AR', { timeZone: 'UTC' })}.`,
-          competencia: competencia._id
-        });
+    const enviarNoti = !(torneoData && torneoData.tipo === 'Nacional');
+
+    if (enviarNoti) {
+      try {
+        const users = await User.find();
+        const linksBase = `${process.env.CLIENT_URL}/competencias/${competencia._id}/confirmar`;
+        for (const u of users) {
+          await sendEmail(
+            u.email,
+            'Nueva competencia',
+            `<p>Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString('es-AR', { timeZone: 'UTC' })}.</p>
+             <p>Confirma tu participación:</p>
+             <a href="${linksBase}?respuesta=SI">Participar</a> | <a href="${linksBase}?respuesta=NO">No participar</a>`
+          );
+          await Notification.create({
+            usuario: u._id,
+            mensaje: `Se ha creado la competencia ${nombre} el ${new Date(fecha).toLocaleDateString('es-AR', { timeZone: 'UTC' })}.`,
+            competencia: competencia._id
+          });
+        }
+      } catch (e) {
+        console.error('Error al enviar notificaciones:', e);
       }
-    } catch (e) {
-      console.error('Error al enviar notificaciones:', e);
     }
     res.json({ msg: 'Competencia creada correctamente' });
 
