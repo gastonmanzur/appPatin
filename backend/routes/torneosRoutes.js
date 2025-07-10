@@ -8,5 +8,6 @@ router.post('/', auth, checkRole(['Delegado']), torneoController.crearTorneo);
 router.get('/', auth, torneoController.listarTorneos);
 router.get('/:id/ranking', auth, torneoController.getRankingTorneo);
 router.get('/:id/ranking-categorias', auth, torneoController.getRankingCategoriasTorneo);
+router.post('/:id/confirmar', auth, torneoController.confirmarParticipacion);
 
 module.exports = router;

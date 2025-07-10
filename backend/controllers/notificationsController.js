@@ -8,6 +8,7 @@ exports.obtenerNotificaciones = async (req, res) => {
     })
       .sort({ fecha: -1 })
       .populate('competencia')
+      .populate('torneo')
       .lean();
     const result = notificaciones.map(n => ({
       ...n,

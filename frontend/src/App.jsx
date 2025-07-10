@@ -32,6 +32,7 @@ import EditarTituloClub from './pages/EditarTituloClub';
 import Titulos from './pages/Titulos';
 import NoticiaDetalle from './pages/NoticiaDetalle';
 import ConfirmarCompetencia from './pages/ConfirmarCompetencia';
+import ConfirmarTorneo from './pages/ConfirmarTorneo';
 import Notificaciones from './pages/Notificaciones';
 import ListaBuenaFe from './pages/ListaBuenaFe';
 import SolicitudSeguro from './pages/SolicitudSeguro';
@@ -61,7 +62,8 @@ const App = () => {
            <Route path="editar-patinador/:id" element={<EditarPatinador />} />
            <Route path="patinador/:id" element={<VerPatinador />} />
            <Route path="torneos" element={<Torneos />} />
-           <Route path="crear-torneo" element={<CrearTorneo />} />
+          <Route path="crear-torneo" element={<CrearTorneo />} />
+          <Route path="torneos/:id/confirmar" element={<ConfirmarTorneo />} />
            <Route path="crear-competencia" element={<CrearCompetencia />} />
           <Route path="competencias" element={<Competencias />} />
           <Route path="competencias/editar/:id" element={<EditarCompetencia />} />
