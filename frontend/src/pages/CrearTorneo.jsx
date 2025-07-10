@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const CrearTorneo = () => {
   const { token } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ nombre: '', descripcion: '', fechaInicio: '', fechaFin: '' });
+  const [form, setForm] = useState({ nombre: '', descripcion: '', fechaInicio: '', fechaFin: '', tipo: 'Metropolitano' });
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -33,6 +33,10 @@ const CrearTorneo = () => {
         <textarea name="descripcion" placeholder="Descripción" onChange={handleChange} className="form-control my-2" />
         <input type="date" name="fechaInicio" onChange={handleChange} />
         <input type="date" name="fechaFin" onChange={handleChange} className="ms-2" />
+        <select name="tipo" onChange={handleChange} className="form-select my-2">
+          <option value="Metropolitano">Metropolitano</option>
+          <option value="Nacional">Nacional</option>
+        </select>
         <button type="submit" className="btn btn-primary ms-2">Crear</button>
       </form>
     </div>

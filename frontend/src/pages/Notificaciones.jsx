@@ -3,6 +3,7 @@ import useAuth from '../store/useAuth';
 import useNotifications from '../store/useNotifications';
 import { getNotificaciones, marcarLeida } from '../api/notificaciones';
 import { confirmarCompetencia } from '../api/competencias';
+import { confirmarTorneo } from '../api/torneos';
 
 const Notificaciones = () => {
   const { token } = useAuth();
@@ -47,6 +48,16 @@ const Notificaciones = () => {
     }
   };
 
+  const confirmarT = async (torneoId, resp) => {
+    try {
+      await confirmarTorneo(torneoId, resp, token);
+      alert('Respuesta registrada');
+    } catch (err) {
+      console.error(err);
+      alert('Error al confirmar');
+    }
+  };
+
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Notificaciones</h2>
@@ -80,6 +91,28 @@ const Notificaciones = () => {
                     onClick={(e) => {
                       e.stopPropagation();
                       confirmar(n.competencia._id, 'NO');
+                    }}
+                  >
+                    No asistir
+                  </button>
+                </div>
+              )}
+              {n.torneo && (
+                <div className="mt-2">
+                  <button
+                    className="btn btn-sm btn-success me-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      confirmarT(n.torneo._id, 'SI');
+                    }}
+                  >
+                    Asistir
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      confirmarT(n.torneo._id, 'NO');
                     }}
                   >
                     No asistir

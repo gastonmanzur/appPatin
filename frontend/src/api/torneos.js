@@ -27,3 +27,10 @@ export const getRankingCategoriasTorneo = async (id, token) => {
   });
   return res.data;
 };
+
+export const confirmarTorneo = async (id, respuesta, token) => {
+  const res = await api.post(`/torneos/${id}/confirmar`, { respuesta }, {
+    headers: { Authorization: token }
+  });
+  return res.data;
+};
