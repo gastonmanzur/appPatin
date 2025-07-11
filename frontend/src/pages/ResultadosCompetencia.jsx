@@ -117,11 +117,12 @@ const ResultadosCompetencia = () => {
                             p.numeroCorredor
                               ?.toString()
                               .includes(filtroNumero)
-                          && (res.categoria
-                              ? p.categoria === res.categoria
-                              : categoriaActual
-                              ? p.categoria === categoriaActual
-                              : true)
+                          && (
+                            !categoriaActual
+                              ||
+                                p.categoria?.trim().toUpperCase() ===
+                                  categoriaActual.trim().toUpperCase()
+                          )
                           )
                           .map(p => (
                             <option key={p._id} value={p._id}>
