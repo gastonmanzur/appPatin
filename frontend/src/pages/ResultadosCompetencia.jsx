@@ -48,6 +48,14 @@ const ResultadosCompetencia = () => {
   const handleChange = (index, field, value) => {
     const nuevos = [...resultados];
     nuevos[index][field] = value;
+
+    if (field === 'patinador') {
+      const pat = patinadores.find(p => p._id === value);
+      if (pat) {
+        nuevos[index].categoria = pat.categoria;
+      }
+    }
+
     setResultados(nuevos);
   };
 
@@ -109,7 +117,11 @@ const ResultadosCompetencia = () => {
                             p.numeroCorredor
                               ?.toString()
                               .includes(filtroNumero)
-                          && (categoriaActual ? p.categoria === categoriaActual : true)
+                          && (res.categoria
+                              ? p.categoria === res.categoria
+                              : categoriaActual
+                              ? p.categoria === categoriaActual
+                              : true)
                           )
                           .map(p => (
                             <option key={p._id} value={p._id}>
