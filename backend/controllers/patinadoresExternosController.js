@@ -2,10 +2,13 @@ const PatinadorExterno = require('../models/PatinadorExterno');
 
 exports.listar = async (req, res) => {
   try {
-    const { numero } = req.query;
+    const { numero, categoria } = req.query;
     const query = {};
     if (numero) {
       query.numeroCorredor = Number(numero);
+    }
+    if (categoria) {
+      query.categoria = categoria;
     }
     const patinadores = await PatinadorExterno.find(query).sort({ numeroCorredor: 1 });
     res.json(patinadores);
