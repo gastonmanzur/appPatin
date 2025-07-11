@@ -108,6 +108,9 @@ exports.agregarResultados = async (req, res) => {
           posicion: Number(r.posicion),
           puntos: Number(r.puntos)
         };
+        if (res.numeroCorredor !== undefined && res.numeroCorredor !== null) {
+          res.numeroCorredor = Number(res.numeroCorredor);
+        }
         if (!res.patinador) {
           delete res.patinador;
         }
