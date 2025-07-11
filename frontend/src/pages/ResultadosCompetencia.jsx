@@ -37,7 +37,7 @@ const ResultadosCompetencia = () => {
   const agregarPatinador = () => {
     setResultados([
       ...resultados,
-      { patinador: '', nombre: '', club: '', categoria: categoriaActual, posicion: '', puntos: '' }
+      { patinador: '', numeroCorredor: '', nombre: '', club: '', categoria: categoriaActual, posicion: '', puntos: '' }
     ]);
   };
 
@@ -117,6 +117,16 @@ const ResultadosCompetencia = () => {
 
                     {!res.patinador && (
                       <>
+                        <div className="col-12 col-md">
+                          <input
+                            className="form-control"
+                            type="number"
+                            placeholder="Número"
+                            value={res.numeroCorredor}
+                            onChange={e => handleChange(index, 'numeroCorredor', e.target.value)}
+                            required
+                          />
+                        </div>
                         <div className="col-12 col-md">
                           <input
                             className="form-control"
