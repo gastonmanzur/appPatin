@@ -1,6 +1,7 @@
 const Competencia = require('../models/Competencia');
 const User = require('../models/User');
 const Patinador = require('../models/Patinador');
+const PatinadorExterno = require('../models/PatinadorExterno');
 const sendEmail = require('../utils/sendEmail');
 const Notification = require('../models/Notification');
 const Torneo = require('../models/Torneo');
@@ -119,6 +120,7 @@ exports.agregarResultados = async (req, res) => {
       .filter(r => !isNaN(r.posicion) && !isNaN(r.puntos));
 
     // Agregar o actualizar resultados existentes
+    const extOps = [];
     parsedResultados.forEach(res => {
       const key = res.patinador ? res.patinador.toString() : `${res.nombre}-${res.club}`;
       const idx = competencia.resultados.findIndex(r => {
@@ -129,16 +131,25 @@ exports.agregarResultados = async (req, res) => {
       });
 
       if (idx !== -1) {
-        // Actualizar valores existentes
         competencia.resultados[idx] = {
           ...competencia.resultados[idx]._doc,
           ...res
         };
       } else {
-        // Agregar nuevo resultado
         competencia.resultados.push(res);
       }
+
+      if (!res.patinador && res.numeroCorredor && res.nombre) {
+        extOps.push(
+          PatinadorExterno.findOneAndUpdate(
+            { numeroCorredor: res.numeroCorredor },
+            { nombre: res.nombre, club: res.club },
+            { upsert: true, new: true }
+          )
+        );
+      }
     });
+    await Promise.all(extOps);
 
     // Calcular puntos por club incluyendo corredores externos
     const patinadoresIds = competencia.resultados
