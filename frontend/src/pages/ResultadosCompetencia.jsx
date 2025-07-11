@@ -46,17 +46,19 @@ const ResultadosCompetencia = () => {
   };
 
   const handleChange = (index, field, value) => {
-    const nuevos = [...resultados];
-    nuevos[index][field] = value;
+    setResultados(prev => {
+      const nuevos = [...prev];
+      nuevos[index] = { ...nuevos[index], [field]: value };
 
-    if (field === 'patinador') {
-      const pat = patinadores.find(p => p._id === value);
-      if (pat) {
-        nuevos[index].categoria = pat.categoria;
+      if (field === 'patinador') {
+        const pat = patinadores.find(p => p._id === value);
+        if (pat) {
+          nuevos[index].categoria = pat.categoria;
+        }
       }
-    }
 
-    setResultados(nuevos);
+      return nuevos;
+    });
   };
 
   const handleSubmit = async e => {
