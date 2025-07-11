@@ -12,6 +12,8 @@ const ResultadosCompetencia = () => {
   const [competencia, setCompetencia] = useState(null);
   const [resultados, setResultados] = useState([]);
   const [filtroNumero, setFiltroNumero] = useState('');
+  const [categoriaActual, setCategoriaActual] = useState('');
+  const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,13 +24,21 @@ const ResultadosCompetencia = () => {
       setPatinadores(lista);
       setCompetencia(comp);
       setResultados([]);
+      const cats = Array.from(new Set(lista.map(p => p.categoria))).sort();
+      setCategorias(cats);
+      if (cats.length) {
+        setCategoriaActual(cats[0]);
+      }
     };
 
     fetchData();
   }, []);
 
   const agregarPatinador = () => {
-    setResultados([...resultados, { patinador: '', nombre: '', club: '', categoria: '', posicion: '', puntos: '' }]);
+    setResultados([
+      ...resultados,
+      { patinador: '', nombre: '', club: '', categoria: categoriaActual, posicion: '', puntos: '' }
+    ]);
   };
 
   const handleChange = (index, field, value) => {
@@ -67,6 +77,18 @@ const ResultadosCompetencia = () => {
                   onChange={e => setFiltroNumero(e.target.value)}
                 />
               </div>
+              <div className="mb-3">
+                <select
+                  className="form-select"
+                  value={categoriaActual}
+                  onChange={e => setCategoriaActual(e.target.value)}
+                >
+                  <option value="">Todas las categorías</option>
+                  {categorias.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
 
               <form onSubmit={handleSubmit}>
                 {resultados.map((res, index) => (
@@ -83,6 +105,7 @@ const ResultadosCompetencia = () => {
                             p.numeroCorredor
                               ?.toString()
                               .includes(filtroNumero)
+                          && (categoriaActual ? p.categoria === categoriaActual : true)
                           )
                           .map(p => (
                             <option key={p._id} value={p._id}>

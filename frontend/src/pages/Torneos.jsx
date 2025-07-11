@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { listarTorneos } from '../api/torneos';
-import { useNavigate } from 'react-router-dom';
 import formatDate from '../utils/formatDate';
 
 const Torneos = () => {
   const { token } = useAuth();
-  const navigate = useNavigate();
   const [torneos, setTorneos] = useState([]);
 
   useEffect(() => {
