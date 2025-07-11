@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../store/useAuth';
 import { agregarResultados, listarCompetencias, obtenerListaBuenaFe } from '../api/competencias';
+import { listarPatinadoresExternos } from '../api/patinadoresExternos';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const ResultadosCompetencia = () => {
@@ -9,6 +10,7 @@ const ResultadosCompetencia = () => {
   const navigate = useNavigate();
 
   const [patinadores, setPatinadores] = useState([]);
+  const [patinadoresExternos, setPatinadoresExternos] = useState([]);
   const [competencia, setCompetencia] = useState(null);
   const [resultados, setResultados] = useState([]);
   const [filtroNumero, setFiltroNumero] = useState('');
@@ -20,8 +22,10 @@ const ResultadosCompetencia = () => {
       const lista = await obtenerListaBuenaFe(id, token);
       const comps = await listarCompetencias(token);
       const comp = comps.find(c => c._id === id);
+      const externos = await listarPatinadoresExternos(token);
 
       setPatinadores(lista);
+      setPatinadoresExternos(externos);
       setCompetencia(comp);
       setResultados([]);
       const cats = Array.from(new Set(lista.map(p => p.categoria))).sort();
@@ -123,7 +127,15 @@ const ResultadosCompetencia = () => {
                             type="number"
                             placeholder="Número"
                             value={res.numeroCorredor}
-                            onChange={e => handleChange(index, 'numeroCorredor', e.target.value)}
+                            onChange={e => {
+                              const val = e.target.value;
+                              handleChange(index, 'numeroCorredor', val);
+                              const ext = patinadoresExternos.find(p => p.numeroCorredor?.toString() === val);
+                              if (ext) {
+                                handleChange(index, 'nombre', ext.nombre);
+                                handleChange(index, 'club', ext.club || '');
+                              }
+                            }}
                             required
                           />
                         </div>
