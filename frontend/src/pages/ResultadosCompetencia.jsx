@@ -13,7 +13,6 @@ const ResultadosCompetencia = () => {
   const [patinadoresExternos, setPatinadoresExternos] = useState([]);
   const [competencia, setCompetencia] = useState(null);
   const [resultados, setResultados] = useState([]);
-  const [filtroNumero, setFiltroNumero] = useState('');
   const [categoriaActual, setCategoriaActual] = useState('');
   const [categorias, setCategorias] = useState([]);
 
@@ -91,15 +90,6 @@ const ResultadosCompetencia = () => {
                 Cargar Resultados de: {competencia?.nombre}
               </h2>
               <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Filtrar por número de patinador"
-                  value={filtroNumero}
-                  onChange={e => setFiltroNumero(e.target.value)}
-                />
-              </div>
-              <div className="mb-3">
                 <select
                   className="form-select"
                   value={categoriaActual}
@@ -123,16 +113,11 @@ const ResultadosCompetencia = () => {
                       >
                         <option value="">Seleccionar Patinador</option>
                         {patinadores
-                          .filter(p =>
-                            p.numeroCorredor
-                              ?.toString()
-                              .includes(filtroNumero)
-                          && (
-                            !categoriaActual
-                              ||
-                                p.categoria?.trim().toUpperCase() ===
-                                  categoriaActual.trim().toUpperCase()
-                          )
+                          .filter(
+                            p =>
+                              !categoriaActual ||
+                              p.categoria?.trim().toUpperCase() ===
+                                categoriaActual.trim().toUpperCase()
                           )
                           .map(p => (
                             <option key={p._id} value={p._id}>
