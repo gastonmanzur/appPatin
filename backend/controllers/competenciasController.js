@@ -142,8 +142,8 @@ exports.agregarResultados = async (req, res) => {
       if (!res.patinador && res.numeroCorredor && res.nombre) {
         extOps.push(
           PatinadorExterno.findOneAndUpdate(
-            { numeroCorredor: res.numeroCorredor },
-            { nombre: res.nombre, club: res.club },
+            { numeroCorredor: res.numeroCorredor, categoria: res.categoria },
+            { nombre: res.nombre, club: res.club, categoria: res.categoria },
             { upsert: true, new: true }
           )
         );
