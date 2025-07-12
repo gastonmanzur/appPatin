@@ -22,10 +22,8 @@ const ResultadosCompetencia = () => {
       const lista = await obtenerListaBuenaFe(id, token);
       const comps = await listarCompetencias(token);
       const comp = comps.find(c => c._id === id);
-      const externos = await listarPatinadoresExternos(token);
 
       setPatinadores(lista);
-      setPatinadoresExternos(externos);
       setCompetencia(comp);
       setResultados([]);
       const cats = Array.from(new Set(lista.map(p => p.categoria))).sort();
@@ -37,6 +35,16 @@ const ResultadosCompetencia = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchExternos = async () => {
+      if (!categoriaActual) return;
+      const externos = await listarPatinadoresExternos(token, categoriaActual);
+      setPatinadoresExternos(externos);
+    };
+
+    fetchExternos();
+  }, [categoriaActual, token]);
 
   const agregarPatinador = () => {
     setResultados([
@@ -145,7 +153,11 @@ const ResultadosCompetencia = () => {
                             onChange={e => {
                               const val = e.target.value;
                               handleChange(index, 'numeroCorredor', val);
-                              const ext = patinadoresExternos.find(p => p.numeroCorredor?.toString() === val);
+                              const ext = patinadoresExternos.find(
+                                p =>
+                                  p.numeroCorredor?.toString() === val &&
+                                  p.categoria === categoriaActual
+                              );
                               if (ext) {
                                 handleChange(index, 'nombre', ext.nombre);
                                 handleChange(index, 'club', ext.club || '');
