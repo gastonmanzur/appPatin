@@ -102,22 +102,35 @@ exports.agregarResultados = async (req, res) => {
       return res.status(404).json({ msg: 'Competencia no encontrada' });
     }
 
-    const parsedResultados = resultados
-      .map(r => {
-        const res = {
-          ...r,
-          posicion: Number(r.posicion),
-          puntos: Number(r.puntos)
-        };
-        if (res.numeroCorredor !== undefined && res.numeroCorredor !== null) {
-          res.numeroCorredor = Number(res.numeroCorredor);
-        }
-        if (!res.patinador) {
-          delete res.patinador;
-        }
-        return res;
-      })
-      .filter(r => !isNaN(r.posicion) && !isNaN(r.puntos));
+    const parsedResultados = (
+      await Promise.all(
+        resultados.map(async r => {
+          const res = {
+            ...r,
+            posicion: Number(r.posicion),
+            puntos: Number(r.puntos)
+          };
+          if (res.numeroCorredor !== undefined && res.numeroCorredor !== null) {
+            res.numeroCorredor = Number(res.numeroCorredor);
+          }
+          if (!res.patinador) {
+            delete res.patinador;
+            if (res.numeroCorredor && (!res.nombre || !res.club)) {
+              const ext = await PatinadorExterno.findOne({
+                numeroCorredor: res.numeroCorredor,
+                categoria: res.categoria
+              });
+              if (ext) {
+                if (!res.nombre) res.nombre = ext.nombre;
+                if (!res.club) res.club = ext.club;
+                if (!res.categoria) res.categoria = ext.categoria;
+              }
+            }
+          }
+          return res;
+        })
+      )
+    ).filter(r => !isNaN(r.posicion) && !isNaN(r.puntos));
 
     // Agregar o actualizar resultados existentes
     const extOps = [];
