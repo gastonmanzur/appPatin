@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
+let memoryServer;
 
 const connectDB = async () => {
-  const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
-  if (!uri) {
-    console.error(
-      'MongoDB connection URI not provided. Set MONGO_URI in your environment.'
-    );
-    process.exit(1);
-  }
+  let uri = process.env.MONGO_URI || process.env.MONGODB_URI;
   try {
+    if (!uri) {
+      const { MongoMemoryServer } = require('mongodb-memory-server');
+      memoryServer = await MongoMemoryServer.create();
+      uri = memoryServer.getUri();
+      console.warn('Using in-memory MongoDB instance');
+    }
+
     await mongoose.connect(uri);
     console.log('MongoDB conectado');
   } catch (err) {
