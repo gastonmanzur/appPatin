@@ -21,7 +21,8 @@ const Login = () => {
       login(res.data.token);
       navigate('/dashboard');
     } catch (err) {
-      alert(err.response.data.msg);
+      const message = err.response?.data?.msg || 'Error al iniciar sesión';
+      alert(message);
     }
   };
 
