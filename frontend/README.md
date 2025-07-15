@@ -10,3 +10,9 @@ Currently, two official plugins are available:
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Environment setup
+
+Create a `.env` file in this folder based on `.env.example`. Set `VITE_GOOGLE_CLIENT_ID` to your Google OAuth Client ID.
+Make sure that the client ID allows your deployment domain (e.g. `https://apppatin-frontend.onrender.com`) under "Authorized JavaScript origins" in the Google Cloud console.
+
