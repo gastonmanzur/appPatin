@@ -10,6 +10,7 @@ import useAuth from '../../store/useAuth';
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   const [form, setForm] = useState({ email: '', password: '' });
 
   const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
@@ -38,23 +39,29 @@ const Login = () => {
             <input className="form-control" name="password" type="password" placeholder="Password" onChange={handleChange} required />
           </div>
           <button className="btn btn-primary w-100 mb-3" type="submit">Iniciar sesión</button>
-          <GoogleLogin
-            onSuccess={async (credentialResponse) => {
-              const { credential } = credentialResponse;
-              const decoded = jwtDecode(credential);
-              const userData = {
-                nombre: decoded.given_name,
-                apellido: decoded.family_name,
-                email: decoded.email,
-                googleId: decoded.sub,
-                picture: decoded.picture,
-              };
-              const res = await api.post('/auth/google-login', userData);
-              login(res.data.token);
-              navigate('/dashboard');
-            }}
-            onError={() => alert('Google Login fallido')}
-          />
+          {googleClientId ? (
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+                const { credential } = credentialResponse;
+                const decoded = jwtDecode(credential);
+                const userData = {
+                  nombre: decoded.given_name,
+                  apellido: decoded.family_name,
+                  email: decoded.email,
+                  googleId: decoded.sub,
+                  picture: decoded.picture,
+                };
+                const res = await api.post('/auth/google-login', userData);
+                login(res.data.token);
+                navigate('/dashboard');
+              }}
+              onError={() => alert('Google Login fallido')}
+            />
+          ) : (
+            <div className="alert alert-warning text-center" role="alert">
+              Configura VITE_GOOGLE_CLIENT_ID para habilitar Google Login
+            </div>
+          )}
           <div className="text-center mt-3">
             <button type="button" className="btn btn-link" onClick={() => navigate('/register')}>Registrarme</button>
           </div>
