@@ -10,3 +10,7 @@ apropiada.
 Para empezar puedes copiar el archivo `.env.example` como `.env` y rellenar sus
 valores. Si obtienes errores de DNS al usar una URI `mongodb+srv://`, cambia a
 la forma estándar `mongodb://usuario:contraseña@host:puerto/nombre_bd`.
+
+El valor de `CLIENT_URL` debe coincidir con la URL de tu frontend (por ejemplo
+`https://apppatin-frontend.onrender.com`) para que el middleware CORS permita
+las solicitudes.
