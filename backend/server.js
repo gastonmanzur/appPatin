@@ -8,7 +8,25 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  'https://apppatin-frontend.onrender.com',
+  'http://localhost:5173',
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
+// Ensure preflight requests always receive CORS headers
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));

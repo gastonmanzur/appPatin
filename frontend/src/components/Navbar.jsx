@@ -238,7 +238,7 @@ const Navbar = () => {
                     src={
                       profile.picture.startsWith('http')
                         ? profile.picture
-                          : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/uploads/${profile.picture}`
+                          : `${import.meta.env.VITE_API_URL || 'https://apppatin-1.onrender.com'}/uploads/${profile.picture}`
                     }
                     alt="Perfil"
                     className="rounded-circle"
