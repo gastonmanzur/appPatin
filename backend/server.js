@@ -27,7 +27,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 // Ensure preflight requests always receive CORS headers
-app.options('*', cors(corsOptions));
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
