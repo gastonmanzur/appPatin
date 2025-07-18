@@ -6,7 +6,9 @@ const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
 const { generateToken } = require('../utils/tokenUtils');
 
-const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const googleClient = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID
+);
 
 // REGISTRO
 exports.register = async (req, res) => {
@@ -105,8 +107,20 @@ exports.login = async (req, res) => {
 // LOGIN GOOGLE
 exports.googleLogin = async (req, res) => {
   try {
-    console.log('Body recibido:', req.body);
-    const { email, nombre, apellido, googleId, picture } = req.body;
+    const { credential } = req.body;
+    const ticket = await googleClient.verifyIdToken({
+      idToken: credential,
+      audience: process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+
+    const {
+      email,
+      given_name: nombre,
+      family_name: apellido,
+      sub: googleId,
+      picture,
+    } = payload;
 
     let user = await User.findOne({ email });
 
@@ -136,7 +150,6 @@ exports.googleLogin = async (req, res) => {
         picture,
       },
     });
-
   } catch (err) {
     console.error('Error interno Google Login:', err);
     res.status(500).json({ msg: 'Error en Google Login' });
