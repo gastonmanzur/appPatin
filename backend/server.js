@@ -2,15 +2,31 @@ require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
-const corsOptions = require('./config/corsOptions');
+const allowedOrigins = [
+  'https://app-patin-ekcu.vercel.app',
+  'https://app-patin-ekcu-gastonmanzurs-projects.vercel.app', // si estás usando previews también
+];
 const path = require('path');
 
 const app = express();
 
 // Middlewares
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Permitir requests sin origin (Postman, servidores) y desde los permitidos
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('No permitido por CORS'));
+      }
+    },
+    credentials: true, // Necesario si estás usando cookies o headers auth
+  })
+);
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
