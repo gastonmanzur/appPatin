@@ -29,7 +29,7 @@ const VerPatinador = () => {
 
           {patinador.fotoRostro && (
             <img
-              src={`${import.meta.env.VITE_API_URL || 'https://apppatin-1.onrender.com'}/uploads/${patinador.fotoRostro}`}
+              src={`${import.meta.env.VITE_API_URL || 'https://backend-app-s246.onrender.com'}/uploads/${patinador.fotoRostro}`}
               alt="Rostro"
               className="rounded-circle mb-3"
               style={{ width: '200px', height: '200px', objectFit: 'cover' }}
@@ -51,7 +51,7 @@ const VerPatinador = () => {
             <div className="mt-4">
               <h3>Foto Completa:</h3>
               <img
-                src={`${import.meta.env.VITE_API_URL || 'https://apppatin-1.onrender.com'}/uploads/${patinador.foto}`}
+                src={`${import.meta.env.VITE_API_URL || 'https://backend-app-s246.onrender.com'}/uploads/${patinador.foto}`}
                 alt="Foto"
                 className="img-fluid"
                 style={{ maxWidth: '400px' }}
