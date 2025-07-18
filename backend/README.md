@@ -12,7 +12,12 @@ valores. Si obtienes errores de DNS al usar una URI `mongodb+srv://`, cambia a
 la forma estándar `mongodb://usuario:contraseña@host:puerto/nombre_bd`.
 
 El valor de `CLIENT_URL` debe coincidir con la URL de tu frontend (por ejemplo
-`http://localhost:5173`) para que el middleware CORS permita las solicitudes.
+`http://localhost:5173`) para generar los enlaces de verificación de cuenta.
+
+Para configurar el middleware CORS puedes definir `ALLOWED_ORIGINS` con una
+lista de dominios separados por comas (por defecto se usan `CLIENT_URL` y las
+URLs de desarrollo). Esto te permite usar la misma imagen en desarrollo y en
+producción sin modificar el código.
 
 Además debes definir `GOOGLE_CLIENT_ID` con el ID de cliente OAuth de Google si
 quieres habilitar el inicio de sesión con Google.
