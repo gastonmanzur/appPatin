@@ -6,9 +6,11 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
       'http://localhost:5173',
     ];
 
+const isVercelDomain = (origin) => /\.vercel\.app$/.test(origin || '');
+
 module.exports = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.includes(origin) || isVercelDomain(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
