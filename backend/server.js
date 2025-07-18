@@ -26,8 +26,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-// Ensure preflight requests always receive CORS headers
-app.options('*', cors(corsOptions));
+// Ensure CORS headers for preflight requests
+// Express 5 requires a named wildcard parameter
+app.options('/*all', cors(corsOptions));
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
