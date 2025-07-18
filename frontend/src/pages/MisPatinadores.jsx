@@ -83,7 +83,7 @@ const MisPatinadores = () => {
                 >
                   {p.foto && (
                     <img
-                      src={`${import.meta.env.VITE_API_URL || 'https://apppatin-1.onrender.com'}/uploads/${p.foto}`}
+                      src={`${import.meta.env.VITE_API_URL || 'https://backend-app-s246.onrender.com'}/uploads/${p.foto}`}
                       alt="Foto"
                       className="m-3"
                       style={{ objectFit: 'cover', height: '80vh' }}

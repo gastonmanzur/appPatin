@@ -52,7 +52,7 @@ const FotoCarousel = ({ fotos }) => {
       {fotos.map((f) => (
         <div key={f._id}>
           <img
-              src={`${import.meta.env.VITE_API_URL || 'https://apppatin-1.onrender.com'}/uploads/${f.imagen}`}
+              src={`${import.meta.env.VITE_API_URL || 'https://backend-app-s246.onrender.com'}/uploads/${f.imagen}`}
             alt="foto"
             style={{ width: '100%', height: '300px', objectFit: 'contain' }}
           />

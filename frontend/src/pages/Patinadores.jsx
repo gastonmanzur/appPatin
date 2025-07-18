@@ -51,7 +51,7 @@ const Patinadores = () => {
             <div className="card h-100 text-center">
               {p.fotoRostro && (
                 <img
-                  src={`${import.meta.env.VITE_API_URL || 'https://apppatin-1.onrender.com'}/uploads/${p.fotoRostro}`}
+                  src={`${import.meta.env.VITE_API_URL || 'https://backend-app-s246.onrender.com'}/uploads/${p.fotoRostro}`}
                   alt="Rostro"
                   className="rounded-circle mx-auto mt-3"
                   style={{ width: '120px', height: '120px', objectFit: 'cover' }}
