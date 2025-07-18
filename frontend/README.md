@@ -18,3 +18,4 @@ Make sure that the client ID allows your deployment domain (e.g. `https://apppat
 
 If `VITE_GOOGLE_CLIENT_ID` is not set when the app is built, the Google login button will be disabled and a warning will appear in the browser console.
 
+If you see a 400 `origin_mismatch` error when signing in with Google, confirm that your deployment URL is listed under "Authorized JavaScript origins" for the OAuth client in Google Cloud Console.
