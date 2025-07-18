@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import api from '../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
 import useAuth from '../../store/useAuth';
 
 
@@ -43,15 +42,7 @@ const Login = () => {
             <GoogleLogin
               onSuccess={async (credentialResponse) => {
                 const { credential } = credentialResponse;
-                const decoded = jwtDecode(credential);
-                const userData = {
-                  nombre: decoded.given_name,
-                  apellido: decoded.family_name,
-                  email: decoded.email,
-                  googleId: decoded.sub,
-                  picture: decoded.picture,
-                };
-                const res = await api.post('/auth/google-login', userData);
+                const res = await api.post('/auth/google-login', { credential });
                 login(res.data.token);
                 navigate('/dashboard');
               }}
