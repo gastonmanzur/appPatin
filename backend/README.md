@@ -26,3 +26,4 @@ ALLOWED_ORIGINS=http://localhost:5173,https://apppatin-frontend.onrender.com
 
 Además debes definir `GOOGLE_CLIENT_ID` con el ID de cliente OAuth de Google si
 quieres habilitar el inicio de sesión con Google.
+Para evitar el error `origin_mismatch` de Google, asegúrate de que la URL configurada en `CLIENT_URL` y cualquier dominio donde despliegues el frontend estén registrados como **Authorized JavaScript origins** del cliente OAuth en la Google Cloud Console.
