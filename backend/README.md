@@ -12,5 +12,7 @@ valores. Si obtienes errores de DNS al usar una URI `mongodb+srv://`, cambia a
 la forma estándar `mongodb://usuario:contraseña@host:puerto/nombre_bd`.
 
 El valor de `CLIENT_URL` debe coincidir con la URL de tu frontend (por ejemplo
-`https://apppatin-frontend.onrender.com`) para que el middleware CORS permita
-las solicitudes.
+`http://localhost:5173`) para que el middleware CORS permita las solicitudes.
+
+Además debes definir `GOOGLE_CLIENT_ID` con el ID de cliente OAuth de Google si
+quieres habilitar el inicio de sesión con Google.
