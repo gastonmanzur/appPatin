@@ -13,3 +13,7 @@ A `netlify.toml` file at the repository root instructs Netlify to build the fron
 3. Trigger a deploy &mdash; Netlify will run `npm install` and `npm run build` inside the `frontend` folder and publish the generated `dist` directory.
 
 The backend should be deployed separately (for example on Render or another provider) and the frontend's `VITE_API_URL` should point to the live backend URL.
+
+## Deploying the frontend on Vercel
+
+The project can also be deployed on [Vercel](https://vercel.com/) as a static site. When creating the Vercel project, set the **Root Directory** to `frontend` and use the default build command (`npm run build`). The Vite build outputs to the `dist` directory, so configure the **Output Directory** as `dist` in the Vercel settings. A `vercel.json` file is included to provide the same configuration and to route all paths to `index.html` for client-side routing.
