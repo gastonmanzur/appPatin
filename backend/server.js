@@ -11,8 +11,6 @@ const app = express();
 app.use(express.json());
 
 app.use(cors(corsOptions));
-// Ensure CORS headers for preflight requests on any route
-app.options('*', cors(corsOptions));
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
