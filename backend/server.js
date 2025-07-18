@@ -9,11 +9,16 @@ const app = express();
 // Middlewares
 app.use(express.json());
 
-const allowedOrigins = [
-  process.env.CLIENT_URL,
-  'https://apppatin-frontend.onrender.com',
-  'http://localhost:5173',
-];
+// Allow multiple origins through an env variable so the same code works in
+// development and production without modifications. The variable should be a
+// comma separated list of origins.
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
+  : [
+      process.env.CLIENT_URL,
+      'https://apppatin-frontend.onrender.com',
+      'http://localhost:5173',
+    ];
 
 const corsOptions = {
   origin: (origin, callback) => {
