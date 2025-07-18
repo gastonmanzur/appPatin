@@ -9,7 +9,7 @@ A `netlify.toml` file at the repository root instructs Netlify to build the fron
 ## Deploy steps
 
 1. Create a new site on Netlify and link it to this repository.
-2. Ensure your environment variables (such as `VITE_API_URL` and `VITE_GOOGLE_CLIENT_ID`) are set in your Netlify site settings. The backend also requires `GOOGLE_CLIENT_ID`, `CLIENT_URL` and optionally `ALLOWED_ORIGINS` for Google login, email verification and CORS.
+2. Ensure your environment variables (such as `VITE_API_URL` and `VITE_GOOGLE_CLIENT_ID`) are set in your Netlify site settings. The backend also requires `GOOGLE_CLIENT_ID`, `CLIENT_URL` and optionally `ALLOWED_ORIGINS` for Google login, email verification and CORS. If set, `ALLOWED_ORIGINS` should be a comma-separated list of allowed domains.
 3. Trigger a deploy &mdash; Netlify will run `npm install` and `npm run build` inside the `frontend` folder and publish the generated `dist` directory.
 
 The backend should be deployed separately (for example on Render or another provider) and the frontend's `VITE_API_URL` should point to the live backend URL.

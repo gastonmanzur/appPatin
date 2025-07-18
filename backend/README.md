@@ -17,7 +17,12 @@ El valor de `CLIENT_URL` debe coincidir con la URL de tu frontend (por ejemplo
 Para configurar el middleware CORS puedes definir `ALLOWED_ORIGINS` con una
 lista de dominios separados por comas (por defecto se usan `CLIENT_URL` y las
 URLs de desarrollo). Esto te permite usar la misma imagen en desarrollo y en
-producción sin modificar el código.
+producción sin modificar el código. Asegúrate de separar las URLs con comas,
+por ejemplo:
+
+```
+ALLOWED_ORIGINS=http://localhost:5173,https://apppatin-frontend.onrender.com
+```
 
 Además debes definir `GOOGLE_CLIENT_ID` con el ID de cliente OAuth de Google si
 quieres habilitar el inicio de sesión con Google.

@@ -2,33 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
 const path = require('path');
 
 const app = express();
 
 // Middlewares
 app.use(express.json());
-
-// Allow multiple origins through an env variable so the same code works in
-// development and production without modifications. The variable should be a
-// comma separated list of origins.
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map((o) => o.trim())
-  : [
-      process.env.CLIENT_URL,
-      'https://apppatin-frontend.onrender.com',
-      'http://localhost:5173',
-    ];
-
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-};
 
 app.use(cors(corsOptions));
 // Ensure CORS headers for preflight requests
