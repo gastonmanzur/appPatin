@@ -2,10 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/db');
 const cors = require('cors');
-const allowedOrigins = [
-  'https://app-patin-ekcu.vercel.app',
-  'https://app-patin-ekcu-gastonmanzurs-projects.vercel.app', // si estás usando previews también
-];
 const path = require('path');
 
 const app = express();
