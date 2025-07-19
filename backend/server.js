@@ -14,19 +14,29 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Permitir requests sin origin (Postman, servidores) y desde los permitidos
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('No permitido por CORS'));
-      }
-    },
-    credentials: true, // Necesario si estás usando cookies o headers auth
-  })
-);
+// 🛡️ Cabeceras opcionales para mejorar compatibilidad con popups (Google Login)
+app.use((req, res, next) => {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  next();
+});
+
+// ✅ Configuración CORS: dominios permitidos
+const allowedOrigins = [
+  'https://app-patin-ekcu.vercel.app',
+  'https://app-patin-ekcu-gastonmanzurs-projects.vercel.app', // preview de Vercel
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  credentials: true,
+}));
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
