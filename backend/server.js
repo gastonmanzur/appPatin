@@ -10,31 +10,26 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ✅ Configuración CORS corregida
+// ---------- Configuración CORS ----------
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, '')) // elimina la barra final si existe
-  : [
-    'https://app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects.vercel.app',
-  ];
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, ''))
+  : [process.env.CLIENT_URL || 'http://localhost:5173'];
 
 const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects\.vercel\.app$/;
 
-app.use(cors({
-  origin: function (origin, callback) {
-    console.log('Origin recibido:', origin); // 👈 útil para depurar
-    if (
-      !origin || // permite Postman, curl, etc.
-      allowedOrigins.includes(origin) ||
-      vercelPreviewRegex.test(origin)
-    ) {
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || vercelPreviewRegex.test(origin)) {
       callback(null, true);
     } else {
-      console.log('❌ Bloqueado por CORS:', origin);
-      callback(new Error('No permitido por CORS'));
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
