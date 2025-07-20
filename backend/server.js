@@ -22,7 +22,7 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
   ];
 
 // Permitir cualquier dominio de preview generado por Vercel para este proyecto
-const vercelPreviewRegex = https://app-patin-ekcu-orp9r397w-gastonmanzurs-projects.vercel.app/;
+const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects\.vercel\.app\/?$/;
 
 app.use(cors({
   origin: function (origin, callback) {

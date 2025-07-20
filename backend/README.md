@@ -21,7 +21,7 @@ producción sin modificar el código. Asegúrate de separar las URLs con comas,
 por ejemplo:
 
 ```
-ALLOWED_ORIGINS=http://localhost:5173,https://apppatin-frontend.onrender.com
+ALLOWED_ORIGINS=http://localhost:5173,https://app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects.vercel.app/
 ```
 
 Además debes definir `GOOGLE_CLIENT_ID` con el ID de cliente OAuth de Google si
