@@ -10,29 +10,26 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Las cabeceras COOP/COEP impedían la comunicación con la ventana emergente de
-// Google Login en producción. Se eliminan para evitar el error
-// "Cross-Origin-Opener-Policy policy would block the window.postMessage call".
-
-// ✅ Configuración CORS: dominios permitidos
+// ✅ Configuración CORS corregida
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, '')) // elimina la barra final si existe
   : [
-    'https://app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects.vercel.app/',
+    'https://app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects.vercel.app',
   ];
 
-// Permitir cualquier dominio de preview generado por Vercel para este proyecto
-const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects\.vercel\.app\/?$/;
+const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects\.vercel\.app$/;
 
 app.use(cors({
   origin: function (origin, callback) {
+    console.log('Origin recibido:', origin); // 👈 útil para depurar
     if (
-      !origin ||
+      !origin || // permite Postman, curl, etc.
       allowedOrigins.includes(origin) ||
       vercelPreviewRegex.test(origin)
     ) {
       callback(null, true);
     } else {
+      console.log('❌ Bloqueado por CORS:', origin);
       callback(new Error('No permitido por CORS'));
     }
   },
@@ -56,9 +53,6 @@ app.use('/api/seguros', require('./routes/segurosRoutes'));
 app.use('/api/informes', require('./routes/informesRoutes'));
 app.use('/api/fotos', require('./routes/photoRoutes'));
 app.use('/api/asistencias', require('./routes/asistenciasRoutes'));
-
-
-
 
 // DB y servidor
 connectDB();
