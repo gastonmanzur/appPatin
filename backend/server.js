@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
   : [
-    'https://app-patin-ekcu.vercel.app',
+    'https://app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects.vercel.app/',
   ];
 
 // Permitir cualquier dominio de preview generado por Vercel para este proyecto
