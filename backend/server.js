@@ -18,14 +18,19 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
   : [
-    'https://app-patin-ekcu-p0bz5vl8t-gastonmanzurs-projects.vercel.app',
-      'https://app-patin-ekcu.vercel.app',
-      'https://app-patin-ekcu-gastonmanzurs-projects.vercel.app', // preview de Vercel
-    ];
+    'https://app-patin-ekcu.vercel.app',
+  ];
+
+// Permitir cualquier dominio de preview generado por Vercel para este proyecto
+const vercelPreviewRegex = /^https:\/\/app-patin-ekcu.*\.vercel\.app$/;
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      vercelPreviewRegex.test(origin)
+    ) {
       callback(null, true);
     } else {
       callback(new Error('No permitido por CORS'));
