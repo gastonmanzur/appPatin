@@ -12,12 +12,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // ✅ Configuración CORS corregida
 const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$, '')) // elimina la barra final si existe
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, '')) // elimina la barra final si existe
   : [
     'https://app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects.vercel.app',
   ];
 
-const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects\.vercel\.app$;
+const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects\.vercel\.app$/;
 
 app.use(cors({
   origin: function (origin, callback) {
