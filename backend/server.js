@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
   : [
+    'https://app-patin-ekcu-orp9r397w-gastonmanzurs-projects.vercel.app/',
       'https://app-patin-ekcu.vercel.app',
       'https://app-patin-ekcu-gastonmanzurs-projects.vercel.app', // preview de Vercel
     ];
