@@ -10,18 +10,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// 🛡️ Cabeceras opcionales para mejorar compatibilidad con popups (Google Login)
-app.use((req, res, next) => {
-  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
-  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-  next();
-});
+// Las cabeceras COOP/COEP impedían la comunicación con la ventana emergente de
+// Google Login en producción. Se eliminan para evitar el error
+// "Cross-Origin-Opener-Policy policy would block the window.postMessage call".
 
 // ✅ Configuración CORS: dominios permitidos
-const allowedOrigins = [
-  'https://app-patin-ekcu.vercel.app',
-  'https://app-patin-ekcu-gastonmanzurs-projects.vercel.app', // preview de Vercel
-];
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : [
+      'https://app-patin-ekcu.vercel.app',
+      'https://app-patin-ekcu-gastonmanzurs-projects.vercel.app', // preview de Vercel
+    ];
 
 app.use(cors({
   origin: function (origin, callback) {
