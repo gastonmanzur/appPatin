@@ -29,7 +29,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options('/*path', cors(corsOptions));
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
