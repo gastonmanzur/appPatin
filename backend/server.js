@@ -29,8 +29,13 @@ const corsOptions = {
   },
   credentials: true,
 };
+const allowedOrigin = "https://app-patin-ekcu-qvkdq556v-gastonmanzurs-projects.vercel.app";
 
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true,
+  optionsSuccessStatus: 200 // importante para que OPTIONS devuelva 200 en legacy browsers
+}));
 app.options('/*path', cors(corsOptions));
 
 // Rutas
