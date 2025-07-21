@@ -12,12 +12,25 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // ---------- Configuración CORS ----------
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, ''))
+  : [process.env.CLIENT_URL || 'http://localhost:5173'];
+
+const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-[\w-]+-gastonmanzurs-projects\.vercel\.app$/;
+
 app.use(cors({
-  origin: "https://app-patin-ekcu-qvkdq556v-gastonmanzurs-projects.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  origin(origin, callback) {
+    if (!origin) return callback(null, true);
+    const clean = origin.replace(/\/$/, '');
+    if (allowedOrigins.includes(clean) || vercelPreviewRegex.test(clean)) {
+      return callback(null, true);
+    }
+    callback(new Error('Not allowed by CORS'));
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 }));
 // Preflight requests handled automatically by cors middleware in Express 5
 
