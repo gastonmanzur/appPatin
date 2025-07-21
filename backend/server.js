@@ -12,28 +12,14 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // ---------- Configuración CORS ----------
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, ''))
-  : [process.env.CLIENT_URL || 'http://localhost:5173'];
-
-const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects\.vercel\.app$/;
-
-
-const corsOptions = {
-  origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || vercelPreviewRegex.test(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+app.use(cors({
+  origin: "https://app-patin-ekcu-qvkdq556v-gastonmanzurs-projects.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
-  optionsSuccessStatus: 200, // ensure OPTIONS returns 200 in legacy browsers
-};
-
-// Apply CORS middleware globally and handle preflight requests
-app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+  optionsSuccessStatus: 200
+}));
+app.options('*', cors()); // para responder a preflight OPTIONS
 
 // Rutas
 app.use('/api/auth', require('./routes/authRoutes'));
