@@ -14,7 +14,7 @@ If you are developing a production application, we recommend using TypeScript wi
 ## Environment setup
 
 Create a `.env` file in this folder based on `.env.example`. Set `VITE_GOOGLE_CLIENT_ID` to your Google OAuth Client ID.
-Make sure that the client ID allows your deployment domain (e.g. `https://app-patin-ekcu-dvow4bzs0-gastonmanzurs-projects.vercel.app/`) under "Authorized JavaScript origins" in the Google Cloud console.
+Make sure that the client ID allows your deployment domain (e.g. `https://app-patin-ekcu-qvkdq556v-gastonmanzurs-projects.vercel.app/`) under "Authorized JavaScript origins" in the Google Cloud console.
 
 If `VITE_GOOGLE_CLIENT_ID` is not set when the app is built, the Google login button will be disabled and a warning will appear in the browser console.
 
