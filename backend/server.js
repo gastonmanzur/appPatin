@@ -11,12 +11,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// ---------- Configuración CORS ----------
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, ''))
-  : [process.env.CLIENT_URL || 'http://localhost:5173'];
+// // ---------- Configuración CORS ----------
+// const allowedOrigins = process.env.ALLOWED_ORIGINS
+//   ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/$/, ''))
+//   : [process.env.CLIENT_URL || 'http://localhost:5173'];
 
-const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-[\w-]+-gastonmanzurs-projects\.vercel\.app$/;
+// const vercelPreviewRegex = /^https:\/\/app-patin-ekcu-[\w-]+-gastonmanzurs-projects\.vercel\.app$/;
 
 // app.use(cors({
 //   origin(origin, callback) {
