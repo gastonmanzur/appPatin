@@ -33,7 +33,7 @@ app.use(cors({
   optionsSuccessStatus: 200,
 }));
 // Handle preflight requests for all routes
-app.options('*', cors());
+app.options('/*any', cors());
 // Preflight requests handled automatically by cors middleware in Express 5
 
 // Rutas
