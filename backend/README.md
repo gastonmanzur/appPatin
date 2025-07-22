@@ -5,7 +5,12 @@ variables de entorno necesarias.
 
 El servicio de base de datos utiliza la variable `MONGO_URI` (o `MONGODB_URI`)
 para conectarse a MongoDB. Asegúrate de establecerla con la cadena de conexión
-apropiada.
+apropiada e **incluye el nombre de tu base de datos** en la URI. Un ejemplo de
+URI válida sería:
+
+```
+MONGO_URI=mongodb+srv://usuario:contraseña@cluster0.mongodb.net/mi_basedatos?retryWrites=true&w=majority
+```
 
 Para empezar puedes copiar el archivo `.env.example` como `.env` y rellenar sus
 valores. Si obtienes errores de DNS al usar una URI `mongodb+srv://`, cambia a
